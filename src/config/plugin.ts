@@ -1,3 +1,7 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
+import 'tsconfig-paths/register'
+
+
 export const cors = {
   enable: false,
   package: 'egg-cors',

@@ -1,6 +1,5 @@
 import { Context, controller, get, inject, provide } from 'midway'
-
-import { UserService } from './user.service'
+import { UserService } from '@/app/service/user'
 
 
 @provide()

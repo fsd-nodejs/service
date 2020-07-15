@@ -1,6 +1,5 @@
 import { provide } from 'midway'
-
-import { GetUserOpts, UserInfo } from './user.model'
+import { GetUserOpts, UserInfo } from '@/app/model/user'
 
 
 @provide()
