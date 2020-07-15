@@ -37,3 +37,12 @@ $ npm stop
 
 
 [midway]: https://midwayjs.org
+
+## TODO
+
+- 超级管理
+- - [ ] 权限
+- - [ ] 角色
+- - [ ] 用户
+- - [ ] 菜单
+- - [ ] 日志
