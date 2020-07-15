@@ -9,7 +9,7 @@ export class UserController {
 
   constructor(
     @inject() private userService: UserService,
-  ) {}
+  ) { }
 
   @get('/:id')
   public async getUser(ctx: Context): Promise<void> {
