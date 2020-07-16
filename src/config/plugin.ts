@@ -3,8 +3,13 @@ import 'tsconfig-paths/register'
 
 
 export const cors = {
-  enable: false,
+  enable: true,
   package: 'egg-cors',
+}
+
+export const mysql = {
+  enable: true,
+  package: 'egg-mysql',
 }
 
 // false 禁用全部安全检查用于临时调试
