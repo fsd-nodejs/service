@@ -10,7 +10,7 @@ export default (appInfo: EggAppInfo) => {
   config.keys = appInfo.name + '_1594797976100_9970'
 
   // add your config here
-  config.middleware = []
+  config.middleware = ['errorHandler']
 
   config.welcomeMsg = 'Hello midwayjs!'
 

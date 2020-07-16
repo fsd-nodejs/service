@@ -6,8 +6,11 @@
   "dependencies": {
     "egg-cors": "^2.2.3",
     "egg-mysql": "^3.0.0",
+    "egg-passport": "^2.1.1",
     "egg-scripts": "^2.10.0",
-    "midway": "^1.0.0"
+    "egg-validate": "^2.0.2",
+    "midway": "^1.0.0",
+    "passport-local": "^1.0.0"
   },
   "devDependencies": {
     "@types/mocha": "^5.2.7",
