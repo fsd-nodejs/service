@@ -1,7 +1,6 @@
 import { Context, controller, get, inject, provide } from 'midway'
 import { UserService } from '@/app/service/user'
 
-
 @provide()
 @controller('/user')
 export class UserController {

@@ -1,4 +1,3 @@
-
 import {
   Context, config, controller, get, provide, post,
 } from 'midway'
