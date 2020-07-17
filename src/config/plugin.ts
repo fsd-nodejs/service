@@ -12,11 +12,6 @@ export const mysql = {
   package: 'egg-mysql',
 }
 
-export const passport = {
-  enable: true,
-  package: 'egg-passport',
-}
-
 export const validate = {
   enable: true,
   package: 'egg-validate',
