@@ -7,11 +7,6 @@ export const cors = {
   package: 'egg-cors',
 }
 
-export const mysql = {
-  enable: true,
-  package: 'egg-mysql',
-}
-
 export const validate = {
   enable: true,
   package: 'egg-validate',

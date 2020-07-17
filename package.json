@@ -5,7 +5,6 @@
   "private": true,
   "dependencies": {
     "egg-cors": "^2.2.3",
-    "egg-mysql": "^3.0.0",
     "egg-scripts": "^2.10.0",
     "egg-validate": "^2.0.2",
     "midway": "^1.0.0"
