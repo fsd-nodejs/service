@@ -3,7 +3,7 @@ import { UserService } from '@/app/service/user'
 
 @provide()
 @controller('/permission')
-export class UserController {
+export class PermissionController {
 
   constructor(
     @inject() private userService: UserService,
