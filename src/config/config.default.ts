@@ -14,5 +14,14 @@ export default (appInfo: EggAppInfo) => {
 
   config.welcomeMsg = 'Hello midwayjs!'
 
+  config.redis = {
+    client: {
+      port: 6379, // Redis port
+      host: '192.168.13.41', // Redis host
+      password: '',
+      db: 0,
+    },
+  }
+
   return config
 }
