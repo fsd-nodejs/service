@@ -4,11 +4,14 @@
   "description": "Node.js 全栈开发-后端服务",
   "private": true,
   "dependencies": {
+    "@types/bcryptjs": "^2.4.2",
+    "bcryptjs": "^2.4.3",
     "egg-cors": "^2.2.3",
     "egg-redis": "^2.4.0",
     "egg-scripts": "^2.10.0",
     "egg-validate": "^2.0.2",
-    "midway": "^1.0.0"
+    "midway": "^1.0.0",
+    "moment": "^2.27.0"
   },
   "devDependencies": {
     "@types/mocha": "^5.2.7",
