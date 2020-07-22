@@ -11,7 +11,7 @@ export class UserController {
 
   @get('/:id')
   public async getUser(ctx: Context): Promise<void> {
-    const id = +ctx.params.id
+    const { id } = ctx.params
     const user = await this.userService.getUser({ id })
 
     ctx.body = {

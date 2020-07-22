@@ -2,15 +2,18 @@
  * 查询用户信息参数
  */
 export interface GetUserOpts {
-  id: number
+  id: string
 }
 
 /**
  * 用户信息
  */
 export interface UserInfo {
-  id: number
-  user_name: string
-  phone: string
+  id: string
+  username: string
+  password?: string
+  phone?: string
   email?: string
+  pass?: string
+  active?: string
 }
