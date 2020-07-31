@@ -5,6 +5,7 @@
   "private": true,
   "dependencies": {
     "@types/bcryptjs": "^2.4.2",
+    "@types/sequelize": "^4.28.9",
     "bcryptjs": "^2.4.3",
     "egg-cors": "^2.2.3",
     "egg-jwt": "^3.1.7",
@@ -12,7 +13,10 @@
     "egg-scripts": "^2.10.0",
     "egg-validate": "^2.0.2",
     "midway": "^1.0.0",
-    "moment": "^2.27.0"
+    "moment": "^2.27.0",
+    "mysql2": "^2.1.0",
+    "sequelize": "^5.21.10",
+    "sequelize-typescript": "^1.1.0"
   },
   "devDependencies": {
     "@types/mocha": "^5.2.7",

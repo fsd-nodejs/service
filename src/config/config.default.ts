@@ -18,10 +18,19 @@ export default (appInfo: EggAppInfo) => {
 
   config.welcomeMsg = 'Hello midwayjs!'
 
+  config.sequelize = {
+    host: '192.168.13.150',
+    port: '3306',
+    user: 'homestead',
+    password: 'secret',
+    database: 'shop_development',
+    dialect: 'mysql',
+  }
+
   config.redis = {
     client: {
       port: 6379, // Redis port
-      host: '192.168.13.41', // Redis host
+      host: '192.168.13.150', // Redis host
       password: '',
       db: 0,
     },
