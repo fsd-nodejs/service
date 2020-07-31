@@ -25,8 +25,8 @@ export class AuthController {
   @post('/login')
   public async login(ctx: Context): Promise<void> {
     // 获取用户函数
-    const getUser = (username: string) => {
-      return this.service.getUserByUserName(username)
+    const getAdminUser = (username: string) => {
+      return this.service.getAdminUserByUserName(username)
     }
 
     const rule = {
@@ -37,12 +37,18 @@ export class AuthController {
     const { username, password } = ctx.request.body
 
     // 查询用户是否在数据库中
-    const User = await getUser(username)
+    const existAdmiUser = await getAdminUser(username)
+
+    // 用户不存在
+    if (!existAdmiUser) {
+      ctx.body = {}
+      return
+    }
 
     // 调用 rotateCsrfSecret 刷新用户的 CSRF token
     // ctx.rotateCsrfSecret()
 
-    ctx.body = { token: this.jwt.sign({ username, password }), User }
+    ctx.body = { token: this.jwt.sign({ username, password }), existAdmiUser }
   }
 
 }

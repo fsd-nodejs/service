@@ -31,7 +31,7 @@ export class AdminUserService {
    * @param {String} username 登录名
    * @return {Promise[user]} 承载用户的 Promise 对象
    */
-  public async getUserByUserName(username: string) {
+  public async getAdminUserByUserName(username: string) {
     const user = this.AdminUserModel.findOne({
       raw: true,
       where: {
