@@ -41,7 +41,7 @@ export default (appInfo: EggAppInfo) => {
     client: {
       secret: '123456',
     },
-    ignore: '/auth/login',
+    ignore: ['/auth/login'],
   }
 
   return config
