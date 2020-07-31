@@ -1,6 +1,6 @@
 import { Sequelize } from 'sequelize-typescript'
 import { provide, scope, ScopeEnum } from 'midway'
-import { UserModel } from '@/app/model/user'
+import { AdminUserModel } from '@/app/model/admin-user'
 
 
 interface SequelizeConfig {
@@ -38,7 +38,7 @@ export class DB {
         logging: false,
       },
     )
-    await DB.sequelize.addModels([UserModel])
+    await DB.sequelize.addModels([AdminUserModel])
 
     try {
       await DB.sequelize.authenticate()

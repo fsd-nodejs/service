@@ -15,7 +15,7 @@ const { STRING, INTEGER } = DataType
   freezeTableName: true,
   tableName: 'admin_users',
 })
-export class UserModel extends Model {
+export class AdminUserModel extends Model {
 
   @Column({
     type: INTEGER,
@@ -71,27 +71,27 @@ export class UserModel extends Model {
 
 }
 
-export const factory = () => UserModel
+export const factory = () => AdminUserModel
 providerWrapper([
   {
-    id: 'UserModel',
+    id: 'AdminUserModel',
     provider: factory,
   },
 ])
 
-export type IUserModel = typeof UserModel
+export type IAdminUserModel = typeof AdminUserModel
 
 /**
  * 查询管理员用户信息参数
  */
-export interface GetUserOpts {
+export interface GetAdminUserOpts {
   id: string
 }
 
 /**
  * 管理员用户信息
  */
-export interface UserInfo {
+export interface AdminUserInfo {
   id: string
   username: string
   password?: string

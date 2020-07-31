@@ -1,15 +1,15 @@
 import { provide, plugin, inject, Context } from 'midway'
-import { GetUserOpts, UserInfo, IUserModel } from '@/app/model/user'
+import { GetAdminUserOpts, AdminUserInfo, IAdminUserModel } from '@/app/model/admin-user'
 import { Jwt } from '@waiting/egg-jwt'
 
-@provide('UserService')
-export class UserService {
+@provide('AdminUserService')
+export class AdminUserService {
 
   @inject()
   ctx!: Context
 
-  @inject('UserModel')
-  public UserModel!: IUserModel
+  @inject('AdminUserModel')
+  public AdminUserModel!: IAdminUserModel
 
   @plugin()
   jwt!: Jwt
@@ -17,7 +17,7 @@ export class UserService {
   /**
    * 读取用户信息
    */
-  public async getUser(options: GetUserOpts): Promise<UserInfo> {
+  public async getUser(options: GetAdminUserOpts): Promise<AdminUserInfo> {
     return {
       id: options.id,
       username: 'mockedName',
@@ -32,7 +32,7 @@ export class UserService {
    * @return {Promise[user]} 承载用户的 Promise 对象
    */
   public async getUserByUserName(username: string) {
-    const user = this.UserModel.findOne({
+    const user = this.AdminUserModel.findOne({
       raw: true,
       where: {
         username,
@@ -83,4 +83,4 @@ export class UserService {
 
 }
 
-export type IUserService = UserService
+export type IAdminUserService = AdminUserService

@@ -1,7 +1,7 @@
 import {
   Context, config, plugin, controller, get, post, provide, inject,
 } from 'midway'
-import { IUserService } from '@/app/service/user'
+import { IAdminUserService } from '@/app/service/admin-user'
 import { Jwt } from '@waiting/egg-jwt'
 
 @provide()
@@ -13,8 +13,8 @@ export class AuthController {
   @plugin()
   jwt!: Jwt
 
-  @inject('UserService')
-  service!: IUserService
+  @inject('AdminUserService')
+  service!: IAdminUserService
 
 
   @get('/', { middleware: ['apiMiddleware'] })
