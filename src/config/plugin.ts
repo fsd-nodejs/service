@@ -19,7 +19,7 @@ export const redis = {
 
 export const jwt = {
   enable: true,
-  package: 'egg-jwt',
+  package: '@waiting/egg-jwt',
 }
 
 // false 禁用全部安全检查用于临时调试

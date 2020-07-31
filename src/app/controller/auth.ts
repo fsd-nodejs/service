@@ -2,20 +2,19 @@ import {
   Context, config, plugin, controller, get, post, provide, inject,
 } from 'midway'
 import { IUserService } from '@/app/service/user'
+import { Jwt } from '@waiting/egg-jwt'
 
 @provide()
 @controller('/auth')
 export class AuthController {
 
-  constructor(@config() private readonly welcomeMsg: string, service: IUserService) {
-    this.service = service
-  }
+  constructor(@config() private readonly welcomeMsg: string) { }
 
   @plugin()
-  jwt: any
+  jwt!: Jwt
 
   @inject('UserService')
-  service: IUserService
+  service!: IUserService
 
 
   @get('/', { middleware: ['apiMiddleware'] })

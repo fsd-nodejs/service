@@ -1,23 +1,18 @@
-import { provide, plugin, inject } from 'midway'
+import { provide, plugin, inject, Context } from 'midway'
 import { GetUserOpts, UserInfo, IUserModel } from '@/app/model/user'
-
+import { Jwt } from '@waiting/egg-jwt'
 
 @provide('UserService')
 export class UserService {
 
   @inject()
-  ctx: any
+  ctx!: Context
 
   @inject('UserModel')
-  public UserModel: IUserModel
+  public UserModel!: IUserModel
 
   @plugin()
-  jwt: any
-
-
-  constructor(UserModel: IUserModel) {
-    this.UserModel = UserModel
-  }
+  jwt!: Jwt
 
   /**
    * 读取用户信息

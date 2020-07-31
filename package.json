@@ -6,9 +6,9 @@
   "dependencies": {
     "@types/bcryptjs": "^2.4.2",
     "@types/sequelize": "^4.28.9",
+    "@waiting/egg-jwt": "^3.0.1",
     "bcryptjs": "^2.4.3",
     "egg-cors": "^2.2.3",
-    "egg-jwt": "^3.1.7",
     "egg-redis": "^2.4.0",
     "egg-scripts": "^2.10.0",
     "egg-validate": "^2.0.2",

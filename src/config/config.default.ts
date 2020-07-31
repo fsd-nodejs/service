@@ -38,7 +38,9 @@ export default (appInfo: EggAppInfo) => {
 
   config.jwt = {
     enable: true,
-    secret: '123456',
+    client: {
+      secret: '123456',
+    },
     ignore: '/auth/login',
   }
 
