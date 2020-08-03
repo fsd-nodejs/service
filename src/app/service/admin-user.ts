@@ -1,12 +1,15 @@
-import { provide, plugin, inject, Context } from 'midway'
+import { provide, plugin, inject, Context, config } from 'midway'
 import { GetAdminUserOpts, AdminUserInfo, IAdminUserModel } from '@/app/model/admin-user'
-import { Jwt } from '@waiting/egg-jwt'
+import { Jwt, JwtConfig } from '@waiting/egg-jwt'
 
 @provide('AdminUserService')
 export class AdminUserService {
 
   @inject()
   ctx!: Context
+
+  @config('jwt')
+  config!: JwtConfig
 
   @inject('AdminUserModel')
   public AdminUserModel!: IAdminUserModel
@@ -47,7 +50,7 @@ export class AdminUserService {
    * @param {Object} data 保存的数据
    */
   public async createToken(data: object) {
-    return this.jwt.sign(data, this.ctx.app.config.jwt.client.secret, { expiresIn: '72h' })
+    return this.jwt.sign(data, this.config.client.secret, { expiresIn: '72h' })
   }
 
   /**
@@ -55,7 +58,7 @@ export class AdminUserService {
    * @param {String} token
    */
   public async verifyToken(token: string) {
-    return this.jwt.verify(token, this.ctx.app.config.jwt.client.secret)
+    return this.jwt.verify(token, this.config.client.secret)
   }
 
 }
