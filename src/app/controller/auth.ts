@@ -1,20 +1,40 @@
 import {
-  Context, config, plugin, controller, get, post, provide, inject,
+  Context, config, controller, get, post, provide, inject,
 } from 'midway'
 import { IAdminUserService } from '@/app/service/admin-user'
-import { Jwt } from '@waiting/egg-jwt'
-
 @provide()
 @controller('/auth')
 export class AuthController {
 
   constructor(@config() private readonly welcomeMsg: string) { }
 
-  @plugin()
-  jwt!: Jwt
-
   @inject('AdminUserService')
   service!: IAdminUserService
+
+
+  private localHandler = async (ctx: Context, params: { username: string, password: string }) => {
+    // 获取用户函数
+    const getAdminUser = (username: string) => {
+      return this.service.getAdminUserByUserName(username)
+    }
+
+    // 查询用户是否在数据库中
+    const existAdmiUser = await getAdminUser(params.username)
+    // 用户不存在
+    if (!existAdmiUser) {
+      return null
+    }
+
+    // 匹配密码
+    const passhash = existAdmiUser.password
+    const equal = ctx.helper.bcompare(params.password, passhash)
+    if (!equal) {
+      return null
+    }
+
+    // 通过验证
+    return existAdmiUser
+  }
 
 
   @get('/', { middleware: ['apiMiddleware'] })
@@ -24,31 +44,29 @@ export class AuthController {
 
   @post('/login')
   public async login(ctx: Context): Promise<void> {
-    // 获取用户函数
-    const getAdminUser = (username: string) => {
-      return this.service.getAdminUserByUserName(username)
-    }
-
+    // 如参数校验
     const rule = {
       username: { type: 'string', required: true },
       password: { type: 'string', required: true },
     }
     ctx.validate(rule, ctx.request.body)
-    const { username, password } = ctx.request.body
 
-    // 查询用户是否在数据库中
-    const existAdmiUser = await getAdminUser(username)
+    // 后续可能有多种登录方式
+    const handler = this.localHandler
+    const existAdmiUser = await handler(ctx, ctx.request.body)
 
-    // 用户不存在
+    // 调用 rotateCsrfSecret 刷新用户的 CSRF token
+    // ctx.rotateCsrfSecret()
     if (!existAdmiUser) {
       ctx.body = {}
       return
     }
-
-    // 调用 rotateCsrfSecret 刷新用户的 CSRF token
-    // ctx.rotateCsrfSecret()
-
-    ctx.body = { token: this.jwt.sign({ username, password }), existAdmiUser }
+    const token = await this.service.createToken({
+      id: existAdmiUser.id,
+    })
+    ctx.body = {
+      token,
+    }
   }
 
 }
