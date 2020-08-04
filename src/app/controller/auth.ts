@@ -37,9 +37,7 @@ export class AuthController {
     const token = await this.service.createToken({
       id: existAdmiUser.id,
     })
-    ctx.body = {
-      token,
-    }
+    ctx.helper.success(ctx, { token })
   }
 
 }
