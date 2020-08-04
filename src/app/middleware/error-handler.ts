@@ -7,7 +7,7 @@ export default (): Middleware => {
     try {
       await next()
       if (ctx.status === 404) {
-        ctx.body = { mssage: 'Not Found', code: 404 }
+        ctx.body = { code: 404, mssage: 'Not Found' }
       }
     }
     catch (err) {
@@ -21,13 +21,9 @@ export default (): Middleware => {
         : err.message
 
       // 从 error 对象上读出各个属性，设置到响应中
-      ctx.body = { error, code: status }
+      ctx.body = { code: status, mssage: error }
       if (status === 422) {
         ctx.body.detail = err.errors
-      }
-
-      if (status === 401) {
-        ctx.body.mssage = '请登录后再进行操作'
       }
       ctx.status = status
     }
