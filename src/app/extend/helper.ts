@@ -5,11 +5,19 @@ import { Context } from 'midway'
 
 moment.locale('zh-cn')
 
-
+/**
+ * 密文转hash
+ * @param str 密文
+ */
 export const bhash = (str: string) => {
   return bcrypt.hashSync(str, 10)
 }
 
+/**
+ * 对面hash是否正确
+ * @param str 密文
+ * @param hash hash值
+ */
 export const bcompare = (str: string, hash: string) => {
   return bcrypt.compareSync(str, hash)
 }

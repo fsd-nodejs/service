@@ -12,6 +12,12 @@ export class AuthController {
   service!: IAdminUserService
 
 
+  /**
+   * 使用帐号密码，本地化登录
+   * @param {Context} ctx 请求对象
+   * @param {Object} params 包涵username、password等参数
+   * @returns {Promise[adminUser] | null} 承载用户的Promise对象
+   */
   private localHandler = async (ctx: Context, params: { username: string, password: string }) => {
     // 获取用户函数
     const getAdminUser = (username: string) => {
