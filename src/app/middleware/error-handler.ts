@@ -23,7 +23,7 @@ export default (): Middleware => {
       // 从 error 对象上读出各个属性，设置到响应中
       ctx.body = { code: status, mssage: error }
       if (status === 422) {
-        ctx.body.detail = err.errors
+        ctx.body.data = err.errors
       }
       ctx.status = status
     }
