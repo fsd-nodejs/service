@@ -69,12 +69,22 @@ export class AdminUserService {
   }
 
   /**
+   * 移除用户Redis Token
+   * @param {String} id
+   * @returns {number} 变更的数量
+   */
+  public async removeAdminUserTokenById(id: string) {
+    return this.redis.del(`admin:accessToken:${id}`)
+  }
+
+  /**
    * 缓存用户
    * @param {AdminUserModel} data 用户数据
+   * @returns {OK | null} 缓存处理结果
    */
   public async cacheAdminUser(data: AdminUserModel) {
     const { password, rememberToken, ...userinfo } = data
-    await this.redis.set(`admin:userinfo:${userinfo.id}`, JSON.stringify(userinfo), 'EX', 60 * 60 * 24 * 3)
+    return this.redis.set(`admin:userinfo:${userinfo.id}`, JSON.stringify(userinfo), 'EX', 60 * 60 * 24 * 3)
   }
 
   /**

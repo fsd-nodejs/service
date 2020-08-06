@@ -2,6 +2,8 @@ import {
   Context, config, controller, get, post, provide, inject,
 } from 'midway'
 import { IAdminUserService } from '@/app/service/admin-user'
+import * as assert from 'power-assert'
+
 @provide()
 @controller('/auth')
 export class AuthController {
@@ -38,7 +40,8 @@ export class AuthController {
     const token = await this.service.createToken(existAdmiUser)
 
     // 缓存用户数据
-    await this.service.cacheAdminUser(existAdmiUser)
+    const isCached = await this.service.cacheAdminUser(existAdmiUser)
+    assert(isCached === 'OK', '缓存用户数据失败')
 
     ctx.helper.success(ctx, {
       token,
@@ -48,7 +51,11 @@ export class AuthController {
     })
   }
 
-  // @post('/logout')
-  // public async logout(ctx: Context): Promise<void> { }
+  @get('/logout')
+  public async logout(ctx: Context): Promise<void> {
+    const { user } = ctx
+    await this.service.removeAdminUserTokenById(user.id)
+    ctx.helper.success(ctx, {})
+  }
 
 }

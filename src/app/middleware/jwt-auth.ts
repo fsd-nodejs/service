@@ -16,7 +16,7 @@ export default (): Middleware => {
       // 验证是否为最新的token
       assert(token === redisToken, 'token已过期或者失效')
 
-      ctx.header.userId = payload.id
+      ctx.user = payload
     }
     catch (error) {
       ctx.throw(401, 'Authentication Failed', { originalError: { message: 'RedisToken was expired!' } })
