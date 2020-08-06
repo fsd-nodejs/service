@@ -16,7 +16,7 @@ export default (): Middleware => {
       const redisToken = await ctx.app.redis.get(`admin:accessToken:${payload.id}`)
 
       // 验证是否为最新的token
-      assert(token === redisToken, new MyError('token已过期或者失效', 401))
+      assert(token === redisToken, new MyError('Authentication Failed', 401))
 
       ctx.user = payload
     }
