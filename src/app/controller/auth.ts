@@ -46,7 +46,7 @@ export class AuthController {
 
     // 缓存用户数据
     const isCached = await this.service.cacheAdminUser(existAdmiUser)
-    assert(isCached !== 'OK', '缓存用户数据失败')
+    assert(isCached === 'OK', '缓存用户数据失败')
 
     ctx.helper.success(ctx, {
       token,
