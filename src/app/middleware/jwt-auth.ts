@@ -19,8 +19,7 @@ export default (): Middleware => {
       ctx.header.userId = payload.id
     }
     catch (error) {
-      ctx.logger.error('jwt验证失败：', error)
-      ctx.throw(401, 'Unauthorized', { originalError: error })
+      ctx.throw(401, 'Authentication Failed', { originalError: { message: 'RedisToken was expired!' } })
     }
 
     await next()
