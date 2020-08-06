@@ -1,16 +1,18 @@
-import { provide, plugin, inject, Context, config } from 'midway'
+import {
+  provide, plugin, inject, Context, config, Service,
+} from 'midway'
 import { GetAdminUserOpts, AdminUserInfo, IAdminUserModel, AdminUserModel } from '@/app/model/admin-user'
 import { Jwt, JwtConfig } from '@waiting/egg-jwt'
 import { Redis } from 'ioredis'
 
 @provide('AdminUserService')
-export class AdminUserService {
+export class AdminUserService extends Service {
 
   @inject()
   ctx!: Context
 
   @config('jwt')
-  config!: JwtConfig
+  jwtConfig!: JwtConfig
 
   @inject('AdminUserModel')
   AdminUserModel!: IAdminUserModel
@@ -54,9 +56,18 @@ export class AdminUserService {
    * @returns {String} 生成的Token字符串
    */
   public async createToken(data: AdminUserModel) {
-    const token: string = this.jwt.sign({ id: data.id }, this.config.client.secret, { expiresIn: '72h' })
+    const token: string = this.jwt.sign({ id: data.id }, this.jwtConfig.client.secret, { expiresIn: '72h' })
     await this.redis.set(`admin:accessToken:${data.id}`, token, 'EX', 60 * 60 * 24 * 3)
     return token
+  }
+
+  /**
+   * 获取用户Redis Token
+   * @param {String} id
+   * @returns {String} Redis中的Token
+   */
+  public async getAdminUserTokenById(id: string) {
+    return this.redis.get(`admin:accessToken:${id}`)
   }
 
   /**
@@ -64,7 +75,7 @@ export class AdminUserService {
    * @param {AdminUserModel} data 用户数据
    */
   public async cacheAdminUser(data: AdminUserModel) {
-    const { password, remember_token, ...userinfo } = data
+    const { password, rememberToken, ...userinfo } = data
     await this.redis.set(`admin:userinfo:${userinfo.id}`, JSON.stringify(userinfo), 'EX', 60 * 60 * 24 * 3)
   }
 
@@ -74,7 +85,16 @@ export class AdminUserService {
    * @returns {Boolean} 是否合法
    */
   public async verifyToken(token: string) {
-    return this.jwt.verify(token, this.config.client.secret)
+    return this.jwt.verify(token, this.jwtConfig.client.secret)
+  }
+
+  /**
+   * 解码token内的数据
+   * @param params
+   * @returns {JsonType}
+   */
+  public async decodeToken(token: string) {
+    return this.jwt.decode(token)
   }
 
 

@@ -40,8 +40,6 @@ export class AuthController {
     // 缓存用户数据
     await this.service.cacheAdminUser(existAdmiUser)
 
-    // 缓存用户数据
-
     ctx.helper.success(ctx, {
       token,
       currentAuthority: 'admin',
@@ -49,5 +47,8 @@ export class AuthController {
       type: 'account',
     })
   }
+
+  // @post('/logout')
+  // public async logout(ctx: Context): Promise<void> { }
 
 }

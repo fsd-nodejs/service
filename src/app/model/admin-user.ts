@@ -54,20 +54,21 @@ export class AdminUserModel extends Model {
   @Column({
     type: STRING(100),
     comment: '记住token',
+    field: 'remember_token',
   })
-  remember_token!: string
+  rememberToken!: string
 
   @CreatedAt
   @Column({
     field: 'created_at',
   })
-  created_at!: Date
+  createdAt!: Date
 
   @UpdatedAt
   @Column({
     field: 'updated_at',
   })
-  updated_at!: Date
+  updatedAt!: Date
 
 }
 

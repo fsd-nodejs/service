@@ -6,7 +6,7 @@ export class HomeController {
 
   constructor(@config() private readonly welcomeMsg: string) { }
 
-  @get('/', { middleware: ['jwtAuth', 'apiMiddleware'] })
+  @get('/', { middleware: ['apiMiddleware'] })
   public index(ctx: Context): void {
     ctx.body = `${this.welcomeMsg} - ${ctx.api.reqTimeStr}`
   }
