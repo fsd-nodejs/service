@@ -1,8 +1,11 @@
+import * as assert from 'assert'
+
 import {
   Context, config, controller, get, post, provide, inject,
 } from 'midway'
 import { IAdminUserService } from '@/app/service/admin-user'
-import * as assert from 'power-assert'
+import { AdminUserModel } from '@/app/model/admin-user'
+import MyError from '@/app/common/my-error'
 
 @provide()
 @controller('/auth')
@@ -18,6 +21,9 @@ export class AuthController {
     ctx.body = `${this.welcomeMsg} - ${ctx.api.reqTimeStr}`
   }
 
+  /**
+   * 登录，目前使用帐号+密码模式
+   */
   @post('/login')
   public async login(ctx: Context): Promise<void> {
     // 如参数校验
@@ -28,20 +34,19 @@ export class AuthController {
     ctx.validate(rule, ctx.request.body)
 
     // 后续可能有多种登录方式
-    const existAdmiUser = await this.service.localHandler(ctx.request.body)
+    const existAdmiUser = await this.service.localHandler(ctx.request.body) as AdminUserModel
 
     // 调用 rotateCsrfSecret 刷新用户的 CSRF token
     // ctx.rotateCsrfSecret()
-    if (!existAdmiUser) {
-      ctx.helper.error(ctx, 422, '这些凭据与我们的记录不符')
-      return
-    }
+
+    assert(existAdmiUser !== null, new MyError('这些凭据与我们的记录不符', 422))
+
     // 生成Token
     const token = await this.service.createToken(existAdmiUser)
 
     // 缓存用户数据
     const isCached = await this.service.cacheAdminUser(existAdmiUser)
-    assert(isCached === 'OK', '缓存用户数据失败')
+    assert(isCached !== 'OK', '缓存用户数据失败')
 
     ctx.helper.success(ctx, {
       token,
@@ -51,10 +56,15 @@ export class AuthController {
     })
   }
 
+  /**
+   * 退出登录
+   */
   @get('/logout')
   public async logout(ctx: Context): Promise<void> {
     const { user } = ctx
+    // 清理用户数据和token
     await this.service.removeAdminUserTokenById(user.id)
+    await this.service.cleanAdminUserDataById(user.id)
     ctx.helper.success(ctx, {})
   }
 

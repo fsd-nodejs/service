@@ -1,5 +1,7 @@
+import * as assert from 'assert'
+
+import MyError from '@/app/common/my-error'
 import { Middleware } from 'midway'
-import * as assert from 'power-assert'
 
 // jwt auth
 export default (): Middleware => {
@@ -14,12 +16,13 @@ export default (): Middleware => {
       const redisToken = await ctx.app.redis.get(`admin:accessToken:${payload.id}`)
 
       // 验证是否为最新的token
-      assert(token === redisToken, 'token已过期或者失效')
+      assert(token === redisToken, new MyError('token已过期或者失效', 401))
 
       ctx.user = payload
     }
     catch (error) {
-      ctx.throw(401, 'Authentication Failed', { originalError: { message: 'RedisToken was expired!' } })
+      // console.log(error.status)
+      ctx.throw(error)
     }
 
     await next()

@@ -87,6 +87,16 @@ export class AdminUserService {
     return this.redis.set(`admin:userinfo:${userinfo.id}`, JSON.stringify(userinfo), 'EX', 60 * 60 * 24 * 3)
   }
 
+
+  /**
+   * 清理用户缓存数据
+   * @param {AdminUserModel} data 用户数据
+   * @returns {OK | null} 缓存处理结果
+   */
+  public async cleanAdminUserDataById(id: string) {
+    return this.redis.del(`admin:userinfo:${id}`)
+  }
+
   /**
    * 验证token的合法性
    * @param {String} token
@@ -111,7 +121,7 @@ export class AdminUserService {
    * @param {Object} params 包涵username、password等参数
    * @returns {Promise[adminUser] | null} 承载用户的Promise对象
    */
-  public async localHandler(params: { username: string, password: string }): Promise<AdminUserModel | null> {
+  public async localHandler(params: { username: string, password: string }) {
     // 获取用户函数
     const getAdminUser = (username: string) => {
       return this.getAdminUserByUserName(username)
