@@ -34,9 +34,7 @@ export class AuthController {
       ctx.helper.error(ctx, 422, '这些凭据与我们的记录不符')
       return
     }
-    const token = await this.service.createToken({
-      id: existAdmiUser.id,
-    })
+    const token = await this.service.createToken(existAdmiUser)
     ctx.helper.success(ctx, {
       token,
       currentAuthority: 'admin',

@@ -51,12 +51,12 @@ export const bcompare = (str: string, hash: string) => {
  * @param status
  */
 export const success = (ctx: Context, result = null, message = '请求成功', status = 200) => {
-  const res = {
+
+  ctx.body = {
     code: status,
     message,
     data: result,
   }
-  ctx.body = res
   ctx.status = status
 }
 

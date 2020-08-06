@@ -12,6 +12,7 @@
     "egg-redis": "^2.4.0",
     "egg-scripts": "^2.10.0",
     "egg-validate": "^2.0.2",
+    "ioredis": "^4.17.3",
     "midway": "^1.0.0",
     "moment": "^2.27.0",
     "mysql2": "^2.1.0",
@@ -20,7 +21,7 @@
   },
   "devDependencies": {
     "@types/mocha": "^5.2.7",
-    "@types/node": "^10.5.5",
+    "@types/node": "^10.17.28",
     "@waiting/eslint-config": "^2.1.0",
     "cross-env": "^6.0.0",
     "egg-ci": "^1.8.0",
@@ -31,7 +32,7 @@
     "ts-node": "^8.3.0",
     "tsconfig-paths": "^3.9.0",
     "tslib": "^1.8.1",
-    "typescript": "^3.5.0"
+    "typescript": "^3.9.7"
   },
   "engines": {
     "node": ">=10.16.0"

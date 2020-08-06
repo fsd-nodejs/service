@@ -93,7 +93,7 @@ export interface GetAdminUserOpts {
  */
 export interface AdminUserInfo {
   id: string
-  username: string
+  username?: string
   password?: string
   phone?: string
   email?: string

@@ -1,6 +1,7 @@
 import { provide, plugin, inject, Context, config } from 'midway'
-import { GetAdminUserOpts, AdminUserInfo, IAdminUserModel } from '@/app/model/admin-user'
+import { GetAdminUserOpts, AdminUserInfo, IAdminUserModel, AdminUserModel } from '@/app/model/admin-user'
 import { Jwt, JwtConfig } from '@waiting/egg-jwt'
+import { Redis } from 'ioredis'
 
 @provide('AdminUserService')
 export class AdminUserService {
@@ -16,6 +17,9 @@ export class AdminUserService {
 
   @plugin()
   jwt!: Jwt
+
+  @plugin()
+  redis!: Redis
 
   /**
    * 读取用户信息
@@ -50,8 +54,10 @@ export class AdminUserService {
    * @param {Object} data 保存的数据
    * @returns {String} 生成的Token字符串
    */
-  public async createToken(data: object) {
-    return this.jwt.sign(data, this.config.client.secret, { expiresIn: '72h' })
+  public async createToken(data: AdminUserModel) {
+    const token: string = this.jwt.sign({ id: data.id }, this.config.client.secret, { expiresIn: '72h' })
+    await this.redis.set(`accessToken:${data.id}`, token, 'EX', 60 * 60 * 24 * 3)
+    return token
   }
 
   /**
@@ -69,7 +75,7 @@ export class AdminUserService {
    * @param {Object} params 包涵username、password等参数
    * @returns {Promise[adminUser] | null} 承载用户的Promise对象
    */
-  public async localHandler(params: { username: string, password: string }) {
+  public async localHandler(params: { username: string, password: string }): Promise<AdminUserModel | null> {
     // 获取用户函数
     const getAdminUser = (username: string) => {
       return this.getAdminUserByUserName(username)
