@@ -21,7 +21,7 @@ export class JwtAuth implements WebMiddleware {
         // 解密，获取payload
         const { payload } = this.jwt.decode(token)
         // redisToken不存在表示token已过期
-        const redisToken = await this.redis.get(`accessToken:${payload.id}`)
+        const redisToken = await this.redis.get(`admin:accessToken:${payload.id}`)
 
         // 验证是否为最新的token
         assert(token === redisToken, 'token已过期或者失效')

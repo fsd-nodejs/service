@@ -48,16 +48,24 @@ export class AdminUserService {
     return user
   }
 
-
   /**
    * 生成Token
-   * @param {Object} data 保存的数据
+   * @param {AdminUserModel} data 保存的数据
    * @returns {String} 生成的Token字符串
    */
   public async createToken(data: AdminUserModel) {
     const token: string = this.jwt.sign({ id: data.id }, this.config.client.secret, { expiresIn: '72h' })
-    await this.redis.set(`accessToken:${data.id}`, token, 'EX', 60 * 60 * 24 * 3)
+    await this.redis.set(`admin:accessToken:${data.id}`, token, 'EX', 60 * 60 * 24 * 3)
     return token
+  }
+
+  /**
+   * 缓存用户
+   * @param {AdminUserModel} data 用户数据
+   */
+  public async cacheAdminUser(data: AdminUserModel) {
+    const { password, remember_token, ...userinfo } = data
+    await this.redis.set(`admin:userinfo:${userinfo.id}`, JSON.stringify(userinfo), 'EX', 60 * 60 * 24 * 3)
   }
 
   /**
