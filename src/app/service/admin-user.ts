@@ -1,12 +1,10 @@
-import {
-  provide, plugin, inject, Context, config, Service,
-} from 'midway'
+import { provide, plugin, inject, Context, config } from 'midway'
 import { GetAdminUserOpts, AdminUserInfo, IAdminUserModel, AdminUserModel } from '@/app/model/admin-user'
 import { Jwt, JwtConfig } from '@waiting/egg-jwt'
 import { Redis } from 'ioredis'
 
 @provide('AdminUserService')
-export class AdminUserService extends Service {
+export class AdminUserService {
 
   @inject()
   ctx!: Context
