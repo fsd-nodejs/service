@@ -7,11 +7,11 @@ import { Redis } from 'ioredis'
 @provide('AuthService')
 export class AuthService {
 
-  @inject()
-  ctx!: Context
-
   @config('jwt')
   jwtConfig!: JwtConfig
+
+  @inject()
+  ctx!: Context
 
   @inject('AdminUserModel')
   AdminUserModel!: IAdminUserModel

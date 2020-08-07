@@ -12,10 +12,6 @@ export class PermissionController {
   @inject('PermissionValidator')
   validator!: PermissionValidator
 
-  // constructor(
-  //   @inject() private userService: UserService,
-  // ) { }
-
   @get('/query')
   public async getUser(ctx: Context): Promise<void> {
     // 校验提交的参数

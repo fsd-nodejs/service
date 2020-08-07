@@ -8,7 +8,7 @@ import Validator from './validator'
 export class AuthValidator extends Validator {
 
   /**
-   * 查询权限
+   * 帐号密码登录校验
    * @param {*} value
    * @memberof AuthValidator
    */
