@@ -23,7 +23,7 @@ export class AdminUserService {
   redis!: Redis
 
   /**
-   * 生成Token
+   * 生成Token(会缓存到Redis中)
    * @param {AdminUserModel} data 保存的数据
    * @returns {String} 生成的Token字符串
    */
