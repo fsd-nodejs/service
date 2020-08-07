@@ -1,9 +1,6 @@
-import * as assert from 'assert'
-
 import { Context, controller, get, provide, inject } from 'midway'
 import { PermissionService } from '@/app/service/permission'
 import { PermissionValidator } from '@/app/validator/permission'
-import MyError from '@/app/common/my-error'
 
 @provide()
 @controller('/permission')
@@ -30,7 +27,6 @@ export class PermissionController {
     const query = this.validator.showPermission(ctx.request.query)
 
     const result = await this.service.getAdminPermissionById(query.id)
-    assert(result !== null, new MyError('未找到对应数据', 400))
 
     ctx.helper.success(ctx, result)
   }
