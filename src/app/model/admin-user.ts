@@ -95,9 +95,8 @@ export interface GetAdminUserOpts {
 export interface AdminUserInfo {
   id: string
   username?: string
-  password?: string
-  phone?: string
-  email?: string
-  pass?: string
-  active?: string
+  name?: string
+  avatar?: string
+  createdAt?: Date
+  updatedAt?: Date
 }

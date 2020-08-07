@@ -1,7 +1,7 @@
 import * as aseert from 'assert'
 
 import { provide, plugin, inject, Context, config } from 'midway'
-import { IAdminUserModel, AdminUserModel } from '@/app/model/admin-user'
+import { IAdminUserModel, AdminUserModel, AdminUserInfo } from '@/app/model/admin-user'
 import { Jwt, JwtConfig } from '@waiting/egg-jwt'
 import { Redis } from 'ioredis'
 
@@ -25,6 +25,35 @@ export class AdminUserService {
   redis!: Redis
 
   /**
+   * 生成Token
+   * @param {AdminUserModel} data 保存的数据
+   * @returns {String} 生成的Token字符串
+   */
+  public async createAdminUserToken(data: AdminUserModel) {
+    const token: string = this.jwt.sign({ id: data.id }, this.jwtConfig.client.secret, { expiresIn: '72h' })
+    await this.redis.set(`admin:accessToken:${data.id}`, token, 'EX', 60 * 60 * 24 * 3)
+    return token
+  }
+
+  /**
+   * 获取用户Redis Token
+   * @param {String} id
+   * @returns {String} Redis中的Token
+   */
+  public async getAdminUserTokenById(id: string) {
+    return this.redis.get(`admin:accessToken:${id}`)
+  }
+
+  /**
+   * 移除用户Redis Token
+   * @param {String} id
+   * @returns {number} 变更的数量
+   */
+  public async removeAdminUserTokenById(id: string) {
+    return this.redis.del(`admin:accessToken:${id}`)
+  }
+
+  /**
    * 根据登录名查找用户
    * @param {String} username 登录名
    * @return {Promise[user]} 承载用户的 Promise 对象
@@ -40,41 +69,14 @@ export class AdminUserService {
   }
 
   /**
-   * 生成Token
-   * @param {AdminUserModel} data 保存的数据
-   * @returns {String} 生成的Token字符串
-   */
-  public async createToken(data: AdminUserModel) {
-    const token: string = this.jwt.sign({ id: data.id }, this.jwtConfig.client.secret, { expiresIn: '72h' })
-    await this.redis.set(`admin:accessToken:${data.id}`, token, 'EX', 60 * 60 * 24 * 3)
-    return token
-  }
-
-  /**
-   * 获取用户Redis Token
+   * 读取Redis缓存中的管理员用户信息
    * @param {String} id
-   * @returns {String} Redis中的Token
+   * @returns {AdminUserInfo} 管理员用户信息
    */
-  public async getAdminUserToken(id: string) {
-    return this.redis.get(`admin:accessToken:${id}`)
-  }
-
-  /**
-   * 移除用户Redis Token
-   * @param {String} id
-   * @returns {number} 变更的数量
-   */
-  public async removeAdminUserToken(id: string) {
-    return this.redis.del(`admin:accessToken:${id}`)
-  }
-
-  /**
-   * 读取管理员用户信息
-   */
-  public async getAdminUser(id: string) {
+  public async getAdminUserById(id: string) {
     const userinfo = await this.redis.get(`admin:userinfo:${id}`)
     aseert(userinfo !== null, '获取用户信息失败')
-    return JSON.parse(userinfo)
+    return JSON.parse(userinfo) as AdminUserInfo
   }
 
   /**
@@ -87,13 +89,12 @@ export class AdminUserService {
     return this.redis.set(`admin:userinfo:${userinfo.id}`, JSON.stringify(userinfo), 'EX', 60 * 60 * 24 * 3)
   }
 
-
   /**
    * 清理用户缓存数据
    * @param {AdminUserModel} data 用户数据
    * @returns {OK | null} 缓存处理结果
    */
-  public async cleanAdminUser(id: string) {
+  public async cleanAdminUserById(id: string) {
     return this.redis.del(`admin:userinfo:${id}`)
   }
 
@@ -114,7 +115,6 @@ export class AdminUserService {
   public async decodeToken(token: string) {
     return this.jwt.decode(token)
   }
-
 
   /**
    * 使用帐号密码，本地化登录
