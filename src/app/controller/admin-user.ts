@@ -1,18 +1,17 @@
 // import { Context, controller, get, inject, provide } from 'midway'
-// // import { UserService } from '@/app/service/user'
+// import { IAdminUserService } from '@/app/service/admin-user'
 
 // @provide()
-// @controller('/user')
-// export class UserController {
+// @controller('/adminUser')
+// export class AdminUserController {
 
-//   constructor(
-//     @inject() private userService: UserService,
-//   ) { }
+//   @inject('AdminUserService')
+//   service!: IAdminUserService
 
-//   @get('/:id')
+//   @get('/')
 //   public async getUser(ctx: Context): Promise<void> {
 //     const { id } = ctx.params
-//     const user = await this.userService.getUser({ id })
+//     const user = await this.service.getUser({ id })
 
 //     ctx.body = {
 //       success: true,

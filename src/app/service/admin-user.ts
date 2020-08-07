@@ -1,7 +1,10 @@
+import * as aseert from 'assert'
+
 import { provide, plugin, inject, Context, config } from 'midway'
-import { GetAdminUserOpts, AdminUserInfo, IAdminUserModel, AdminUserModel } from '@/app/model/admin-user'
+import { IAdminUserModel, AdminUserModel } from '@/app/model/admin-user'
 import { Jwt, JwtConfig } from '@waiting/egg-jwt'
 import { Redis } from 'ioredis'
+
 
 @provide('AdminUserService')
 export class AdminUserService {
@@ -20,18 +23,6 @@ export class AdminUserService {
 
   @plugin()
   redis!: Redis
-
-  /**
-   * 读取用户信息
-   */
-  public async getUser(options: GetAdminUserOpts): Promise<AdminUserInfo> {
-    return {
-      id: options.id,
-      username: 'mockedName',
-      phone: '12345678901',
-      email: 'xxx.xxx@xxx.com',
-    }
-  }
 
   /**
    * 根据登录名查找用户
@@ -64,7 +55,7 @@ export class AdminUserService {
    * @param {String} id
    * @returns {String} Redis中的Token
    */
-  public async getAdminUserTokenById(id: string) {
+  public async getAdminUserToken(id: string) {
     return this.redis.get(`admin:accessToken:${id}`)
   }
 
@@ -73,8 +64,17 @@ export class AdminUserService {
    * @param {String} id
    * @returns {number} 变更的数量
    */
-  public async removeAdminUserTokenById(id: string) {
+  public async removeAdminUserToken(id: string) {
     return this.redis.del(`admin:accessToken:${id}`)
+  }
+
+  /**
+   * 读取管理员用户信息
+   */
+  public async getAdminUser(id: string) {
+    const userinfo = await this.redis.get(`admin:userinfo:${id}`)
+    aseert(userinfo !== null, '获取用户信息失败')
+    return JSON.parse(userinfo)
   }
 
   /**
@@ -93,7 +93,7 @@ export class AdminUserService {
    * @param {AdminUserModel} data 用户数据
    * @returns {OK | null} 缓存处理结果
    */
-  public async cleanAdminUserDataById(id: string) {
+  public async cleanAdminUser(id: string) {
     return this.redis.del(`admin:userinfo:${id}`)
   }
 
