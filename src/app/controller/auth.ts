@@ -39,14 +39,14 @@ export class AuthController {
     // 调用 rotateCsrfSecret 刷新用户的 CSRF token
     ctx.rotateCsrfSecret()
 
+    // 判断用户是否存在
     assert(existAdmiUser !== null, new MyError('这些凭据与我们的记录不符', 422))
 
     // 生成Token
     const token = await this.service.createAdminUserToken(existAdmiUser)
 
     // 缓存用户数据
-    const isCached = await this.service.cacheAdminUser(existAdmiUser)
-    assert(isCached === 'OK', '缓存用户数据失败')
+    await this.service.cacheAdminUser(existAdmiUser)
 
     ctx.helper.success(ctx, {
       token,

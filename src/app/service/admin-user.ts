@@ -1,5 +1,3 @@
-import * as aseert from 'assert'
-
 import { provide, plugin, inject, Context, config } from 'midway'
 import { IAdminUserModel, AdminUserModel, AdminUserInfo } from '@/app/model/admin-user'
 import { Jwt, JwtConfig } from '@waiting/egg-jwt'
@@ -74,8 +72,7 @@ export class AdminUserService {
    * @returns {AdminUserInfo} 管理员用户信息
    */
   public async getAdminUserById(id: string) {
-    const userinfo = await this.redis.get(`admin:userinfo:${id}`)
-    aseert(userinfo !== null, '获取用户信息失败')
+    const userinfo = await this.redis.get(`admin:userinfo:${id}`) as string
     return JSON.parse(userinfo) as AdminUserInfo
   }
 
