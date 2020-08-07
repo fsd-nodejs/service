@@ -74,4 +74,13 @@ export class PermissionService {
     }
   }
 
+  public async getAdminPermissionById(id: string) {
+    return this.AdminPermissionModel.findOne({
+      raw: true,
+      where: {
+        id,
+      },
+    })
+  }
+
 }

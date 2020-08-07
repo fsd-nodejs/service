@@ -57,7 +57,7 @@ export class AuthService {
    * @returns {Promise[user]} 承载用户的 Promise 对象
    */
   public async getAdminUserByUserName(username: string) {
-    const user = this.AdminUserModel.findOne({
+    const user = await this.AdminUserModel.findOne({
       raw: true,
       where: {
         username,
