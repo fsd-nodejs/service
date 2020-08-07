@@ -85,8 +85,8 @@ export interface GetAdminPermissionOpts {
   httpMethod?: string[] // 请求方式
   httpPath?: string // 请求路径
   sorter?: string // 排序
-  pageSize?: number
-  current?: number
+  pageSize: number
+  current: number
 }
 
 /**

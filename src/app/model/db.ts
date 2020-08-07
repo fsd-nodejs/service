@@ -11,6 +11,7 @@ interface SequelizeConfig {
   password: string
   database: string
   dialect: 'mysql' | 'postgres' | 'sqlite' | 'mariadb' | 'mssql' | undefined
+  debug: boolean
 }
 
 @scope(ScopeEnum.Singleton)
@@ -22,7 +23,7 @@ export class DB {
 
   public static async initDB(conf: SequelizeConfig) {
     const {
-      database, user, password, port, host, dialect,
+      database, user, password, port, host, dialect, debug,
     } = conf
     DB.sequelize = new Sequelize(
       database,
@@ -36,7 +37,7 @@ export class DB {
         host,
         port,
         timezone: '+08:00',
-        logging: false,
+        logging: debug,
       },
     )
     await DB.sequelize.addModels([AdminUserModel, AdminPermissionModel])

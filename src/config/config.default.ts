@@ -29,6 +29,7 @@ export default (appInfo: EggAppInfo) => {
     password: 'secret',
     database: 'shop_development',
     dialect: 'mysql',
+    debug: true,
   }
 
   config.redis = {

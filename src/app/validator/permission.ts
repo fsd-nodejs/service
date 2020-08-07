@@ -14,8 +14,10 @@ export class PermissionValidator extends Validator {
    */
   public queryPermission(value: any) {
     return this.validate(value, {
-      current: Joi.number().max(100000),
-      pageSize: Joi.number().max(1000),
+      current: Joi.number().max(100000).default(1),
+      pageSize: Joi.number().max(1000).default(10),
+      id: Joi.string().max(10),
+      slug: [Joi.string().max(50), Joi.empty()],
     })
   }
 

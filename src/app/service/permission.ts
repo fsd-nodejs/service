@@ -1,6 +1,6 @@
 import { provide, inject } from 'midway'
 import { IAdminPermissionModel, AdminPermissionInfo, GetAdminPermissionOpts } from '@/app/model/admin-permission'
-import { WhereAttributeHash } from 'sequelize'
+import { Op } from 'sequelize'
 
 @provide('PermissionService')
 export class PermissionService {
@@ -20,16 +20,27 @@ export class PermissionService {
    */
   public async queryAdminPermission(queryParams: GetAdminPermissionOpts) {
     const {
-      pageSize = 10, current = 1, sorter, ...where
+      pageSize, current, sorter, ...params
     } = queryParams
-
-    return this.AdminPermissionModel.findAll({
+    const where: any = {}
+    if (params.slug) {
+      where.slug = {
+        [Op.like]: `%${params.slug}%`,
+      }
+    }
+    const { rows: list, count: total } = await this.AdminPermissionModel.findAndCountAll({
       order: [['id', 'desc']],
-      where: where as WhereAttributeHash,
+      where,
       raw: true,
       limit: pageSize,
       offset: pageSize * (current - 1),
     })
+    return {
+      current,
+      pageSize,
+      total,
+      list,
+    }
   }
 
 }
