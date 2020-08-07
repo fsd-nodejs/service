@@ -37,7 +37,7 @@ export class AuthController {
     const existAdmiUser = await this.service.localHandler(ctx.request.body) as AdminUserModel
 
     // 调用 rotateCsrfSecret 刷新用户的 CSRF token
-    // ctx.rotateCsrfSecret()
+    ctx.rotateCsrfSecret()
 
     assert(existAdmiUser !== null, new MyError('这些凭据与我们的记录不符', 422))
 
