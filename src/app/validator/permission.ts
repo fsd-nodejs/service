@@ -5,7 +5,7 @@ import Validator from './validator'
 
 
 @provide('PermissionValidator')
-export default class PermissionValidator extends Validator {
+export class PermissionValidator extends Validator {
 
   /**
    * 查询权限

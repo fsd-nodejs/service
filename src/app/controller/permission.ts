@@ -1,6 +1,6 @@
 import { Context, controller, get, provide, inject } from 'midway'
 import { PermissionService } from '@/app/service/permission'
-import PermissionValidator from '@/app/validator/permission'
+import { PermissionValidator } from '@/app/validator/permission'
 
 @provide()
 @controller('/permission')

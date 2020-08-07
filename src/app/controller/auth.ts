@@ -4,7 +4,7 @@ import {
   Context, config, controller, get, post, provide, inject,
 } from 'midway'
 import { AuthService } from '@/app/service/auth'
-import { AdminUserModel } from '@/app/model/admin-user'
+import { AuthValidator } from '@/app/validator/auth'
 import MyError from '@/app/common/my-error'
 
 @provide()
@@ -15,6 +15,9 @@ export class AuthController {
 
   @inject('AuthService')
   service!: AuthService
+
+  @inject('AuthValidator')
+  validator!: AuthValidator
 
   @get('/', { middleware: ['apiMiddleware'] })
   public index(ctx: Context): void {
@@ -27,18 +30,10 @@ export class AuthController {
   @post('/login')
   public async login(ctx: Context): Promise<void> {
     // 如参数校验
-    const rule = {
-      username: { type: 'string', required: true },
-      password: { type: 'string', required: true },
-    }
-
-    ctx.validate(rule, ctx.request.body)
+    const params = this.validator.login(ctx.request.body)
 
     // 后续可能有多种登录方式
-    const existAdmiUser = await this.service.localHandler(ctx.request.body) as AdminUserModel
-
-    // 调用 rotateCsrfSecret 刷新用户的 CSRF token
-    ctx.rotateCsrfSecret()
+    const existAdmiUser = await this.service.localHandler(params)
 
     // 判断用户是否存在
     assert(existAdmiUser !== null, new MyError('这些凭据与我们的记录不符', 400))
@@ -48,6 +43,9 @@ export class AuthController {
 
     // 缓存用户数据
     await this.service.cacheAdminUser(existAdmiUser)
+
+    // 调用 rotateCsrfSecret 刷新用户的 CSRF token
+    // ctx.rotateCsrfSecret()
 
     ctx.helper.success(ctx, {
       token,
