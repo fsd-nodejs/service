@@ -4,8 +4,8 @@ import { Jwt, JwtConfig } from '@waiting/egg-jwt'
 import { Redis } from 'ioredis'
 
 
-@provide('AdminUserService')
-export class AdminUserService {
+@provide('AuthService')
+export class AuthService {
 
   @inject()
   ctx!: Context
@@ -54,7 +54,7 @@ export class AdminUserService {
   /**
    * 根据登录名查找用户
    * @param {String} username 登录名
-   * @return {Promise[user]} 承载用户的 Promise 对象
+   * @returns {Promise[user]} 承载用户的 Promise 对象
    */
   public async getAdminUserByUserName(username: string) {
     const user = this.AdminUserModel.findOne({
@@ -144,4 +144,4 @@ export class AdminUserService {
 
 }
 
-export type IAdminUserService = AdminUserService
+export type IAuthService = AuthService

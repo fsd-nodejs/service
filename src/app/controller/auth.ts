@@ -3,7 +3,7 @@ import * as assert from 'assert'
 import {
   Context, config, controller, get, post, provide, inject,
 } from 'midway'
-import { IAdminUserService } from '@/app/service/admin-user'
+import { AuthService } from '@/app/service/auth'
 import { AdminUserModel } from '@/app/model/admin-user'
 import MyError from '@/app/common/my-error'
 
@@ -13,8 +13,8 @@ export class AuthController {
 
   constructor(@config() private readonly welcomeMsg: string) { }
 
-  @inject('AdminUserService')
-  service!: IAdminUserService
+  @inject('AuthService')
+  service!: AuthService
 
   @get('/', { middleware: ['apiMiddleware'] })
   public index(ctx: Context): void {
