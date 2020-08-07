@@ -31,6 +31,7 @@ export class AuthController {
       username: { type: 'string', required: true },
       password: { type: 'string', required: true },
     }
+
     ctx.validate(rule, ctx.request.body)
 
     // 后续可能有多种登录方式
@@ -40,7 +41,7 @@ export class AuthController {
     ctx.rotateCsrfSecret()
 
     // 判断用户是否存在
-    assert(existAdmiUser !== null, new MyError('这些凭据与我们的记录不符', 422))
+    assert(existAdmiUser !== null, new MyError('这些凭据与我们的记录不符', 400))
 
     // 生成Token
     const token = await this.service.createAdminUserToken(existAdmiUser)
