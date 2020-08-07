@@ -23,6 +23,12 @@ export class PermissionService {
       pageSize, current, sorter, ...params
     } = queryParams
     const where: any = {}
+    let order: any = [['id', 'desc']]
+
+    // 排序方式
+    if (sorter) {
+      order = [sorter.split('_')]
+    }
 
     // 模糊匹配id
     if (params.id) {
@@ -60,7 +66,7 @@ export class PermissionService {
     }
 
     const { rows: list, count: total } = await this.AdminPermissionModel.findAndCountAll({
-      order: [['id', 'desc']],
+      order,
       where,
       raw: true,
       limit: pageSize,

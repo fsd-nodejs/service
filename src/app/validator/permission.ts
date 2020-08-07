@@ -14,12 +14,30 @@ export class PermissionValidator extends Validator {
    */
   public queryPermission(value: any) {
     return this.validate(value, {
-      current: Joi.number().max(100000).default(1),
-      pageSize: Joi.number().max(1000).default(10),
-      id: [Joi.string().max(10), Joi.empty()],
-      slug: [Joi.string().max(50), Joi.empty()],
-      httpPath: [Joi.string().max(50), Joi.empty()],
-      httpMethod: [Joi.string().max(50), Joi.empty()],
+      current: Joi.number()
+        .max(100000)
+        .default(1)
+        .optional(),
+      pageSize: Joi.number()
+        .max(1000)
+        .default(10)
+        .optional(),
+      id: Joi.string()
+        .max(10)
+        .optional(),
+      slug: Joi.string()
+        .max(50)
+        .optional(),
+      httpPath: Joi.string()
+        .max(50)
+        .optional(),
+      httpMethod: Joi.string()
+        .max(50)
+        .optional(),
+      sorter: Joi.string()
+        .max(50)
+        .regex(/^[a-zA-Z]*(_asc|_desc)$/)
+        .optional(),
     })
   }
 
@@ -30,7 +48,9 @@ export class PermissionValidator extends Validator {
    */
   public showPermission(value: any) {
     return this.validate(value, {
-      id: Joi.string().max(10).required(),
+      id: Joi.string()
+        .max(10)
+        .required(),
     })
   }
 

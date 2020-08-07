@@ -18,6 +18,7 @@ export class PermissionController {
     const query = this.validator.queryPermission(ctx.request.query)
 
     const result = await this.service.queryAdminPermission(query)
+
     ctx.helper.success(ctx, result)
   }
 
