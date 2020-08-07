@@ -18,6 +18,8 @@ export class PermissionValidator extends Validator {
       pageSize: Joi.number().max(1000).default(10),
       id: Joi.string().max(10),
       slug: [Joi.string().max(50), Joi.empty()],
+      httpPath: [Joi.string().max(50), Joi.empty()],
+      httpMethod: [Joi.string().max(50), Joi.empty()],
     })
   }
 
