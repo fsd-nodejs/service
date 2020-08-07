@@ -1,24 +1,28 @@
-import { Context, controller, get, provide } from 'midway'
-// import { UserService } from '@/app/service/user'
+import { Context, controller, get, provide, inject } from 'midway'
+import { PermissionService } from '@/app/service/permission'
+import PermissionValidator from '@/app/validator/permission'
 
 @provide()
 @controller('/permission')
 export class PermissionController {
 
+  @inject('PermissionService')
+  service!: PermissionService
+
+  @inject('PermissionValidator')
+  validator!: PermissionValidator
+
   // constructor(
   //   @inject() private userService: UserService,
   // ) { }
 
-  @get('/:id')
+  @get('/query')
   public async getUser(ctx: Context): Promise<void> {
-    // const id = +ctx.params.id
-    // const user = await this.userService.getUser({ id })
+    // 校验提交的参数
+    const query = this.validator.queryPermission(ctx.request.query)
 
-    ctx.body = {
-      success: true,
-      message: 'OK',
-      data: ctx,
-    }
+    const result = await this.service.queryAdminPermission(query)
+    ctx.helper.success(ctx, result)
   }
 
 }

@@ -4,8 +4,6 @@
   "description": "Node.js 全栈开发-后端服务",
   "private": true,
   "dependencies": {
-    "@types/bcryptjs": "^2.4.2",
-    "@types/sequelize": "^4.28.9",
     "@waiting/egg-jwt": "^3.0.1",
     "bcryptjs": "^2.4.3",
     "egg-cors": "^2.2.3",
@@ -13,6 +11,7 @@
     "egg-scripts": "^2.10.0",
     "egg-validate": "^2.0.2",
     "ioredis": "^4.17.3",
+    "joi": "^14.3.1",
     "midway": "^1.0.0",
     "moment": "^2.27.0",
     "mysql2": "^2.1.0",
@@ -21,8 +20,11 @@
     "sequelize-typescript": "^1.1.0"
   },
   "devDependencies": {
+    "@types/joi": "^14.3.4",
+    "@types/bcryptjs": "^2.4.2",
     "@types/mocha": "^5.2.7",
     "@types/node": "^10.17.28",
+    "@types/sequelize": "^4.28.9",
     "@waiting/eslint-config": "^2.1.0",
     "cross-env": "^6.0.0",
     "egg-ci": "^1.8.0",

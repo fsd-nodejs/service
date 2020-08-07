@@ -79,7 +79,14 @@ export type IAdminPermissionModel = typeof AdminPermissionModel
  * 查询权限信息参数
  */
 export interface GetAdminPermissionOpts {
-  id: string
+  id?: string // 自增id
+  name?: string // 名称
+  slug?: string // 标识
+  httpMethod?: string[] // 请求方式
+  httpPath?: string // 请求路径
+  sorter?: string // 排序
+  pageSize?: number
+  current?: number
 }
 
 /**

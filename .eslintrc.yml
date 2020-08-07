@@ -9,6 +9,7 @@ parserOptions:
 rules:
   unicorn/filename-case: 2
   # Use tsconfig.json noUnusedLocals:true instead
-  "@typescript-eslint/no-unused-vars": 0
+  # "@typescript-eslint/no-unused-vars": 0
   "space-unary-ops": 0
+  "@typescript-eslint/no-explicit-any": 0
 
