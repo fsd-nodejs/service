@@ -107,11 +107,11 @@ export class PermissionValidator extends Validator {
       name: Joi.string()
         .trim()
         .max(50)
-        .required(),
+        .optional(),
       slug: Joi.string()
         .trim()
         .max(50)
-        .required(),
+        .optional(),
       httpMethod: Joi.array()
         .items(
           Joi.string()
@@ -119,10 +119,10 @@ export class PermissionValidator extends Validator {
             .empty()
             .label('httpMethod'),
         ).unique()
-        .required(),
+        .optional(),
       httpPath: Joi.string()
         .uri({ allowRelative: true })
-        .required(),
+        .optional(),
     })
   }
 

@@ -1,5 +1,5 @@
 import {
-  Context, controller, get, provide, inject, del, post, put,
+  Context, controller, get, provide, inject, del, post, patch,
 } from 'midway'
 import { PermissionService } from '@/app/service/permission'
 import { PermissionValidator } from '@/app/validator/permission'
@@ -47,15 +47,13 @@ export class PermissionController {
     ctx.helper.success(ctx, result, null, 201)
   }
 
-  @put('/update')
+  @patch('/update')
   public async update(ctx: Context): Promise<void> {
     // 校验提交的参数
     const { id, ...params } = this.validator.updatePermission(ctx.request.body)
+    params.httpMethod = params.httpMethod?.join(',')
 
-    await this.service.updateAdminPermission(id, {
-      ...params,
-      httpMethod: params.httpMethod.join(','),
-    })
+    await this.service.updateAdminPermission(id, params)
 
     ctx.helper.success(ctx, null, null, 204)
   }
