@@ -66,6 +66,7 @@ export class PermissionService {
       limit: pageSize,
       offset: pageSize * (current - 1),
     })
+
     return {
       current,
       pageSize,
@@ -87,7 +88,6 @@ export class PermissionService {
     })
   }
 
-
   /**
    * 创建权限
    * @param {AdminPermissionInfo} params
@@ -95,7 +95,6 @@ export class PermissionService {
   public async createAdminPermission(params: AdminPermissionInfo) {
     return this.AdminPermissionModel.create(params)
   }
-
 
   /**
    * 更新权限
@@ -109,7 +108,6 @@ export class PermissionService {
       limit: 1,
     })
   }
-
 
   /**
    * 删除多条权限数据
