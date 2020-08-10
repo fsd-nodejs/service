@@ -52,12 +52,12 @@ export class PermissionController {
     // 校验提交的参数
     const { id, ...params } = this.validator.updatePermission(ctx.request.body)
 
-    const result = await this.service.updateAdminPermission(id, {
+    await this.service.updateAdminPermission(id, {
       ...params,
       httpMethod: params.httpMethod.join(','),
     })
 
-    ctx.helper.success(ctx, result, null, 201)
+    ctx.helper.success(ctx, null, null, 204)
   }
 
   @del('/remove')
