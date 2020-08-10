@@ -15,7 +15,7 @@ const { STRING, INTEGER, TEXT } = DataType
   freezeTableName: true,
   tableName: 'admin_permissions',
 })
-export class AdminPermissionModel extends Model {
+export class AdminPermissionModel extends Model<AdminPermissionModel> {
 
   @Column({
     type: INTEGER,

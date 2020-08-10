@@ -9,18 +9,6 @@ export class PermissionService {
   AdminPermissionModel!: IAdminPermissionModel
 
   /**
-   * 创建权限
-   * @param {AdminPermissionInfo} params
-   */
-  public async createAdminPermission(params: AdminPermissionInfo) {
-    const { httpMethod = [], ...data } = params
-    return this.AdminPermissionModel.create({
-      ...data,
-      httpMethod: httpMethod.join(','),
-    })
-  }
-
-  /**
    * 分页查询权限列表
    * @param {GetAdminPermissionOpts} queryParams
    */
@@ -71,16 +59,12 @@ export class PermissionService {
       }
     }
 
-    const { rows, count: total } = await this.AdminPermissionModel.findAndCountAll({
+    const { rows: list, count: total } = await this.AdminPermissionModel.findAndCountAll({
       order,
       where,
       raw: true,
       limit: pageSize,
       offset: pageSize * (current - 1),
-    })
-    const list = rows.map((item) => {
-      const httpMethod = item.httpMethod.split(',')
-      return { ...item, httpMethod }
     })
     return {
       current,
@@ -102,6 +86,30 @@ export class PermissionService {
       },
     })
   }
+
+
+  /**
+   * 创建权限
+   * @param {AdminPermissionInfo} params
+   */
+  public async createAdminPermission(params: AdminPermissionInfo) {
+    return this.AdminPermissionModel.create(params)
+  }
+
+
+  /**
+   * 更新权限
+   * @param {AdminPermissionInfo} params
+   */
+  public async updateAdminPermission(id: string, params: AdminPermissionInfo) {
+    return this.AdminPermissionModel.update(params, {
+      where: {
+        id,
+      },
+      limit: 1,
+    })
+  }
+
 
   /**
    * 删除多条权限数据

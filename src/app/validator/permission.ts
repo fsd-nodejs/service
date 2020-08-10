@@ -94,4 +94,36 @@ export class PermissionValidator extends Validator {
     })
   }
 
+  /**
+   * 修改权限
+   * @param {*} value
+   * @memberof PermissionValidator
+   */
+  public updatePermission(value: any) {
+    return this.validate(value, {
+      id: Joi.string()
+        .max(50)
+        .required(),
+      name: Joi.string()
+        .trim()
+        .max(50)
+        .required(),
+      slug: Joi.string()
+        .trim()
+        .max(50)
+        .required(),
+      httpMethod: Joi.array()
+        .items(
+          Joi.string()
+            .valid(['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS', 'HEAD', 'ANY'])
+            .empty()
+            .label('httpMethod'),
+        ).unique()
+        .required(),
+      httpPath: Joi.string()
+        .uri({ allowRelative: true })
+        .required(),
+    })
+  }
+
 }
