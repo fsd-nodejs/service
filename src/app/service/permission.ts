@@ -10,6 +10,7 @@ export class PermissionService {
 
   /**
    * 创建权限
+   * @param {AdminPermissionInfo} data
    */
   public async createAdminPermission(data: AdminPermissionInfo) {
     return this.AdminPermissionModel.create(data)
@@ -17,6 +18,7 @@ export class PermissionService {
 
   /**
    * 分页查询权限列表
+   * @param {GetAdminPermissionOpts} queryParams
    */
   public async queryAdminPermission(queryParams: GetAdminPermissionOpts) {
     const {
@@ -80,11 +82,27 @@ export class PermissionService {
     }
   }
 
+  /**
+   * 通过ID获取单条权限数据
+   * @param {String} id
+   */
   public async getAdminPermissionById(id: string) {
     return this.AdminPermissionModel.findOne({
       raw: true,
       where: {
         id,
+      },
+    })
+  }
+
+  /**
+   * 删除多条权限数据
+   * @param {string} ids
+   */
+  public async removeAdminPermissionByIds(ids: string[]) {
+    return this.AdminPermissionModel.destroy({
+      where: {
+        id: ids,
       },
     })
   }

@@ -54,6 +54,22 @@ export class PermissionValidator extends Validator {
     })
   }
 
+  /**
+   * 删除权限
+   * @param {*} value
+   * @memberof PermissionValidator
+   */
+  public removePermission(value: any) {
+    return this.validate(value, {
+      ids: Joi.array().items(Joi.string()).min(1),
+    })
+  }
+
+  /**
+   * 创建权限
+   * @param {*} value
+   * @memberof PermissionValidator
+   */
   public createPermission(value: any) {
     return this.validate(value, {
       name: Joi.string()
