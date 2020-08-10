@@ -13,3 +13,4 @@ rules:
   "space-unary-ops": 0
   "@typescript-eslint/no-explicit-any": 0
   "require-unicode-regexp": 0
+  "array-bracket-spacing": 0
