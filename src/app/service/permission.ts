@@ -10,10 +10,14 @@ export class PermissionService {
 
   /**
    * 创建权限
-   * @param {AdminPermissionInfo} data
+   * @param {AdminPermissionInfo} params
    */
-  public async createAdminPermission(data: AdminPermissionInfo) {
-    return this.AdminPermissionModel.create(data)
+  public async createAdminPermission(params: AdminPermissionInfo) {
+    const { httpMethod = [], ...data } = params
+    return this.AdminPermissionModel.create({
+      ...data,
+      httpMethod: httpMethod.join(','),
+    })
   }
 
   /**
@@ -67,12 +71,16 @@ export class PermissionService {
       }
     }
 
-    const { rows: list, count: total } = await this.AdminPermissionModel.findAndCountAll({
+    const { rows, count: total } = await this.AdminPermissionModel.findAndCountAll({
       order,
       where,
       raw: true,
       limit: pageSize,
       offset: pageSize * (current - 1),
+    })
+    const list = rows.map((item) => {
+      const httpMethod = item.httpMethod.split(',')
+      return { ...item, httpMethod }
     })
     return {
       current,

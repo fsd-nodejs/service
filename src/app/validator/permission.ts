@@ -74,9 +74,22 @@ export class PermissionValidator extends Validator {
     return this.validate(value, {
       name: Joi.string()
         .trim()
+        .max(50)
         .required(),
       slug: Joi.string()
         .trim()
+        .max(50)
+        .required(),
+      httpMethod: Joi.array()
+        .items(
+          Joi.string()
+            .valid(['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS', 'HEAD', 'ANY'])
+            .empty()
+            .label('httpMethod'),
+        ).unique()
+        .required(),
+      httpPath: Joi.string()
+        .uri({ allowRelative: true })
         .required(),
     })
   }

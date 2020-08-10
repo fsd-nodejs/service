@@ -1,5 +1,5 @@
 import {
-  Context, controller, get, provide, inject, del,
+  Context, controller, get, provide, inject, del, post,
 } from 'midway'
 import { PermissionService } from '@/app/service/permission'
 import { PermissionValidator } from '@/app/validator/permission'
@@ -32,6 +32,16 @@ export class PermissionController {
     const result = await this.service.getAdminPermissionById(query.id)
 
     ctx.helper.success(ctx, result)
+  }
+
+  @post('/create')
+  public async create(ctx: Context): Promise<void> {
+    // 校验提交的参数
+    const params = this.validator.createPermission(ctx.request.body)
+
+    const result = await this.service.createAdminPermission(params)
+
+    ctx.helper.success(ctx, result, null, 201)
   }
 
   @del('/remove')
