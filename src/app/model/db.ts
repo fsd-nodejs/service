@@ -3,6 +3,7 @@ import { provide, scope, ScopeEnum } from 'midway'
 import { AdminUserModel } from '@/app/model/admin-user'
 import { AdminPermissionModel } from '@/app/model/admin-permission'
 import { AdminRoleModel } from '@/app/model/admin-role'
+import { AdminRolePermissionModel } from '@/app/model/admin-role-permission'
 
 
 interface SequelizeConfig {
@@ -41,7 +42,7 @@ export class DB {
         logging: debug,
       },
     )
-    await DB.sequelize.addModels([AdminUserModel, AdminPermissionModel, AdminRoleModel])
+    await DB.sequelize.addModels([AdminUserModel, AdminPermissionModel, AdminRoleModel, AdminRolePermissionModel])
 
     try {
       await DB.sequelize.authenticate()

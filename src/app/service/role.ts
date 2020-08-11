@@ -1,5 +1,6 @@
 import { provide, inject } from 'midway'
 import { IAdminRoleModel, GetAdminRoleOpts, AdminRoleInfo } from '@/app/model/admin-role'
+import { AdminPermissionModel } from '@/app/model/admin-permission'
 import { Op } from 'sequelize'
 
 @provide('RoleService')
@@ -44,13 +45,20 @@ export class RoleService {
         [Op.like]: `%${params.slug}%`,
       }
     }
-
     const { rows: list, count: total } = await this.AdminRoleModel.findAndCountAll({
       order,
       where,
       raw: true,
       limit: pageSize,
       offset: pageSize * (current - 1),
+      include: [
+        {
+          model: AdminPermissionModel,
+          through: {
+            attributes: [],
+          },
+        },
+      ],
     })
 
     return {
@@ -71,6 +79,7 @@ export class RoleService {
       where: {
         id,
       },
+      include: [{ model: AdminPermissionModel }],
     })
   }
 

@@ -1,19 +1,29 @@
 import { providerWrapper } from 'midway'
 import {
-  Column, CreatedAt, UpdatedAt, DataType, Model, Scopes, Table,
+  Column, CreatedAt, UpdatedAt, DataType, Model, Scopes, Table, BelongsToMany,
 } from 'sequelize-typescript'
+import { AdminRoleModel } from '@/app/model/admin-role'
+import { AdminRolePermissionModel } from '@/app/model/admin-role-permission'
 
 
 const { STRING, INTEGER, TEXT } = DataType
 
-@Scopes({
-  avaliable: {
-    where: { status: 1 },
+@Scopes(() => ({
+  roles: {
+    include: [
+      {
+        model: AdminRoleModel,
+        through: { attributes: [] },
+      },
+    ],
   },
-})
+}))
 @Table({
   freezeTableName: true,
   tableName: 'admin_permissions',
+  createdAt: 'created_at',
+  updatedAt: 'updated_at',
+  timestamps: false,
 })
 export class AdminPermissionModel extends Model<AdminPermissionModel> {
 
@@ -62,6 +72,9 @@ export class AdminPermissionModel extends Model<AdminPermissionModel> {
     field: 'updated_at',
   })
   updatedAt!: Date
+
+  @BelongsToMany(() => AdminRoleModel, () => AdminRolePermissionModel)
+  roles!: AdminRoleModel[]
 
 }
 
