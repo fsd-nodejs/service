@@ -21,9 +21,6 @@ const { STRING, INTEGER, TEXT } = DataType
 @Table({
   freezeTableName: true,
   tableName: 'admin_permissions',
-  createdAt: 'created_at',
-  updatedAt: 'updated_at',
-  timestamps: false,
 })
 export class AdminPermissionModel extends Model<AdminPermissionModel> {
 

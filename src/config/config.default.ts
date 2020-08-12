@@ -30,6 +30,7 @@ export default (appInfo: EggAppInfo) => {
     database: 'shop_development',
     dialect: 'mysql',
     debug: true,
+    timezone: '+08:00',
   }
 
   config.redis = {

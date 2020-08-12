@@ -14,6 +14,7 @@ interface SequelizeConfig {
   database: string
   dialect: 'mysql' | 'postgres' | 'sqlite' | 'mariadb' | 'mssql' | undefined
   debug: boolean
+  timezone: string
 }
 
 @scope(ScopeEnum.Singleton)
@@ -25,7 +26,7 @@ export class DB {
 
   public static async initDB(conf: SequelizeConfig) {
     const {
-      database, user, password, port, host, dialect, debug,
+      database, user, password, port, host, dialect, debug, timezone,
     } = conf
     DB.sequelize = new Sequelize(
       database,
@@ -38,7 +39,7 @@ export class DB {
         dialect,
         host,
         port,
-        timezone: '+08:00',
+        timezone,
         logging: debug,
       },
     )

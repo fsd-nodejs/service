@@ -45,6 +45,7 @@ export class RoleService {
         [Op.like]: `%${params.slug}%`,
       }
     }
+
     const { rows: list, count: total } = await this.AdminRoleModel.findAndCountAll({
       order,
       where,
@@ -71,6 +72,7 @@ export class RoleService {
   /**
    * 通过ID获取单条角色数据
    * @param {String} id
+   * @returns {AdminRoleModel | null}
    */
   public async getAdminRoleById(id: string) {
     return this.AdminRoleModel.findOne({
@@ -91,6 +93,7 @@ export class RoleService {
   /**
    * 创建角色
    * @param {AdminRoleInfo} params
+   * @returns {AdminRoleInfo}
    */
   public async createAdminRole(params: AdminRoleInfo) {
     return this.AdminRoleModel.create(params)
@@ -99,6 +102,7 @@ export class RoleService {
   /**
    * 更新角色
    * @param {AdminRoleInfo} params
+   * @returns {[number, AdminRoleModel[]]}
    */
   public async updateAdminRole(id: string, params: AdminRoleInfo) {
     return this.AdminRoleModel.update(params, {
@@ -112,6 +116,7 @@ export class RoleService {
   /**
    * 删除多条角色数据
    * @param {string} ids
+   * @returns {number}
    */
   public async removeAdminRoleByIds(ids: string[]) {
     return this.AdminRoleModel.destroy({
