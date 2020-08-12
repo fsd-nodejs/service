@@ -52,7 +52,9 @@ export class AdminPermissionModel extends Model<AdminPermissionModel> {
     comment: '请求方式 ["ANY", "DELETE", "POST", "GET", "PUT", "PATCH", "OPTIONS", "HEAD"]',
     field: 'http_method',
   })
-  httpMethod!: string
+  public get httpMethod(): string[] {
+    return String(this.getDataValue('httpMethod')).split(',')
+  }
 
   @Column({
     type: TEXT,
