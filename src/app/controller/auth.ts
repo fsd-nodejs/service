@@ -61,9 +61,11 @@ export class AuthController {
   @get('/logout')
   public async logout(ctx: Context): Promise<void> {
     const { user } = ctx
+
     // 清理用户数据和token
     await this.service.removeAdminUserTokenById(user.id)
     await this.service.cleanAdminUserById(user.id)
+
     ctx.helper.success(ctx, {})
   }
 
@@ -73,7 +75,9 @@ export class AuthController {
   @get('/currentUser')
   public async currentUser(ctx: Context): Promise<void> {
     const { user } = ctx
+
     const currentUser = await this.service.getAdminUserById(user.id)
+
     ctx.helper.success(ctx, currentUser)
   }
 
