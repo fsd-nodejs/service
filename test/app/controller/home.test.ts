@@ -1,36 +1,45 @@
-// import { basename } from 'path'
 
-// import * as assert from 'power-assert'
-// import { app } from 'midway-mock/bootstrap'
+import * as assert from 'power-assert'
+import { app } from 'midway-mock/bootstrap'
 
 
-// const filename = basename(__filename)
+describe('test/controller/home.test.ts', () => {
+  let currentUser: any
+  before(async () => {
+    app.mockCsrf()
+    const response = await app.httpRequest()
+      .post('/auth/login')
+      .type('form')
+      .send(app.config.admin)
+      .expect(200)
+    currentUser = response.body.data
+  })
 
-// describe(filename, () => {
+  it('should assert', async () => {
+    // eslint-disable-next-line
+    const pkg = require('../../../package.json')
+    assert(app.config.keys.startsWith(pkg.name))
+    // const ctx = app.mockContext({});
+    // await ctx.service.xx();
+  })
 
-//   it('should assert', async () => {
-//     // eslint-disable-next-line
-//     const pkg = require('../../../package.json')
-//     assert(app.config.keys.startsWith(pkg.name))
-//     // const ctx = app.mockContext({});
-//     // await ctx.service.xx();
-//   })
+  it('should GET /', async () => {
+    const response = await app.httpRequest()
+      .get('/')
+      .set('Authorization', `Bearer ${currentUser.token}`)
+      .expect(200)
 
-//   it('should GET /', async () => {
-//     const ret = await app.httpRequest()
-//       .get('/')
-//       .expect(401)
+    const msg: string = response.text
+    assert(msg && msg.includes('Hello midwayjs!'))
+  })
 
-//     const msg: string = ret.text
-//     assert(msg && msg.includes('Hello midwayjs!'))
-//   })
+  it('should GET /ping', async () => {
+    const ret = await app.httpRequest()
+      .get('/ping')
+      .expect(200)
 
-//   it('should GET /ping', async () => {
-//     const ret = await app.httpRequest()
-//       .get('/ping')
-//       .expect(200)
+    const msg: string = ret.text
+    assert(msg && msg === 'OK')
+  })
 
-//     const msg: string = ret.text
-//     assert(msg && msg === 'OK')
-//   })
-// })
+})

@@ -1,35 +1,48 @@
-// import { basename } from 'path'
 
-// import * as assert from 'power-assert'
-// import { app } from 'midway-mock/bootstrap'
+import * as assert from 'power-assert'
+import { app } from 'midway-mock/bootstrap'
 
 
-// const filename = basename(__filename)
-// describe(filename, () => {
+describe('test/controller/auth.test.ts', () => {
+  let currentUser: any
 
-//   it('should assert', async () => {
-//     // eslint-disable-next-line
-//     const pkg = require('../../../package.json')
-//     assert(app.config.keys.startsWith(pkg.name))
-//     // const ctx = app.mockContext({});
-//     // await ctx.service.xx();
-//   })
+  it('should POST /auth/login by wrong username and password', async () => {
+    app.mockCsrf()
+    const response = await app.httpRequest()
+      .post('/auth/login')
+      .type('form')
+      .send({
+        username: app.config.admin.username,
+        password: '123456',
+      })
+      .expect(400)
+    assert.deepEqual(response.body.code, 400)
+  })
 
-//   it('should GET /', async () => {
-//     const ret = await app.httpRequest()
-//       .get('/')
-//       .expect(200)
+  it('should POST /auth/login by correct username and password', async () => {
+    app.mockCsrf()
+    const response = await app.httpRequest()
+      .post('/auth/login')
+      .type('form')
+      .send(app.config.admin)
+      .expect(200)
+    assert(response.body.data.token)
+    currentUser = response.body.data
+  })
 
-//     const msg: string = ret.text
-//     assert(msg && msg.includes('Hello midwayjs!'))
-//   })
+  it('should GET /auth/currentUser', async () => {
+    const response = await app.httpRequest()
+      .get('/auth/currentUser')
+      .set('Authorization', `Bearer ${currentUser.token}`)
+      .expect(200)
+    assert.deepEqual(response.body.code, 200)
+  })
 
-//   it('should GET /ping', async () => {
-//     const ret = await app.httpRequest()
-//       .get('/ping')
-//       .expect(200)
-
-//     const msg: string = ret.text
-//     assert(msg && msg === 'OK')
-//   })
-// })
+  it('should GET /auth/logout', async () => {
+    const response = await app.httpRequest()
+      .get('/auth/logout')
+      .set('Authorization', `Bearer ${currentUser.token}`)
+      .expect(200)
+    assert.deepEqual(response.body.code, 200)
+  })
+})

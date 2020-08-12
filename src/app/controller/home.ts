@@ -4,7 +4,8 @@ import { Context, config, controller, get, provide } from 'midway'
 @controller('/')
 export class HomeController {
 
-  constructor(@config() private readonly welcomeMsg: string) { }
+  @config()
+  private readonly welcomeMsg!: string
 
   @get('/', { middleware: ['apiMiddleware'] })
   public index(ctx: Context): void {

@@ -9,15 +9,17 @@ export default (appInfo: EggAppInfo) => {
   // use for cookie sign key, should change to your own and keep security
   config.keys = appInfo.name + '_1594797976100_9970'
 
+  config.admin = {
+    username: 'admin',
+    password: 'admin',
+  }
+
   // add your config here
   config.middleware = ['jwtAuth']
 
+  // 所有的路径都走统一错误处理
   config.errorHandler = {
     match: '*',
-  }
-
-  config.jwtAuth = {
-    ignore: ['/auth/login'],
   }
 
   config.welcomeMsg = 'Hello midwayjs!'
@@ -42,12 +44,18 @@ export default (appInfo: EggAppInfo) => {
     },
   }
 
+  // jwt
   config.jwt = {
     enable: true,
     client: {
       secret: '123456',
     },
-    ignore: ['/auth/login'],
+    ignore: ['/auth/login', '/ping'],
+  }
+
+  // jwt token 校验中间件
+  config.jwtAuth = {
+    ignore: ['/auth/login', '/ping'],
   }
 
   return config

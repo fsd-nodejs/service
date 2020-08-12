@@ -17,12 +17,12 @@ export class AuthValidator extends Validator {
       username: Joi.string()
         .trim()
         .required()
-        .min(6)
+        .min(5)
         .max(190),
       password: Joi.string()
         .trim()
         .required()
-        .min(6)
+        .min(5)
         .max(60),
     })
   }

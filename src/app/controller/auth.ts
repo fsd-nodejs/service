@@ -1,7 +1,7 @@
 import * as assert from 'assert'
 
 import {
-  Context, config, controller, get, post, provide, inject,
+  Context, controller, get, post, provide, inject,
 } from 'midway'
 import { AuthService } from '@/app/service/auth'
 import { AuthValidator } from '@/app/validator/auth'
@@ -11,18 +11,11 @@ import MyError from '@/app/common/my-error'
 @controller('/auth')
 export class AuthController {
 
-  constructor(@config() private readonly welcomeMsg: string) { }
-
   @inject('AuthService')
   service!: AuthService
 
   @inject('AuthValidator')
   validator!: AuthValidator
-
-  @get('/', { middleware: ['apiMiddleware'] })
-  public index(ctx: Context): void {
-    ctx.body = `${this.welcomeMsg} - ${ctx.api.reqTimeStr}`
-  }
 
   /**
    * 登录，目前使用帐号+密码模式
