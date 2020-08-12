@@ -29,7 +29,7 @@ export default (appInfo: EggAppInfo) => {
     password: 'secret',
     database: 'shop_development',
     dialect: 'mysql',
-    debug: true,
+    debug: false,
     timezone: '+08:00',
   }
 

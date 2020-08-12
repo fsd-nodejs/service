@@ -89,7 +89,7 @@ export interface GetAdminRoleOpts {
  * 角色信息
  */
 export interface AdminRoleInfo {
-  id: string
+  id?: string
   name?: string
   slug?: string
   createdAt?: Date

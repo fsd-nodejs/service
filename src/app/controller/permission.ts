@@ -1,6 +1,9 @@
+import * as assert from 'assert'
+
 import {
   Context, controller, get, provide, inject, del, post, patch,
 } from 'midway'
+import MyError from '@/app/common/my-error'
 import { PermissionService } from '@/app/service/permission'
 import { PermissionValidator } from '@/app/validator/permission'
 
@@ -52,8 +55,8 @@ export class PermissionController {
     // 校验提交的参数
     const { id, ...params } = this.validator.updatePermission(ctx.request.body)
     params.httpMethod = params.httpMethod?.join(',')
-
-    await this.service.updateAdminPermission(id, params)
+    const [total] = await this.service.updateAdminPermission(id, params)
+    assert(total, new MyError('更新失败', 400))
 
     ctx.helper.success(ctx, null, null, 204)
   }
@@ -63,7 +66,8 @@ export class PermissionController {
     // 校验提交的参数
     const params = this.validator.removePermission(ctx.request.body)
 
-    await this.service.removeAdminPermissionByIds(params.ids)
+    const total = await this.service.removeAdminPermissionByIds(params.ids)
+    assert(total, new MyError('删除失败', 400))
 
     ctx.helper.success(ctx, null, null, 204)
   }

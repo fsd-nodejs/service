@@ -105,7 +105,7 @@ export interface GetAdminPermissionOpts {
  * 权限信息
  */
 export interface AdminPermissionInfo {
-  id: string
+  id?: string
   name?: string
   slug?: string
   httpMethod?: string[] // ["ANY", "DELETE", "POST", "GET", "PUT", "PATCH", "OPTIONS", "HEAD"]

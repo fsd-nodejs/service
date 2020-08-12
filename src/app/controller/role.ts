@@ -1,6 +1,9 @@
+import * as assert from 'assert'
+
 import {
   Context, controller, get, provide, inject, del, post, patch,
 } from 'midway'
+import MyError from '@/app/common/my-error'
 import { RoleService } from '@/app/service/role'
 import { RoleValidator } from '@/app/validator/role'
 
@@ -53,7 +56,8 @@ export class RoleController {
     const { id, ...params } = this.validator.updateRole(ctx.request.body)
     params.httpMethod = params.httpMethod?.join(',')
 
-    await this.service.updateAdminRole(id, params)
+    const [total] = await this.service.updateAdminRole(id, params)
+    assert(total, new MyError('更新失败', 400))
 
     ctx.helper.success(ctx, null, null, 204)
   }
@@ -63,7 +67,8 @@ export class RoleController {
     // 校验提交的参数
     const params = this.validator.removeRole(ctx.request.body)
 
-    await this.service.removeAdminRoleByIds(params.ids)
+    const total = await this.service.removeAdminRoleByIds(params.ids)
+    assert(total, new MyError('删除失败', 400))
 
     ctx.helper.success(ctx, null, null, 204)
   }

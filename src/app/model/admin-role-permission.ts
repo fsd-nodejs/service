@@ -1,4 +1,4 @@
-import { providerWrapper } from 'midway'
+// import { providerWrapper } from 'midway'
 import {
   Column, CreatedAt, UpdatedAt, Model, Table, ForeignKey,
 } from 'sequelize-typescript'
@@ -40,12 +40,12 @@ export default class AdminRolePermissionModel extends Model<AdminRolePermissionM
 }
 
 
-export const factory = () => AdminRolePermissionModel
-providerWrapper([
-  {
-    id: 'AdminRolePermissionModel',
-    provider: factory,
-  },
-])
+// export const factory = () => AdminRolePermissionModel
+// providerWrapper([
+//   {
+//     id: 'AdminRolePermissionModel',
+//     provider: factory,
+//   },
+// ])
 
 export type IAdminRolePermissionModel = typeof AdminRolePermissionModel

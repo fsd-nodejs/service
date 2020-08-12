@@ -134,3 +134,4 @@ export class PermissionService {
   }
 
 }
+export type IPermissionService = PermissionService
