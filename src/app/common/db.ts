@@ -1,9 +1,7 @@
+import * as path from 'path'
+
 import { Sequelize } from 'sequelize-typescript'
 import { provide, scope, ScopeEnum } from 'midway'
-import { AdminUserModel } from '@/app/model/admin-user'
-import { AdminPermissionModel } from '@/app/model/admin-permission'
-import { AdminRoleModel } from '@/app/model/admin-role'
-import { AdminRolePermissionModel } from '@/app/model/admin-role-permission'
 
 
 interface SequelizeConfig {
@@ -43,7 +41,7 @@ export class DB {
         logging: debug,
       },
     )
-    await DB.sequelize.addModels([AdminUserModel, AdminPermissionModel, AdminRoleModel, AdminRolePermissionModel])
+    DB.sequelize.addModels([path.resolve(__dirname, '../model/')])
 
     try {
       await DB.sequelize.authenticate()

@@ -2,8 +2,8 @@ import { providerWrapper } from 'midway'
 import {
   Column, CreatedAt, UpdatedAt, DataType, Model, Scopes, Table, BelongsToMany,
 } from 'sequelize-typescript'
-import { AdminPermissionModel } from '@/app/model/admin-permission'
-import { AdminRolePermissionModel } from '@/app/model/admin-role-permission'
+import AdminPermissionModel from '@/app/model/admin-permission'
+import AdminRolePermissionModel from '@/app/model/admin-role-permission'
 
 
 const { STRING, INTEGER } = DataType
@@ -24,7 +24,7 @@ const { STRING, INTEGER } = DataType
   freezeTableName: true,
   tableName: 'admin_roles',
 })
-export class AdminRoleModel extends Model<AdminRoleModel> {
+export default class AdminRoleModel extends Model<AdminRoleModel> {
 
   @Column({
     type: INTEGER,

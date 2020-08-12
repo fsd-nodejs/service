@@ -1,6 +1,6 @@
 import { provide, inject } from 'midway'
 import { IAdminRoleModel, GetAdminRoleOpts, AdminRoleInfo } from '@/app/model/admin-role'
-import { AdminPermissionModel } from '@/app/model/admin-permission'
+import AdminPermissionModel from '@/app/model/admin-permission'
 import { Op } from 'sequelize'
 
 @provide('RoleService')

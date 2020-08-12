@@ -1,5 +1,5 @@
 import { Application } from 'midway'
-import { DB } from '@/app/model/db'
+import { DB } from '@/app/common/db'
 
 
 export default (app: Application) => {
