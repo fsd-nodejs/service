@@ -48,7 +48,6 @@ export class RoleService {
     const { rows: list, count: total } = await this.AdminRoleModel.findAndCountAll({
       order,
       where,
-      raw: true,
       limit: pageSize,
       offset: pageSize * (current - 1),
       include: [
@@ -75,11 +74,17 @@ export class RoleService {
    */
   public async getAdminRoleById(id: string) {
     return this.AdminRoleModel.findOne({
-      raw: true,
       where: {
         id,
       },
-      include: [{ model: AdminPermissionModel }],
+      include: [
+        {
+          model: AdminPermissionModel,
+          through: {
+            attributes: [],
+          },
+        },
+      ],
     })
   }
 

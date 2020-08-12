@@ -58,7 +58,6 @@ export class AuthService {
    */
   public async getAdminUserByUserName(username: string) {
     const user = await this.AdminUserModel.findOne({
-      raw: true,
       where: {
         username,
       },
