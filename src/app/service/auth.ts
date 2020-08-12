@@ -35,7 +35,7 @@ export class AuthService {
 
   /**
    * 获取用户Redis Token
-   * @param {String} id
+   * @param {String} id 管理员用户id
    * @returns {String} Redis中的Token
    */
   public async getAdminUserTokenById(id: string) {
@@ -44,7 +44,7 @@ export class AuthService {
 
   /**
    * 移除用户Redis Token
-   * @param {String} id
+   * @param {String} id 管理员用户id
    * @returns {number} 变更的数量
    */
   public async removeAdminUserTokenById(id: string) {
@@ -81,35 +81,24 @@ export class AuthService {
    * @returns {OK | null} 缓存处理结果
    */
   public async cacheAdminUser(data: AdminUserModel) {
-    const { password, rememberToken, ...userinfo } = data
+    const {
+      id, username, name, avatar, createdAt, updatedAt,
+    } = data
+
+    const userinfo = {
+      id, username, name, avatar, createdAt, updatedAt,
+    }
+
     return this.redis.set(`admin:userinfo:${userinfo.id}`, JSON.stringify(userinfo), 'EX', 60 * 60 * 24 * 3)
   }
 
   /**
    * 清理用户缓存数据
-   * @param {AdminUserModel} data 用户数据
+   * @param {String} id 用户id
    * @returns {number} 缓存处理结果
    */
   public async cleanAdminUserById(id: string) {
     return this.redis.del(`admin:userinfo:${id}`)
-  }
-
-  /**
-   * 验证token的合法性
-   * @param {String} token
-   * @returns {Boolean} 是否合法
-   */
-  public async verifyToken(token: string) {
-    return this.jwt.verify(token, this.jwtConfig.client.secret)
-  }
-
-  /**
-   * 解码token内的数据
-   * @param params
-   * @returns {JsonType}
-   */
-  public async decodeToken(token: string) {
-    return this.jwt.decode(token)
   }
 
   /**
