@@ -54,7 +54,7 @@ export class AuthService {
   /**
    * 根据登录名查找用户
    * @param {String} username 登录名
-   * @returns {Promise[user]} 承载用户的 Promise 对象
+   * @returns {AdminUserModel | null} 承载用户的 Promise 对象
    */
   public async getAdminUserByUserName(username: string) {
     const user = await this.AdminUserModel.findOne({
@@ -88,7 +88,7 @@ export class AuthService {
   /**
    * 清理用户缓存数据
    * @param {AdminUserModel} data 用户数据
-   * @returns {OK | null} 缓存处理结果
+   * @returns {number} 缓存处理结果
    */
   public async cleanAdminUserById(id: string) {
     return this.redis.del(`admin:userinfo:${id}`)

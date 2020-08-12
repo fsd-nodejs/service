@@ -79,6 +79,7 @@ export class PermissionService {
   /**
    * 通过ID获取单条权限数据
    * @param {String} id
+   * @returns {AdminPermissionModel | null}
    */
   public async getAdminPermissionById(id: string) {
     return this.AdminPermissionModel.findOne({
@@ -91,6 +92,7 @@ export class PermissionService {
           through: {
             attributes: [],
           },
+          attributes: ['id', 'name', 'slug'],
         },
       ],
     })
@@ -99,6 +101,7 @@ export class PermissionService {
   /**
    * 创建权限
    * @param {AdminPermissionInfo} params
+   * @returns {AdminPermissionModel}
    */
   public async createAdminPermission(params: AdminPermissionInfo) {
     return this.AdminPermissionModel.create(params)
@@ -120,6 +123,7 @@ export class PermissionService {
   /**
    * 删除多条权限数据
    * @param {string} ids
+   * @returns {number}
    */
   public async removeAdminPermissionByIds(ids: string[]) {
     return this.AdminPermissionModel.destroy({
