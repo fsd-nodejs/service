@@ -7,11 +7,6 @@ export const cors = {
   package: 'egg-cors',
 }
 
-export const validate = {
-  enable: true,
-  package: 'egg-validate',
-}
-
 export const redis = {
   enable: true,
   package: 'egg-redis',
