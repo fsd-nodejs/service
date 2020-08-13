@@ -1,6 +1,6 @@
 # service
 
-[![GitHub Actions status](https://github.com/fsd-nodejs/service/workflows/Node%20CI/badge.svg)](https://github.com/fsd-nodejs/service)
+[![GitHub Actions status](https://github.com/fsd-nodejs/service/workflows/Node.js%20CI/badge.svg)](https://github.com/fsd-nodejs/service)
 
 Node.js 全栈开发-后端服务(仅对管理后台，提供API服务)
 
