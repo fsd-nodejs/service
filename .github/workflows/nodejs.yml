@@ -62,7 +62,7 @@ jobs:
       run: |
         apt-get update
         apt-get install -y mysql-client
-        mysql --host locahost -uroot -ppassword -e "SHOW DATABASES"
+        mysql --host localhost -uroot -ppassword -e "SHOW DATABASES"
       env:
         CI: true
         # The hostname used to communicate with the Redis service container
