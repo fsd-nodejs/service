@@ -38,7 +38,7 @@ export default (appInfo: EggAppInfo) => {
   config.redis = {
     client: {
       port: process.env.REDIS_PORT || 6379, // Redis port
-      host: process.env.REDIS_HOST || '192.168.13.15', // Redis host
+      host: process.env.REDIS_HOST || '192.168.13.150', // Redis host
       password: '',
       db: 0,
     },

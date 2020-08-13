@@ -1,6 +1,8 @@
 # service
 
-[![codecov](https://codecov.io/gh/fsd-nodejs/service/branch/master/graph/badge.svg)](https://codecov.io/gh/fsd-nodejs/service) [![GitHub Actions status](https://github.com/fsd-nodejs/service/workflows/Node.js%20CI/badge.svg)](https://github.com/fsd-nodejs/service)
+[![codecov](https://codecov.io/gh/fsd-nodejs/service/branch/master/graph/badge.svg)](https://codecov.io/gh/fsd-nodejs/service)
+[![GitHub Actions status](https://github.com/fsd-nodejs/service/workflows/Node.js%20CI/badge.svg)](https://github.com/fsd-nodejs/service)
+[![codebeat badge](https://codebeat.co/badges/8b640045-39b8-403e-9c47-605b08df53af)](https://codebeat.co/projects/github-com-fsd-nodejs-service-master)
 
 Node.js 全栈开发-后端服务(仅对管理后台，提供API服务)
 
