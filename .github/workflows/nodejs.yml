@@ -44,6 +44,7 @@ jobs:
           - 3306:3306
         env:
           MYSQL_ROOT_PASSWORD: password
+          MYSQL_DATABASE: shop 
 
     strategy:
       matrix:
@@ -56,16 +57,17 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-#    - run: npm i -g npminstall && npminstall
-#    - run: npm run ci
-    - name: Check mysql connection from container
-      run: |
-        apt-get update
-        apt-get install -y mysql-client
-        mysql --host localhost -uroot -ppassword -e "SHOW DATABASES"
+    - run: npm i -g npminstall && npminstall
+    - run: npm run ci
       env:
         CI: true
         # The hostname used to communicate with the Redis service container
+        # mysql
+        MYSQL_HOST: localhost
+        MYSQL_PORT: 3306
+        MYSQL_USER: root
+        MYSQL_PASSWORD: password
+        MYSQL_DATABASE: shop
+        # redis
         REDIS_HOST: localhost
-        # The default Redis port
         REDIS_PORT: 6379
