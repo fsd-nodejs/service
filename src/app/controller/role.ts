@@ -42,10 +42,7 @@ export class RoleController {
     // 校验提交的参数
     const params = this.validator.createRole(ctx.request.body)
 
-    const result = await this.service.createAdminRole({
-      ...params,
-      httpMethod: params.httpMethod.join(','),
-    })
+    const result = await this.service.createAdminRole(params)
 
     ctx.helper.success(ctx, result, null, 201)
   }
@@ -54,7 +51,6 @@ export class RoleController {
   public async update(ctx: Context): Promise<void> {
     // 校验提交的参数
     const { id, ...params } = this.validator.updateRole(ctx.request.body)
-    params.httpMethod = params.httpMethod?.join(',')
 
     const [total] = await this.service.updateAdminRole(id, params)
     assert(total, new MyError('更新失败', 400))

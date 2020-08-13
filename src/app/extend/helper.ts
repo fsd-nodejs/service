@@ -29,9 +29,9 @@ moment.locale('zh-cn')
  * @param str 需要加密的内容
  * @returns {String} 密文
  */
-export const bhash = (str: string) => {
-  return bcrypt.hashSync(str, 10)
-}
+// export const bhash = (str: string) => {
+//   return bcrypt.hashSync(str, 10)
+// }
 
 /**
  * hash是否正确
@@ -66,11 +66,11 @@ export const success = (ctx: Context, result = null, message = '请求成功', s
  * @param code
  * @param message
  */
-export const error = (ctx: Context, code: number, message: string) => {
-  ctx.body = {
-    code,
-    message,
-    data: null,
-  }
-  ctx.status = code
-}
+// export const error = (ctx: Context, code: number, message: string) => {
+//   ctx.body = {
+//     code,
+//     message,
+//     data: null,
+//   }
+//   ctx.status = code
+// }

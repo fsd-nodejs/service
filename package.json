@@ -19,8 +19,8 @@
     "sequelize-typescript": "^1.1.0"
   },
   "devDependencies": {
-    "@types/joi": "^14.3.4",
     "@types/bcryptjs": "^2.4.2",
+    "@types/joi": "^14.3.4",
     "@types/mocha": "^5.2.7",
     "@types/node": "^10.17.28",
     "@types/sequelize": "^4.28.9",
@@ -52,7 +52,7 @@
     "start": "egg-scripts start --daemon --title=egg-server-service --framework=midway --ts",
     "start_build": "npm run build && cross-env NODE_ENV=development midway-bin dev",
     "stop": "egg-scripts stop --title=egg-server-service",
-    "test": "npm run lint && npm run devtest",
+    "test": "npm run lint && jest --forceExit",
     "autod": "midway-bin autod"
   },
   "ci": {
