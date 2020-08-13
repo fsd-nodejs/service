@@ -31,7 +31,7 @@ jobs:
           --health-timeout 5s
           --health-retries 5
       mysql:
-        image: mysql
+        image: mysql:5.7
         options: >-
           --health-cmd="mysqladmin ping"
           --health-interval=10s
@@ -54,8 +54,8 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - name: Verify MySQL connection from container 
       run: |
-        sudo apt-get update
-        sudo apt-get install -y mysql-client-core-5.5
+        apt-get update
+        apt-get install -y mysql-client
         mysql --host mysql -uroot -ppassword -e "SHOW DATABASES"
     - run: npm i -g npminstall && npminstall
     - run: npm run ci
