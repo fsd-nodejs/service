@@ -33,6 +33,17 @@ jobs:
         ports:
           # Maps port 6379 on service container to the host
           - 6379:6379
+      mysql:
+        image: mysql
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+        ports:
+          - 3306:3306
+        env:
+          MYSQL_ROOT_PASSWORD: password
 
     strategy:
       matrix:
@@ -45,8 +56,13 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - run: npm i -g npminstall && npminstall
+#    - run: npm i -g npminstall && npminstall
 #    - run: npm run ci
+    - name: Check mysql connection from container
+      run: |
+        apt-get update
+        apt-get install -y mysql-client
+        mysql --host locahost -uroot -ppassword -e "SHOW DATABASES"
       env:
         CI: true
         # The hostname used to communicate with the Redis service container
