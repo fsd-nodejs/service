@@ -30,9 +30,9 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
-        ports:
+        #ports:
           # Maps port 6379 on service container to the host
-          - 6379:6379
+          #- 6379:6379
       mysql:
         image: mysql
         options: >-
@@ -40,8 +40,8 @@ jobs:
           --health-interval=10s
           --health-timeout=5s
           --health-retries=3
-        ports:
-          - 3306:3306
+        #ports:
+          #- 3306:3306
         env:
           MYSQL_ROOT_PASSWORD: password
           MYSQL_DATABASE: shop 
