@@ -69,5 +69,5 @@ jobs:
         MYSQL_PASSWORD: password
         MYSQL_DATABASE: shop
         # redis
-        REDIS_HOST: localhost
+        REDIS_HOST: redis
         REDIS_PORT: 6379
