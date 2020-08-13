@@ -47,3 +47,7 @@ jobs:
     - run: node client.js
       env:
         CI: true
+        # The hostname used to communicate with the Redis service container
+        REDIS_HOST: localhost
+        # The default Redis port
+        REDIS_PORT: 6379
