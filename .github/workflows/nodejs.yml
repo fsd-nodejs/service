@@ -71,4 +71,5 @@ jobs:
         # redis
         REDIS_HOST: redis
         REDIS_PORT: 6379
-    - run: bash <(curl -s https://codecov.io/bash) -f coverage/coverage-final.json
+    - name: Codecov
+      run: bash <(curl -s https://codecov.io/bash) -f ./coverage/coverage-final.json
