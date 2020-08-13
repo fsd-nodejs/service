@@ -47,7 +47,6 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run: npm i -g npminstall && npminstall
 #    - run: npm run ci
-    - run: node client.js
       env:
         CI: true
         # The hostname used to communicate with the Redis service container
