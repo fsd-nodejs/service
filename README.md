@@ -61,7 +61,7 @@ $ npm stop
 - - [ ] 日志
 
 ## 问题汇总
-- sequlize 无法自定义字段格式，get() set()
+- sequlize  设置raw=true 无法自定义字段格式，get() set()
 
 ## 注意事项
 - 单元测试需要导入部分测试数据
