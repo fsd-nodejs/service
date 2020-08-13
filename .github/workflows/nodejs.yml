@@ -61,7 +61,6 @@ jobs:
     - run: npm run ci
       env:
         CI: true
-        # The hostname used to communicate with the Redis service container
         # mysql
         MYSQL_HOST: mysql
         MYSQL_PORT: 3306
