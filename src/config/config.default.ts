@@ -25,11 +25,11 @@ export default (appInfo: EggAppInfo) => {
   config.welcomeMsg = 'Hello midwayjs!'
 
   config.sequelize = {
-    host: '192.168.13.150',
-    port: '3306',
-    user: 'homestead',
-    password: 'secret',
-    database: 'shop_development',
+    host: process.env.MYSQL_HOST || '192.168.13.150',
+    port: process.env.MYSQL_PORT || '3306',
+    user: process.env.MYSQL_USER || 'homestead',
+    password: process.env.MYSQL_PASSWORD || 'secret',
+    database: process.env.MYSQL_DATABASE || 'shop_development',
     dialect: 'mysql',
     debug: false,
     timezone: '+08:00',
@@ -37,8 +37,8 @@ export default (appInfo: EggAppInfo) => {
 
   config.redis = {
     client: {
-      port: 6379, // Redis port
-      host: '127.0.0.1', // Redis host
+      port: process.env.REDIS_PORT || 6379, // Redis port
+      host: process.env.REDIS_HOST || '192.168.13.15', // Redis host
       password: '',
       db: 0,
     },
