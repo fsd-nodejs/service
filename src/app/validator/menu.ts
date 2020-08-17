@@ -38,14 +38,26 @@ export class MenuValidator extends Validator {
    */
   public createMenu(value: any) {
     return this.validate(value, {
+      parentId: Joi.string()
+        .trim()
+        .max(10)
+        .optional()
+        .default('0'),
       name: Joi.string()
         .trim()
         .max(50)
         .required(),
-      slug: Joi.string()
+      uri: Joi.string()
+        .max(255)
+        .uri({ allowRelative: true })
+        .required(),
+      roles: Joi.array()
+        .items(Joi.string())
+        .optional(),
+      permission: Joi.string()
         .trim()
         .max(50)
-        .required(),
+        .optional(),
     })
   }
 
@@ -59,14 +71,45 @@ export class MenuValidator extends Validator {
       id: Joi.string()
         .max(50)
         .required(),
+      parentId: Joi.string()
+        .trim()
+        .max(10)
+        .optional()
+        .default('0'),
       name: Joi.string()
         .trim()
         .max(50)
+        .required(),
+      uri: Joi.string()
+        .max(255)
+        .uri({ allowRelative: true })
+        .required(),
+      roles: Joi.array()
+        .items(Joi.string())
         .optional(),
-      slug: Joi.string()
+      permission: Joi.string()
         .trim()
         .max(50)
         .optional(),
+    })
+  }
+
+  /**
+   * 排序菜单
+   * @param {*} value
+   * @memberof MenuValidator
+   */
+  public orderMenu(value: any) {
+    return this.validate(value, {
+      orders: Joi.array().items(Joi.object({
+        id: Joi.string()
+          .max(50)
+          .required(),
+        parentId: Joi.string()
+          .max(50)
+          .optional()
+          .default('0'),
+      })),
     })
   }
 
