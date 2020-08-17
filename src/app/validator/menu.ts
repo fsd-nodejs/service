@@ -52,7 +52,7 @@ export class MenuValidator extends Validator {
         .uri({ allowRelative: true })
         .required(),
       roles: Joi.array()
-        .items(Joi.string())
+        .items(Joi.string().max(50))
         .optional(),
       permission: Joi.string()
         .trim()
@@ -85,7 +85,7 @@ export class MenuValidator extends Validator {
         .uri({ allowRelative: true })
         .required(),
       roles: Joi.array()
-        .items(Joi.string())
+        .items(Joi.string().max(50))
         .optional(),
       permission: Joi.string()
         .trim()

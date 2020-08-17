@@ -55,7 +55,7 @@ export class RoleValidator extends Validator {
    */
   public removeRole(value: any) {
     return this.validate(value, {
-      ids: Joi.array().items(Joi.string()).min(1),
+      ids: Joi.array().items(Joi.string().max(50)).min(1),
     })
   }
 
@@ -74,6 +74,9 @@ export class RoleValidator extends Validator {
         .trim()
         .max(50)
         .required(),
+      permissions: Joi.array()
+        .items(Joi.string().max(50))
+        .optional(),
     })
   }
 
