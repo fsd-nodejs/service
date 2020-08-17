@@ -67,8 +67,7 @@ export default class AdminPermissionModel extends Model<AdminPermissionModel> {
   @BelongsToMany(() => AdminRoleModel, () => AdminRolePermissionModel)
   roles!: AdminRoleModel[]
 
-
-  @HasMany(() => AdminMenuModel, 'permission')
+  @HasMany(() => AdminMenuModel, { foreignKey: 'permission' })
   menu!: AdminMenuModel[]
 
 }

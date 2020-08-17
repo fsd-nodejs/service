@@ -1,8 +1,8 @@
 import { providerWrapper } from 'midway'
 import {
-  Column, CreatedAt, UpdatedAt, DataType, Model, Scopes, Table, BelongsTo, BelongsToMany,
+  Column, CreatedAt, UpdatedAt, DataType, Model, Scopes, Table, BelongsToMany,
 } from 'sequelize-typescript'
-import AdminPermissionModel from '@/app/model/admin-permission'
+// import AdminPermissionModel from '@/app/model/admin-permission'
 import AdminRoleModel from '@/app/model/admin-role'
 import AdminRoleMenuModel from '@/app/model/admin-role-menu'
 
@@ -49,7 +49,13 @@ export default class AdminMenuModel extends Model<AdminMenuModel> {
     type: STRING(255),
     comment: '路径',
   })
-  path!: string
+  uri!: string
+
+  @Column({
+    type: STRING(255),
+    comment: '权限',
+  })
+  permission!: string
 
   @CreatedAt
   @Column({
@@ -62,9 +68,6 @@ export default class AdminMenuModel extends Model<AdminMenuModel> {
     field: 'updated_at',
   })
   updatedAt!: Date
-
-  @BelongsTo(() => AdminPermissionModel, 'slug')
-  permission!: string
 
   @BelongsToMany(() => AdminRoleModel, () => AdminRoleMenuModel)
   roles!: AdminRoleModel[]
