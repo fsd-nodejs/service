@@ -1,16 +1,11 @@
 import { providerWrapper } from 'midway'
 import {
-  Column, CreatedAt, UpdatedAt, DataType, Model, Scopes, Table,
+  Column, CreatedAt, UpdatedAt, DataType, Model, Table,
 } from 'sequelize-typescript'
 
 
 const { STRING, INTEGER } = DataType
 
-@Scopes({
-  avaliable: {
-    where: { status: 1 },
-  },
-})
 @Table({
   freezeTableName: true,
   tableName: 'admin_users',
@@ -43,7 +38,6 @@ export default class AdminUserModel extends Model<AdminUserModel> {
     comment: '名称',
   })
   name!: string
-
 
   @Column({
     type: STRING(255),

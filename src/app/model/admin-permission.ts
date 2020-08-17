@@ -1,23 +1,14 @@
 import { providerWrapper } from 'midway'
 import {
-  Column, CreatedAt, UpdatedAt, DataType, Model, Scopes, Table, BelongsToMany,
+  Column, CreatedAt, UpdatedAt, DataType, Model, Table, BelongsToMany, HasMany,
 } from 'sequelize-typescript'
 import AdminRoleModel from '@/app/model/admin-role'
 import AdminRolePermissionModel from '@/app/model/admin-role-permission'
+import AdminMenuModel from '@/app/model/admin-menu'
 
 
 const { STRING, INTEGER, TEXT } = DataType
 
-@Scopes(() => ({
-  roles: {
-    include: [
-      {
-        model: AdminRoleModel,
-        through: { attributes: [] },
-      },
-    ],
-  },
-}))
 @Table({
   freezeTableName: true,
   tableName: 'admin_permissions',
@@ -38,7 +29,6 @@ export default class AdminPermissionModel extends Model<AdminPermissionModel> {
     comment: '名称',
   })
   name!: string
-
 
   @Column({
     type: STRING(50),
@@ -76,6 +66,10 @@ export default class AdminPermissionModel extends Model<AdminPermissionModel> {
 
   @BelongsToMany(() => AdminRoleModel, () => AdminRolePermissionModel)
   roles!: AdminRoleModel[]
+
+
+  @HasMany(() => AdminMenuModel, 'permission')
+  menu!: AdminMenuModel[]
 
 }
 

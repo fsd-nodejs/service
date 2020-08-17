@@ -54,6 +54,7 @@ export class RoleService {
       include: [
         {
           model: AdminPermissionModel,
+          attributes: ['id', 'name', 'slug'],
           through: {
             attributes: [],
           },
