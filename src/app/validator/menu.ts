@@ -8,35 +8,7 @@ import Validator from './validator'
 export class MenuValidator extends Validator {
 
   /**
-   * 查询权限列表
-   * @param {*} value
-   * @memberof MenuValidator
-   */
-  public queryMenu(value: any) {
-    return this.validate(value, {
-      current: Joi.number()
-        .max(100000)
-        .default(1)
-        .optional(),
-      pageSize: Joi.number()
-        .max(1000)
-        .default(10)
-        .optional(),
-      id: Joi.string()
-        .max(10)
-        .optional(),
-      slug: Joi.string()
-        .max(50)
-        .optional(),
-      sorter: Joi.string()
-        .max(50)
-        .regex(/^[a-zA-Z]*(_asc|_desc)$/)
-        .optional(),
-    })
-  }
-
-  /**
-   * 查询权限
+   * 查询菜单
    * @param {*} value
    * @memberof MenuValidator
    */
@@ -49,7 +21,7 @@ export class MenuValidator extends Validator {
   }
 
   /**
-   * 删除权限
+   * 删除菜单
    * @param {*} value
    * @memberof MenuValidator
    */
@@ -60,7 +32,7 @@ export class MenuValidator extends Validator {
   }
 
   /**
-   * 创建权限
+   * 创建菜单
    * @param {*} value
    * @memberof MenuValidator
    */
@@ -78,7 +50,7 @@ export class MenuValidator extends Validator {
   }
 
   /**
-   * 修改权限
+   * 修改菜单
    * @param {*} value
    * @memberof MenuValidator
    */
