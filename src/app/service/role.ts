@@ -28,21 +28,21 @@ export class RoleService {
     // 模糊匹配id
     if (params.id) {
       where.id = {
-        [Op.like]: `%${params.id}%`,
+        [Op.like]: `%${params.id}`,
       }
     }
 
     // 模糊匹配名称
     if (params.name) {
       where.name = {
-        [Op.like]: `%${params.name}%`,
+        [Op.like]: `%${params.name}`,
       }
     }
 
     // 模糊匹配标识
     if (params.slug) {
       where.slug = {
-        [Op.like]: `%${params.slug}%`,
+        [Op.like]: `%${params.slug}`,
       }
     }
 
