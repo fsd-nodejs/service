@@ -98,6 +98,9 @@ export class RoleValidator extends Validator {
         .trim()
         .max(50)
         .optional(),
+      permissions: Joi.array()
+        .items(Joi.string().max(50))
+        .optional(),
     })
   }
 

@@ -31,7 +31,7 @@ export default (appInfo: EggAppInfo) => {
     password: process.env.MYSQL_PASSWORD || 'secret',
     database: process.env.MYSQL_DATABASE || 'shop_development',
     dialect: 'mysql',
-    debug: false,
+    debug: true,
     timezone: '+08:00',
   }
 

@@ -1,13 +1,28 @@
-import { provide, inject } from 'midway'
+import * as assert from 'assert'
+
+import { provide, inject, Context } from 'midway'
 import { IAdminRoleModel, GetAdminRoleOpts, AdminRoleInfo } from '@/app/model/admin-role'
-import AdminPermissionModel from '@/app/model/admin-permission'
+import AdminPermissionModel, { IAdminPermissionModel } from '@/app/model/admin-permission'
+import { IAdminRolePermissionModel } from '@/app/model/admin-role-permission'
 import { Op } from 'sequelize'
+
+import MyError from '../common/my-error'
 
 @provide('RoleService')
 export class RoleService {
 
+  @inject()
+  ctx!: Context
+
+
   @inject('AdminRoleModel')
   AdminRoleModel!: IAdminRoleModel
+
+  @inject('AdminPermissionModel')
+  AdminPermissionModel!: IAdminPermissionModel
+
+  @inject('AdminRolePermissionModel')
+  AdminRolePermissionModel!: IAdminRolePermissionModel
 
   /**
    * 分页查询角色列表
@@ -86,6 +101,7 @@ export class RoleService {
           through: {
             attributes: [],
           },
+          attributes: ['id', 'name', 'slug'],
         },
       ],
     })
@@ -97,7 +113,21 @@ export class RoleService {
    * @returns {AdminRoleInfo}
    */
   public async createAdminRole(params: AdminRoleInfo) {
-    return this.AdminRoleModel.create(params)
+    const { permissions = [] } = params
+    await this.checkPermissionExists(permissions)
+
+    const role = await this.AdminRoleModel.create({
+      name: params.name,
+      slug: params.slug,
+    })
+
+    const rolePermissions = permissions.map(id => ({
+      roleId: role.id,
+      permissionId: id,
+    }))
+    await this.AdminRolePermissionModel.bulkCreate(rolePermissions)
+
+    return this.getAdminRoleById(role.id)
   }
 
   /**
@@ -106,6 +136,30 @@ export class RoleService {
    * @returns {[number, AdminRoleModel[]]}
    */
   public async updateAdminRole(id: string, params: AdminRoleInfo) {
+    const { permissions: newPermissions = [] } = params
+    await this.checkPermissionExists(newPermissions)
+
+    const role = await this.getAdminRoleById(id)
+    assert(role, new MyError('角色不存在', 400))
+
+    const oldPermissions = role?.permissions.map(item => item.id)
+
+    // 对比权限变更差异
+    const [increase, decrease]: [any[], any[]] = this.ctx.helper.arrayDiff(newPermissions, oldPermissions)
+
+    const increaseRolePermissions = increase.map(item => ({
+      roleId: role.id,
+      permissionId: item,
+    }))
+
+    await this.AdminRolePermissionModel.bulkCreate(increaseRolePermissions)
+    await this.AdminRolePermissionModel.destroy({
+      where: {
+        roleId: role.id,
+        permissionId: decrease,
+      },
+    })
+
     return this.AdminRoleModel.update(params, {
       where: {
         id,
@@ -116,7 +170,7 @@ export class RoleService {
 
   /**
    * 删除多条角色数据
-   * @param {string} ids
+   * @param {string[]} ids
    * @returns {number}
    */
   public async removeAdminRoleByIds(ids: string[]) {
@@ -125,6 +179,25 @@ export class RoleService {
         id: ids,
       },
     })
+  }
+
+  /**
+   * 检查权限是否存在于数据库，自动抛错
+   * @param {string[]} ids
+   */
+  private async checkPermissionExists(ids: string[]) {
+    const count = await this.AdminPermissionModel.count({
+      where: {
+        id: {
+          [Op.in]: ids,
+        },
+      },
+    })
+    assert.deepEqual(
+      count,
+      ids.length,
+      new MyError('权限不存在，请检查', 400),
+    )
   }
 
 }

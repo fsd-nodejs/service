@@ -46,7 +46,14 @@ export default class AdminRoleModel extends Model<AdminRoleModel> {
   updatedAt!: Date
 
   @BelongsToMany(() => AdminPermissionModel, () => AdminRolePermissionModel)
-  permissions!: AdminPermissionModel[]
+  // permissions!: AdminPermissionModel[]
+  public get permissions(): AdminPermissionModel[] {
+    return this.getDataValue('permissions')
+  }
+
+  public set permissions(value: AdminPermissionModel[]) {
+    this.setDataValue('permissions', value)
+  }
 
 }
 
@@ -79,6 +86,7 @@ export interface AdminRoleInfo {
   id?: string
   name?: string
   slug?: string
+  permissions?: string[]
   createdAt?: Date
   updatedAt?: Date
 }
