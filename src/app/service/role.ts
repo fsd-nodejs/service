@@ -14,7 +14,6 @@ export class RoleService {
   @inject()
   ctx!: Context
 
-
   @inject('AdminRoleModel')
   AdminRoleModel!: IAdminRoleModel
 
@@ -116,18 +115,21 @@ export class RoleService {
    * @returns {AdminRoleInfo}
    */
   public async createAdminRole(params: AdminRoleInfo) {
-    const { permissions = [] } = params
+    const { permissions } = params
 
     const role = await this.AdminRoleModel.create({
       name: params.name,
       slug: params.slug,
     })
 
-    const rolePermissions = permissions.map(id => ({
-      roleId: role.id,
-      permissionId: id,
-    }))
-    await this.AdminRolePermissionModel.bulkCreate(rolePermissions)
+    // 如果有传递permissions
+    if (permissions) {
+      const rolePermissions = permissions.map(id => ({
+        roleId: role.id,
+        permissionId: id,
+      }))
+      await this.AdminRolePermissionModel.bulkCreate(rolePermissions)
+    }
 
     return this.getAdminRoleById(role.id)
   }
@@ -138,27 +140,30 @@ export class RoleService {
    * @returns {[number, AdminRoleModel[]]}
    */
   public async updateAdminRole(id: string, params: AdminRoleInfo) {
-    const { permissions: newPermissions = [] } = params
+    const { permissions: newPermissions } = params
 
     const role = await this.getAdminRoleById(id) as AdminRoleModel
 
-    const oldPermissions = role?.permissions.map(item => item.id)
+    // 如果有传递permissions
+    if (newPermissions) {
+      const oldPermissions = role?.permissions.map(item => item.id)
 
-    // 对比权限变更差异
-    const [increase, decrease]: [any[], any[]] = this.ctx.helper.arrayDiff(newPermissions, oldPermissions)
+      // 对比权限变更差异
+      const [increase, decrease]: [any[], any[]] = this.ctx.helper.arrayDiff(newPermissions, oldPermissions)
 
-    const increaseRolePermissions = increase.map(item => ({
-      roleId: role.id,
-      permissionId: item,
-    }))
-
-    await this.AdminRolePermissionModel.bulkCreate(increaseRolePermissions)
-    await this.AdminRolePermissionModel.destroy({
-      where: {
+      const increaseRolePermissions = increase.map(item => ({
         roleId: role.id,
-        permissionId: decrease,
-      },
-    })
+        permissionId: item,
+      }))
+
+      await this.AdminRolePermissionModel.bulkCreate(increaseRolePermissions)
+      await this.AdminRolePermissionModel.destroy({
+        where: {
+          roleId: role.id,
+          permissionId: decrease,
+        },
+      })
+    }
 
     return this.AdminRoleModel.update(params, {
       where: {

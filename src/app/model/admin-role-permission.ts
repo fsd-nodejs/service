@@ -38,8 +38,6 @@ export default class AdminRolePermissionModel extends Model<AdminRolePermissionM
 
 }
 
-export type IAdminRolePermissionModel = typeof AdminRolePermissionModel
-
 export const factory = () => AdminRolePermissionModel
 providerWrapper([
   {
@@ -47,3 +45,5 @@ providerWrapper([
     provider: factory,
   },
 ])
+
+export type IAdminRolePermissionModel = typeof AdminRolePermissionModel

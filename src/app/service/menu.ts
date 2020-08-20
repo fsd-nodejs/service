@@ -1,21 +1,24 @@
-import { provide, inject } from 'midway'
-import { IAdminMenuModel, AdminMenuInfo, GetAdminMenuOpts } from '@/app/model/admin-menu'
+import * as assert from 'assert'
+
+import { provide, inject, Context } from 'midway'
+import AdminMenuModel, { IAdminMenuModel, AdminMenuInfo, GetAdminMenuOpts } from '@/app/model/admin-menu'
 import AdminRoleModel from '@/app/model/admin-role'
 import AdminPermissionModel from '@/app/model/admin-permission'
-import { RoleService } from '@/app/service/role'
-import { PermissionService } from '@/app/service/permission'
+import { IAdminRoleMenuModel } from '@/app/model/admin-role-menu'
+import { Op } from 'sequelize'
+import MyError from '@/app/common/my-error'
 
 @provide('MenuService')
 export class MenuService {
 
+  @inject()
+  ctx!: Context
+
   @inject('AdminMenuModel')
   AdminMenuModel!: IAdminMenuModel
 
-  @inject('RoleService')
-  RoleService!: RoleService
-
-  @inject('PermissionService')
-  PermissionService!: PermissionService
+  @inject('AdminRoleMenuModel')
+  AdminRoleMenuModel!: IAdminRoleMenuModel
 
   /**
    * 查询菜单列表(不分页)
@@ -73,14 +76,26 @@ export class MenuService {
    * @returns {AdminMenuInfo}
    */
   public async createAdminMenu(params: AdminMenuInfo) {
-    const { roles = [], permissionId } = params
+    const { roles } = params
 
-    // 检查角色，权限是否存在
-    await this.RoleService.checkRoleExists(roles)
-    permissionId && await this.PermissionService.checkPermissionExists([permissionId])
+    const menu = await this.AdminMenuModel.create({
+      parentId: params.parentId,
+      title: params.title,
+      uri: params.uri,
+      permissionId: params.permissionId,
+    })
 
+    // 如果有传递roles
+    if (roles) {
+      const roleMenu = roles.map(id => ({
+        roleId: id,
+        menuId: menu.id,
+      }))
 
-    return this.AdminMenuModel.create(params)
+      await this.AdminRoleMenuModel.bulkCreate(roleMenu)
+    }
+
+    return this.getAdminMenuById(menu.id)
   }
 
   /**
@@ -89,6 +104,31 @@ export class MenuService {
    * @returns {[number, AdminMenuModel[]]}
    */
   public async updateAdminMenu(id: string, params: AdminMenuInfo) {
+    const { roles: newRoles } = params
+
+    const menu = await this.getAdminMenuById(id) as AdminMenuModel
+
+    // 如果有传递roles
+    if (newRoles) {
+      const oldRoles = menu?.roles.map(item => item.id)
+
+      // 对比角色变更差异
+      const [increase, decrease]: [any[], any[]] = this.ctx.helper.arrayDiff(newRoles, oldRoles)
+
+      const increaseRoleMenu = increase.map(item => ({
+        roleId: item,
+        menuId: menu.id,
+      }))
+
+      await this.AdminRoleMenuModel.bulkCreate(increaseRoleMenu)
+      await this.AdminRoleMenuModel.destroy({
+        where: {
+          roleId: decrease,
+          menuId: menu.id,
+        },
+      })
+    }
+
     return this.AdminMenuModel.update(params, {
       where: {
         id,
@@ -108,6 +148,25 @@ export class MenuService {
         id: ids,
       },
     })
+  }
+
+  /**
+   * 检查菜单是否存在于数据库，自动抛错
+   * @param {string[]} ids
+   */
+  public async checkMenuExists(ids: string[]) {
+    const count = await this.AdminMenuModel.count({
+      where: {
+        id: {
+          [Op.in]: ids,
+        },
+      },
+    })
+    assert.deepEqual(
+      count,
+      ids.length,
+      new MyError('菜单不存在，请检查', 400),
+    )
   }
 
 }

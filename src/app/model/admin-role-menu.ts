@@ -1,3 +1,4 @@
+import { providerWrapper } from 'midway'
 import {
   Column, CreatedAt, UpdatedAt, Model, Table, ForeignKey,
 } from 'sequelize-typescript'
@@ -36,5 +37,13 @@ export default class AdminRoleMenuModel extends Model<AdminRoleMenuModel> {
   updatedAt!: Date
 
 }
+
+export const factory = () => AdminRoleMenuModel
+providerWrapper([
+  {
+    id: 'AdminRoleMenuModel',
+    provider: factory,
+  },
+])
 
 export type IAdminRoleMenuModel = typeof AdminRoleMenuModel

@@ -6,6 +6,8 @@ import {
 import MyError from '@/app/common/my-error'
 import { MenuService } from '@/app/service/menu'
 import { MenuValidator } from '@/app/validator/menu'
+import { RoleService } from '@/app/service/role'
+import { PermissionService } from '@/app/service/permission'
 
 @provide()
 @controller('/menu')
@@ -13,6 +15,12 @@ export class MenuController {
 
   @inject('MenuService')
   service!: MenuService
+
+  @inject('RoleService')
+  RoleService!: RoleService
+
+  @inject('PermissionService')
+  PermissionService!: PermissionService
 
   @inject('MenuValidator')
   validator!: MenuValidator
@@ -41,6 +49,13 @@ export class MenuController {
   public async create(ctx: Context): Promise<void> {
     // 校验提交的参数
     const params = this.validator.createMenu(ctx.request.body)
+    const { roles = [], permissionId } = params
+
+    // 检查角色是否存在
+    await this.RoleService.checkRoleExists(roles)
+
+    // 检查权限是否存在
+    permissionId && await this.PermissionService.checkPermissionExists([permissionId])
 
     const result = await this.service.createAdminMenu(params)
 
@@ -51,6 +66,17 @@ export class MenuController {
   public async update(ctx: Context): Promise<void> {
     // 校验提交的参数
     const { id, ...params } = this.validator.updateMenu(ctx.request.body)
+    const { roles = [], permissionId } = params
+
+    // 检查菜单是否存在
+    await this.service.checkMenuExists([id])
+
+    // 检查角色是否存在
+    await this.RoleService.checkRoleExists(roles)
+
+    // 检查权限是否存在
+    permissionId && await this.PermissionService.checkPermissionExists([permissionId])
+
 
     const [total] = await this.service.updateAdminMenu(id, params)
     assert(total, new MyError('更新失败', 400))
@@ -62,6 +88,9 @@ export class MenuController {
   public async remove(ctx: Context): Promise<void> {
     // 校验提交的参数
     const params = this.validator.removeMenu(ctx.request.body)
+
+    // 检查菜单是否存在
+    await this.service.checkMenuExists(params.ids)
 
     const total = await this.service.removeAdminMenuByIds(params.ids)
     assert(total, new MyError('删除失败', 400))

@@ -68,7 +68,7 @@ export class MenuValidator extends Validator {
         .max(10)
         .optional()
         .default('0'),
-      name: Joi.string()
+      title: Joi.string()
         .trim()
         .max(50)
         .required(),
@@ -106,7 +106,7 @@ export class MenuValidator extends Validator {
         .max(10)
         .optional()
         .default('0'),
-      name: Joi.string()
+      title: Joi.string()
         .trim()
         .max(50)
         .required(),
@@ -122,9 +122,9 @@ export class MenuValidator extends Validator {
             .max(10),
         )
         .optional(),
-      permission: Joi.string()
+      permissionId: Joi.string()
         .trim()
-        .max(50)
+        .max(10)
         .optional(),
     })
   }

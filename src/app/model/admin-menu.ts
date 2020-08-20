@@ -50,6 +50,12 @@ export default class AdminMenuModel extends Model<AdminMenuModel> {
   order!: string
 
   @Column({
+    type: STRING(50),
+    comment: '标题',
+  })
+  title!: string
+
+  @Column({
     type: STRING(255),
     comment: '路径',
   })
@@ -101,7 +107,7 @@ export interface AdminMenuInfo {
   parentId?: string
   order?: string
   title?: string
-  path?: string
+  uri?: string
   roles?: string[]
   permissionId?: string
   createdAt?: Date

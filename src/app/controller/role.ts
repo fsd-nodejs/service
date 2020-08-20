@@ -60,12 +60,12 @@ export class RoleController {
     // 校验提交的参数
     const { id, ...params } = this.validator.updateRole(ctx.request.body)
 
+    // 检查角色是否存在
+    await this.service.checkRoleExists([id])
+
     // 检查权限是否存在
     const { permissions: newPermissions = [] } = params
     await this.PermissionService.checkPermissionExists(newPermissions)
-
-    // 检查角色是否存在
-    await this.service.checkRoleExists([id])
 
     const [total] = await this.service.updateAdminRole(id, params)
     assert(total, new MyError('更新失败', 400))
