@@ -154,7 +154,7 @@ export class RoleService {
 
     // 如果有传递permissions
     if (newPermissions) {
-      const oldPermissions = role?.permissions.map(item => item.id)
+      const oldPermissions = role.permissions.map(item => item.id)
 
       // 对比权限变更差异
       const [increase, decrease]: [any[], any[]] = this.ctx.helper.arrayDiff(newPermissions, oldPermissions)
