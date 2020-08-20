@@ -16,21 +16,6 @@ describe('test/service/role.test.ts', () => {
     assert(total)
   })
 
-  it('#queryAdminRole >should get role list and sorter by id asc', async () => {
-    const auth = await app.applicationContext.getAsync<IRoleService>('RoleService')
-    const queryParams: GetAdminRoleOpts = {
-      pageSize: 10,
-      current: 1,
-    }
-    const { list: descList } = await auth.queryAdminRole(queryParams)
-    const { list: ascList } = await auth.queryAdminRole({
-      ...queryParams,
-      sorter: 'id_asc',
-    })
-
-    assert.notDeepEqual(descList[0].id, ascList[0].id)
-  })
-
   it('#queryAdminRole >should get role list and query by id', async () => {
     const auth = await app.applicationContext.getAsync<IRoleService>('RoleService')
     const queryParams: GetAdminRoleOpts = {
@@ -78,7 +63,7 @@ describe('test/service/role.test.ts', () => {
     assert(total)
   })
 
-  it('#getAdminRoleById >should created role', async () => {
+  it('#createAdminRole >should created role', async () => {
     const auth = await app.applicationContext.getAsync<IRoleService>('RoleService')
     const params: AdminRoleInfo = {
       name: 'fakeName',
@@ -90,6 +75,21 @@ describe('test/service/role.test.ts', () => {
     currentRole = role
   })
 
+  it('#queryAdminRole >should get role list and sorter by id asc', async () => {
+    const auth = await app.applicationContext.getAsync<IRoleService>('RoleService')
+    const queryParams: GetAdminRoleOpts = {
+      pageSize: 10,
+      current: 1,
+    }
+    const { list: descList } = await auth.queryAdminRole(queryParams)
+    const { list: ascList } = await auth.queryAdminRole({
+      ...queryParams,
+      sorter: 'id_asc',
+    })
+
+    assert.notDeepEqual(descList[0].id, ascList[0].id)
+  })
+
   it('#getAdminRoleById >should get role by id', async () => {
     const auth = await app.applicationContext.getAsync<IRoleService>('RoleService')
     const role = await auth.getAdminRoleById(currentRole.id)
@@ -97,14 +97,14 @@ describe('test/service/role.test.ts', () => {
     assert(role)
   })
 
-  it('#getAdminRoleById >should update role', async () => {
+  it('#updateAdminRole >should update role', async () => {
     const auth = await app.applicationContext.getAsync<IRoleService>('RoleService')
     const { id } = currentRole
     const [total] = await auth.updateAdminRole(id, { name: 'fakeName2' })
     assert(total)
   })
 
-  it('#getAdminRoleById >should remove role', async () => {
+  it('#removeAdminRoleByIds >should remove role', async () => {
     const auth = await app.applicationContext.getAsync<IRoleService>('RoleService')
     const { id } = currentRole
     const total = await auth.removeAdminRoleByIds([id])

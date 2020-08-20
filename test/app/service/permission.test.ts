@@ -108,7 +108,7 @@ describe('test/service/permission.test.ts', () => {
     assert(total)
   })
 
-  it('#getAdminPermissionById >should created permission', async () => {
+  it('#createAdminPermission >should created permission', async () => {
     const auth = await app.applicationContext.getAsync<IPermissionService>('PermissionService')
     const params: AdminPermissionInfo = {
       name: 'fakeName',
@@ -128,14 +128,14 @@ describe('test/service/permission.test.ts', () => {
     assert(permission)
   })
 
-  it('#getAdminPermissionById >should update permission', async () => {
+  it('#updateAdminPermission >should update permission', async () => {
     const auth = await app.applicationContext.getAsync<IPermissionService>('PermissionService')
     const { id } = currentPermission
     const [total] = await auth.updateAdminPermission(id, { httpPath: '/fake/path2' })
     assert(total)
   })
 
-  it('#getAdminPermissionById >should remove permission', async () => {
+  it('#removeAdminPermissionByIds >should remove permission', async () => {
     const auth = await app.applicationContext.getAsync<IPermissionService>('PermissionService')
     const { id } = currentPermission
     const total = await auth.removeAdminPermissionByIds([id])
