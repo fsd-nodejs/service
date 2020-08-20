@@ -60,9 +60,9 @@ export class PermissionController {
     const { id, ...params } = this.validator.updatePermission(ctx.request.body)
 
     // 检查权限是否存在
-    await this.service.checkPermissionExists([id])
+    await this.service.checkPermissionExists([id as string])
 
-    const [total] = await this.service.updateAdminPermission(id, {
+    const [total] = await this.service.updateAdminPermission(id as string, {
       ...params,
       httpMethod: params.httpMethod.join(','),
     } as unknown as AdminPermissionInfo)

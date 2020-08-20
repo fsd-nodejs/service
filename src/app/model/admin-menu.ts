@@ -113,7 +113,7 @@ export interface GetAdminMenuOpts {
  * 菜单信息
  */
 export interface AdminMenuInfo {
-  id: string
+  id?: string
   parentId?: string
   order?: string
   title?: string

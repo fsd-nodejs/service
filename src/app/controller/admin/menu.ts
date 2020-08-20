@@ -73,7 +73,7 @@ export class MenuController {
     const { roles = [], permissionId } = params
 
     // 检查菜单是否存在
-    await this.service.checkMenuExists([id])
+    await this.service.checkMenuExists([id as string])
 
     // 检查角色是否存在
     await this.RoleService.checkRoleExists(roles)
@@ -82,7 +82,7 @@ export class MenuController {
     permissionId && await this.PermissionService.checkPermissionExists([permissionId])
 
 
-    const [total] = await this.service.updateAdminMenu(id, params as AdminMenuInfo)
+    const [total] = await this.service.updateAdminMenu(id as string, params as AdminMenuInfo)
     assert(total, new MyError('更新失败', 400))
 
     ctx.helper.success(ctx, null, null, 204)

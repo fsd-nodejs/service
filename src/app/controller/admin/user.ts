@@ -77,7 +77,7 @@ export class UserController {
     const { roles = [], permissions = [] } = params
 
     // 检查管理员是否存在
-    await this.service.checkUserExists([id])
+    await this.service.checkUserExists([id as string])
 
     // 检查角色是否存在
     await this.RoleService.checkRoleExists(roles)
@@ -85,7 +85,7 @@ export class UserController {
     // 检查权限是否存在
     await this.PermissionService.checkPermissionExists(permissions)
 
-    const [total] = await this.service.updateAdminUser(id, params as AdminUserInfo)
+    const [total] = await this.service.updateAdminUser(id as string, params as AdminUserInfo)
     assert(total, new MyError('更新失败', 400))
 
     ctx.helper.success(ctx, null, null, 204)

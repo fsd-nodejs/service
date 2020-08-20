@@ -104,7 +104,7 @@ export interface GetAdminUserOpts {
  * 管理员用户信息
  */
 export interface AdminUserInfo {
-  id: string
+  id?: string
   username?: string
   name?: string
   password?: string
