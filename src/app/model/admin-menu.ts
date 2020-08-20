@@ -41,7 +41,18 @@ export default class AdminMenuModel extends Model<AdminMenuModel> {
     field: 'parent_id',
     comment: '父级ID',
   })
-  parentId!: string
+  public get parentId() {
+    return String(this.getDataValue('parentId'))
+  }
+
+  @Column({
+    type: INTEGER,
+    field: 'permission_id',
+    comment: '权限ID',
+  })
+  public get permissionId() {
+    return String(this.getDataValue('permissionId'))
+  }
 
   @Column({
     type: STRING(50),
@@ -76,7 +87,7 @@ export default class AdminMenuModel extends Model<AdminMenuModel> {
   @BelongsToMany(() => AdminRoleModel, () => AdminRoleMenuModel)
   roles!: AdminRoleModel[]
 
-  @BelongsTo(() => AdminPermissionModel, 'permission_id')
+  @BelongsTo(() => AdminPermissionModel, 'permissionId')
   permission!: AdminPermissionModel
 
 }

@@ -8,7 +8,7 @@ import Validator from './validator'
 export class RoleValidator extends Validator {
 
   /**
-   * 查询权限列表
+   * 查询角色列表
    * @param {*} value
    * @memberof RoleValidator
    */
@@ -39,7 +39,7 @@ export class RoleValidator extends Validator {
   }
 
   /**
-   * 查询权限
+   * 查询角色
    * @param {*} value
    * @memberof RoleValidator
    */
@@ -53,7 +53,7 @@ export class RoleValidator extends Validator {
   }
 
   /**
-   * 删除权限
+   * 删除角色
    * @param {*} value
    * @memberof RoleValidator
    */
@@ -70,7 +70,7 @@ export class RoleValidator extends Validator {
   }
 
   /**
-   * 创建权限
+   * 创建角色
    * @param {*} value
    * @memberof RoleValidator
    */
@@ -95,7 +95,7 @@ export class RoleValidator extends Validator {
   }
 
   /**
-   * 修改权限
+   * 修改角色
    * @param {*} value
    * @memberof RoleValidator
    */
