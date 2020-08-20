@@ -1,6 +1,6 @@
 import * as Joi from 'joi'
 import { provide } from 'midway'
-import { AdminUserInfo } from '@/app/model/admin-user'
+import { AdminUserInfo, GetAdminUserOpts } from '@/app/model/admin-user'
 
 import Validator from './validator'
 
@@ -13,7 +13,7 @@ export class AdminUserValidator extends Validator {
  * @param {*} value
  * @memberof AdminUserValidator
  */
-  public queryUser(value: any) {
+  public queryUser(value: any): GetAdminUserOpts {
     return this.validate(value, {
       current: Joi.number()
         .max(100000)
