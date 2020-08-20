@@ -25,12 +25,25 @@ export class UserService {
   AdminUserPermissionModel!: IAdminUserPermissionModel
 
   /**
-   * 查询管理员用户列表(不分页)
+   * 查询管理员用户列表
    * @param {GetAdminUserOpts} queryParams
    */
   public async queryAdminUser(queryParams: GetAdminUserOpts) {
-    const { current, pageSize } = queryParams
+    const {
+      current, pageSize, sorter, ...params
+    } = queryParams
+
+    const where: any = {}
+    let order: any = [['id', 'desc']]
+
+    // 排序方式
+    if (sorter) {
+      order = [sorter.split('_')]
+    }
+
     const { rows: list, count: total } = await this.AdminUserModel.findAndCountAll({
+      order,
+      where,
       limit: pageSize,
       offset: pageSize * (current - 1),
       include: [

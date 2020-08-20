@@ -21,7 +21,7 @@ export class MenuService {
   AdminRoleMenuModel!: IAdminRoleMenuModel
 
   /**
-   * 查询菜单列表(不分页)
+   * 查询菜单列表
    * @param {GetAdminMenuOpts} queryParams
    */
   public async queryAdminMenu(queryParams: GetAdminMenuOpts) {

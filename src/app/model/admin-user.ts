@@ -95,6 +95,7 @@ export interface GetAdminUserOpts {
   id: string
   name?: string // 名称
   username?: string // 帐号
+  sorter?: string // 排序
   pageSize: number
   current: number
 }
