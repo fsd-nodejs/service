@@ -8,7 +8,7 @@ import { AuthValidator } from '@/app/validator/auth'
 import MyError from '@/app/common/my-error'
 
 @provide()
-@controller('/admin/auth')
+@controller('/auth')
 export class AuthController {
 
   @inject('AuthService')

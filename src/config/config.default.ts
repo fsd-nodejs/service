@@ -50,12 +50,12 @@ export default (appInfo: EggAppInfo) => {
     client: {
       secret: '123456',
     },
-    ignore: ['/admin/auth/login', '/ping'],
+    ignore: ['/auth/login', '/ping'],
   }
 
   // jwt token 校验中间件
   config.jwtAuth = {
-    ignore: ['/admin/auth/login', '/ping'],
+    ignore: ['/auth/login', '/ping'],
   }
 
   return config
