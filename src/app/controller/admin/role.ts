@@ -49,7 +49,6 @@ export class RoleController {
     // 校验提交的参数
     const params = this.validator.createRole(ctx.request.body)
     const { permissions = [] } = params
-
     // 检查权限是否存在
     await this.PermissionService.checkPermissionExists(permissions)
 

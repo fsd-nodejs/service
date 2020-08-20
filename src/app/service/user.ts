@@ -41,6 +41,27 @@ export class UserService {
       order = [sorter.split('_')]
     }
 
+    // 模糊匹配id
+    if (params.id) {
+      where.id = {
+        [Op.like]: `%${params.id}`,
+      }
+    }
+
+    // 模糊匹配名称
+    if (params.name) {
+      where.name = {
+        [Op.like]: `%${params.name}`,
+      }
+    }
+
+    // 模糊匹配帐号
+    if (params.username) {
+      where.username = {
+        [Op.like]: `%${params.username}`,
+      }
+    }
+
     const { rows: list, count: total } = await this.AdminUserModel.findAndCountAll({
       order,
       where,

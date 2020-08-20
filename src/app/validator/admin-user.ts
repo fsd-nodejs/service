@@ -8,7 +8,7 @@ import Validator from './validator'
 export class AdminUserValidator extends Validator {
 
   /**
- * 查询用户列表
+ * 查询管理员用户列表
  * @param {*} value
  * @memberof AdminUserValidator
  */
@@ -38,7 +38,7 @@ export class AdminUserValidator extends Validator {
   }
 
   /**
-   * 查询用户
+   * 查询管理员用户
    * @param {*} value
    * @memberof AdminUserValidator
    */
@@ -52,7 +52,7 @@ export class AdminUserValidator extends Validator {
   }
 
   /**
-   * 删除用户
+   * 删除管理员用户
    * @param {*} value
    * @memberof AdminUserValidator
    */
@@ -69,7 +69,7 @@ export class AdminUserValidator extends Validator {
   }
 
   /**
-   * 创建用户
+   * 创建管理员用户
    * @param {*} value
    * @memberof AdminUserValidator
    */
@@ -112,7 +112,7 @@ export class AdminUserValidator extends Validator {
   }
 
   /**
-   * 修改用户
+   * 修改管理员用户
    * @param {*} value
    * @memberof AdminUserValidator
    */
