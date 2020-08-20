@@ -36,6 +36,9 @@ export class RoleController {
     // 校验提交的参数
     const query = this.validator.showRole(ctx.request.query)
 
+    // 检查角色是否存在
+    await this.service.checkRoleExists([query.id])
+
     const result = await this.service.getAdminRoleById(query.id)
 
     ctx.helper.success(ctx, result)

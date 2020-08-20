@@ -40,6 +40,9 @@ export class MenuController {
     // 校验提交的参数
     const query = this.validator.showMenu(ctx.request.query)
 
+    // 检查菜单是否存在
+    await this.service.checkMenuExists([query.id])
+
     const result = await this.service.getAdminMenuById(query.id)
 
     ctx.helper.success(ctx, result)

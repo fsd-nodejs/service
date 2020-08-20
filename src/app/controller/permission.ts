@@ -32,6 +32,9 @@ export class PermissionController {
     // 校验提交的参数
     const query = this.validator.showPermission(ctx.request.query)
 
+    // 检查权限是否存在
+    await this.service.checkPermissionExists([query.id])
+
     const result = await this.service.getAdminPermissionById(query.id)
 
     ctx.helper.success(ctx, result)
@@ -54,6 +57,10 @@ export class PermissionController {
   public async update(ctx: Context): Promise<void> {
     // 校验提交的参数
     const { id, ...params } = this.validator.updatePermission(ctx.request.body)
+
+    // 检查权限是否存在
+    await this.service.checkPermissionExists([id])
+
     params.httpMethod = params.httpMethod?.join(',')
     const [total] = await this.service.updateAdminPermission(id, params)
     assert(total, new MyError('更新失败', 400))
@@ -65,6 +72,9 @@ export class PermissionController {
   public async remove(ctx: Context): Promise<void> {
     // 校验提交的参数
     const params = this.validator.removePermission(ctx.request.body)
+
+    // 检查权限是否存在
+    await this.service.checkPermissionExists(params.ids)
 
     const total = await this.service.removeAdminPermissionByIds(params.ids)
     assert(total, new MyError('删除失败', 400))
