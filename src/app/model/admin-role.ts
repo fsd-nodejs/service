@@ -19,7 +19,9 @@ export default class AdminRoleModel extends Model<AdminRoleModel> {
     primaryKey: true,
     autoIncrement: true,
   })
-  id!: string
+  public get id() {
+    return String(this.getDataValue('id'))
+  }
 
   @Column({
     type: STRING(50),

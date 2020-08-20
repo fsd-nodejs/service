@@ -17,7 +17,9 @@ export default class AdminUserModel extends Model<AdminUserModel> {
     primaryKey: true,
     autoIncrement: true,
   })
-  id!: string
+  public get id() {
+    return String(this.getDataValue('id'))
+  }
 
   @Column({
     type: STRING(190),

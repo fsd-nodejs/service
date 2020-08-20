@@ -32,7 +32,9 @@ export default class AdminMenuModel extends Model<AdminMenuModel> {
     primaryKey: true,
     autoIncrement: true,
   })
-  id!: string
+  public get id() {
+    return String(this.getDataValue('id'))
+  }
 
   @Column({
     type: INTEGER,
