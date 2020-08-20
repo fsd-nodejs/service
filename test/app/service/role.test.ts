@@ -64,10 +64,12 @@ describe('test/service/role.test.ts', () => {
   })
 
   it('#createAdminRole >should created role', async () => {
-    const auth = await app.applicationContext.getAsync<IRoleService>('RoleService')
+    const ctx = app.mockContext()
+    const auth = await ctx.requestContext.getAsync<IRoleService>('RoleService')
     const params: AdminRoleInfo = {
       name: 'fakeName',
       slug: 'fakeSlug',
+      permissions: ['1'],
     }
     const role = await auth.createAdminRole(params) as AdminRoleModel
 
@@ -98,9 +100,10 @@ describe('test/service/role.test.ts', () => {
   })
 
   it('#updateAdminRole >should update role', async () => {
-    const auth = await app.applicationContext.getAsync<IRoleService>('RoleService')
+    const ctx = app.mockContext()
+    const auth = await ctx.requestContext.getAsync<IRoleService>('RoleService')
     const { id } = currentRole
-    const [total] = await auth.updateAdminRole(id, { name: 'fakeName2' })
+    const [total] = await auth.updateAdminRole(id, { name: 'fakeName2', permissions: ['2'] })
     assert(total)
   })
 
