@@ -4,6 +4,8 @@ import {
 } from 'sequelize-typescript'
 import AdminPermissionModel from '@/app/model/admin-permission'
 import AdminRolePermissionModel from '@/app/model/admin-role-permission'
+import AdminMenuModel from '@/app/model/admin-menu'
+import AdminRoleMenuModel from '@/app/model/admin-role-menu'
 
 
 const { STRING, INTEGER } = DataType
@@ -48,14 +50,10 @@ export default class AdminRoleModel extends Model<AdminRoleModel> {
   updatedAt!: Date
 
   @BelongsToMany(() => AdminPermissionModel, () => AdminRolePermissionModel)
-  // permissions!: AdminPermissionModel[]
-  public get permissions(): AdminPermissionModel[] {
-    return this.getDataValue('permissions')
-  }
+  permissions!: AdminPermissionModel[]
 
-  public set permissions(value: AdminPermissionModel[]) {
-    this.setDataValue('permissions', value)
-  }
+  @BelongsToMany(() => AdminMenuModel, () => AdminRoleMenuModel)
+  menu!: AdminMenuModel[]
 
 }
 

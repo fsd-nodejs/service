@@ -1,9 +1,10 @@
 import * as assert from 'assert'
 
 import { provide, inject } from 'midway'
-import { IAdminPermissionModel, AdminPermissionInfo, GetAdminPermissionOpts } from '@/app/model/admin-permission'
 import { Op } from 'sequelize'
+import { IAdminPermissionModel, AdminPermissionInfo, GetAdminPermissionOpts } from '@/app/model/admin-permission'
 import AdminRoleModel from '@/app/model/admin-role'
+import AdminMenuModel from '@/app/model/admin-menu'
 import MyError from '@/app/common/my-error'
 
 @provide('PermissionService')
@@ -95,6 +96,10 @@ export class PermissionService {
             attributes: [],
           },
           attributes: ['id', 'name', 'slug'],
+        },
+        {
+          model: AdminMenuModel,
+          attributes: ['id', 'parentId', 'title', 'uri'],
         },
       ],
     })

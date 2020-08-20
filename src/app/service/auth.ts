@@ -1,7 +1,7 @@
 import { provide, plugin, inject, Context, config } from 'midway'
-import AdminUserModel, { IAdminUserModel, AdminUserInfo } from '@/app/model/admin-user'
 import { Jwt, JwtConfig } from '@waiting/egg-jwt'
 import { Redis } from 'ioredis'
+import AdminUserModel, { IAdminUserModel, AdminUserInfo } from '@/app/model/admin-user'
 
 
 @provide('AuthService')

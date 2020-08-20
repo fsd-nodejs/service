@@ -1,11 +1,11 @@
 import * as assert from 'assert'
 
 import { provide, inject, Context } from 'midway'
+import { Op } from 'sequelize'
 import AdminMenuModel, { IAdminMenuModel, AdminMenuInfo, GetAdminMenuOpts } from '@/app/model/admin-menu'
 import AdminRoleModel from '@/app/model/admin-role'
 import AdminPermissionModel from '@/app/model/admin-permission'
 import { IAdminRoleMenuModel } from '@/app/model/admin-role-menu'
-import { Op } from 'sequelize'
 import MyError from '@/app/common/my-error'
 
 @provide('MenuService')
