@@ -1,7 +1,11 @@
 import { providerWrapper } from 'midway'
 import {
-  Column, CreatedAt, UpdatedAt, DataType, Model, Table,
+  Column, CreatedAt, UpdatedAt, DataType, Model, Table, BelongsToMany,
 } from 'sequelize-typescript'
+import AdminRoleModel from '@/app/model/admin-role'
+import AdminRoleUserModel from '@/app/model/admin-role-user'
+import AdminPermissionModel from '@/app/model/admin-permission'
+import AdminUserPermissionModel from '@/app/model/admin-user-permission'
 
 
 const { STRING, INTEGER } = DataType
@@ -66,6 +70,12 @@ export default class AdminUserModel extends Model<AdminUserModel> {
   })
   updatedAt!: Date
 
+  @BelongsToMany(() => AdminRoleModel, () => AdminRoleUserModel)
+  roles!: AdminRoleModel[]
+
+  @BelongsToMany(() => AdminPermissionModel, () => AdminUserPermissionModel)
+  permissions!: AdminPermissionModel[]
+
 }
 
 export const factory = () => AdminUserModel
@@ -83,6 +93,10 @@ export type IAdminUserModel = typeof AdminUserModel
  */
 export interface GetAdminUserOpts {
   id: string
+  name?: string // 名称
+  username?: string // 帐号
+  pageSize: number
+  current: number
 }
 
 /**
@@ -92,7 +106,10 @@ export interface AdminUserInfo {
   id: string
   username?: string
   name?: string
+  password?: string
   avatar?: string
+  roles?: string[]
+  permissions?: string[]
   createdAt?: Date
   updatedAt?: Date
 }

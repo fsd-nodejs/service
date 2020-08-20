@@ -2,7 +2,6 @@ import { providerWrapper } from 'midway'
 import {
   Column, CreatedAt, UpdatedAt, DataType, Model, Scopes, Table, BelongsToMany, BelongsTo,
 } from 'sequelize-typescript'
-// import AdminPermissionModel from '@/app/model/admin-permission'
 import AdminRoleModel from '@/app/model/admin-role'
 import AdminRoleMenuModel from '@/app/model/admin-role-menu'
 

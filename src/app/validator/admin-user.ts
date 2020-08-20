@@ -4,13 +4,13 @@ import { provide } from 'midway'
 import Validator from './validator'
 
 
-@provide('UserValidator')
-export class UserValidator extends Validator {
+@provide('AdminUserValidator')
+export class AdminUserValidator extends Validator {
 
   /**
  * 查询用户列表
  * @param {*} value
- * @memberof UserValidator
+ * @memberof AdminUserValidator
  */
   public queryUser(value: any) {
     return this.validate(value, {
@@ -30,13 +30,17 @@ export class UserValidator extends Validator {
         .trim()
         .max(50)
         .optional(),
+      username: Joi.string()
+        .trim()
+        .max(50)
+        .optional(),
     })
   }
 
   /**
    * 查询用户
    * @param {*} value
-   * @memberof UserValidator
+   * @memberof AdminUserValidator
    */
   public showUser(value: any) {
     return this.validate(value, {
@@ -50,7 +54,7 @@ export class UserValidator extends Validator {
   /**
    * 删除用户
    * @param {*} value
-   * @memberof UserValidator
+   * @memberof AdminUserValidator
    */
   public removeUser(value: any) {
     return this.validate(value, {
@@ -67,7 +71,7 @@ export class UserValidator extends Validator {
   /**
    * 创建用户
    * @param {*} value
-   * @memberof UserValidator
+   * @memberof AdminUserValidator
    */
   public createUser(value: any) {
     return this.validate(value, {
@@ -110,7 +114,7 @@ export class UserValidator extends Validator {
   /**
    * 修改用户
    * @param {*} value
-   * @memberof UserValidator
+   * @memberof AdminUserValidator
    */
   public updateUser(value: any) {
     return this.validate(value, {
