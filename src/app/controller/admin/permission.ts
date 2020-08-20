@@ -48,7 +48,7 @@ export class PermissionController {
 
     const result = await this.service.createAdminPermission({
       ...params,
-      httpMethod: params.httpMethod.join(','),
+      httpMethod: params.httpMethod?.join(','),
     } as unknown as AdminPermissionInfo)
 
     ctx.helper.success(ctx, result, null, 201)
@@ -64,7 +64,7 @@ export class PermissionController {
 
     const [total] = await this.service.updateAdminPermission(id as string, {
       ...params,
-      httpMethod: params.httpMethod.join(','),
+      httpMethod: params.httpMethod?.join(','),
     } as unknown as AdminPermissionInfo)
     assert(total, new MyError('更新失败', 400))
 

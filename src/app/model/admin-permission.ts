@@ -103,7 +103,7 @@ export interface AdminPermissionInfo {
   id?: string
   name?: string
   slug?: string
-  httpMethod: string[] // ["ANY", "DELETE", "POST", "GET", "PUT", "PATCH", "OPTIONS", "HEAD"]
+  httpMethod?: string[] // ["ANY", "DELETE", "POST", "GET", "PUT", "PATCH", "OPTIONS", "HEAD"]
   httpPath?: string
   createdAt?: Date
   updatedAt?: Date
