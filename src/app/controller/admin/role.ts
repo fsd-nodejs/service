@@ -9,7 +9,7 @@ import { RoleValidator } from '@/app/validator/role'
 import { PermissionService } from '@/app/service/permission'
 
 @provide()
-@controller('/role')
+@controller('/admin/role')
 export class RoleController {
 
   @inject('RoleService')

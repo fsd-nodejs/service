@@ -8,7 +8,7 @@ import { PermissionService } from '@/app/service/permission'
 import { PermissionValidator } from '@/app/validator/permission'
 
 @provide()
-@controller('/permission')
+@controller('/admin/permission')
 export class PermissionController {
 
   @inject('PermissionService')
