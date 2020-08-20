@@ -30,9 +30,9 @@ moment.locale('zh-cn')
  * @param str 需要加密的内容
  * @returns {String} 密文
  */
-// export const bhash = (str: string) => {
-//   return bcrypt.hashSync(str, 10)
-// }
+export const bhash = (str: string) => {
+  return bcrypt.hashSync(str, 10)
+}
 
 /**
  * hash是否正确

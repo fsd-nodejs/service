@@ -1,5 +1,6 @@
 import * as Joi from 'joi'
 import { provide } from 'midway'
+import { AdminUserInfo } from '@/app/model/admin-user'
 
 import Validator from './validator'
 
@@ -73,7 +74,7 @@ export class AdminUserValidator extends Validator {
    * @param {*} value
    * @memberof AdminUserValidator
    */
-  public createUser(value: any) {
+  public createUser(value: any): AdminUserInfo {
     return this.validate(value, {
       username: Joi.string()
         .trim()
@@ -116,7 +117,7 @@ export class AdminUserValidator extends Validator {
    * @param {*} value
    * @memberof AdminUserValidator
    */
-  public updateUser(value: any) {
+  public updateUser(value: any): AdminUserInfo {
     return this.validate(value, {
       id: Joi.string()
         .max(10)

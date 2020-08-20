@@ -6,6 +6,7 @@ import {
 import MyError from '@/app/common/my-error'
 import { PermissionService } from '@/app/service/permission'
 import { PermissionValidator } from '@/app/validator/permission'
+import { AdminPermissionInfo } from '@/app/model/admin-permission'
 
 @provide()
 @controller('/admin/permission')
@@ -48,7 +49,7 @@ export class PermissionController {
     const result = await this.service.createAdminPermission({
       ...params,
       httpMethod: params.httpMethod.join(','),
-    })
+    } as unknown as AdminPermissionInfo)
 
     ctx.helper.success(ctx, result, null, 201)
   }
@@ -61,8 +62,10 @@ export class PermissionController {
     // 检查权限是否存在
     await this.service.checkPermissionExists([id])
 
-    params.httpMethod = params.httpMethod?.join(',')
-    const [total] = await this.service.updateAdminPermission(id, params)
+    const [total] = await this.service.updateAdminPermission(id, {
+      ...params,
+      httpMethod: params.httpMethod.join(','),
+    } as unknown as AdminPermissionInfo)
     assert(total, new MyError('更新失败', 400))
 
     ctx.helper.success(ctx, null, null, 204)

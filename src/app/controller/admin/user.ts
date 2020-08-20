@@ -8,6 +8,7 @@ import { UserService } from '@/app/service/user'
 import { AdminUserValidator } from '@/app/validator/admin-user'
 import { RoleService } from '@/app/service/role'
 import { PermissionService } from '@/app/service/permission'
+import { AdminUserInfo } from '@/app/model/admin-user'
 
 @provide()
 @controller('/admin/user')
@@ -53,14 +54,18 @@ export class UserController {
     // 校验提交的参数
     const params = this.validator.createUser(ctx.request.body)
     const { roles = [], permissions = [] } = params
-
     // 检查角色是否存在
     await this.RoleService.checkRoleExists(roles)
 
     // 检查权限是否存在
     await this.PermissionService.checkPermissionExists(permissions)
 
-    const result = await this.service.createAdminUser(params)
+    const passwordHash = ctx.helper.bhash(params.password)
+
+    const result = await this.service.createAdminUser({
+      ...params,
+      password: passwordHash,
+    })
 
     ctx.helper.success(ctx, result, null, 201)
   }
@@ -80,7 +85,7 @@ export class UserController {
     // 检查权限是否存在
     await this.PermissionService.checkPermissionExists(permissions)
 
-    const [total] = await this.service.updateAdminUser(id, params)
+    const [total] = await this.service.updateAdminUser(id, params as AdminUserInfo)
     assert(total, new MyError('更新失败', 400))
 
     ctx.helper.success(ctx, null, null, 204)

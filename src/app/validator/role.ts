@@ -1,5 +1,6 @@
 import * as Joi from 'joi'
 import { provide } from 'midway'
+import { AdminRoleInfo, GetAdminRoleOpts } from '@/app/model/admin-role'
 
 import Validator from './validator'
 
@@ -12,7 +13,7 @@ export class RoleValidator extends Validator {
    * @param {*} value
    * @memberof RoleValidator
    */
-  public queryRole(value: any) {
+  public queryRole(value: any): GetAdminRoleOpts {
     return this.validate(value, {
       current: Joi.number()
         .max(100000)
@@ -74,7 +75,7 @@ export class RoleValidator extends Validator {
    * @param {*} value
    * @memberof RoleValidator
    */
-  public createRole(value: any) {
+  public createRole(value: any): AdminRoleInfo {
     return this.validate(value, {
       name: Joi.string()
         .trim()
@@ -99,7 +100,7 @@ export class RoleValidator extends Validator {
    * @param {*} value
    * @memberof RoleValidator
    */
-  public updateRole(value: any) {
+  public updateRole(value: any): AdminRoleInfo {
     return this.validate(value, {
       id: Joi.string()
         .max(10)

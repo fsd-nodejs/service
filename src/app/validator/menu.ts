@@ -1,5 +1,6 @@
 import * as Joi from 'joi'
 import { provide } from 'midway'
+import { AdminMenuInfo, GetAdminMenuOpts } from '@/app/model/admin-menu'
 
 import Validator from './validator'
 
@@ -12,7 +13,7 @@ export class MenuValidator extends Validator {
  * @param {*} value
  * @memberof MenuValidator
  */
-  public queryMenu(value: any) {
+  public queryMenu(value: any): GetAdminMenuOpts {
     return this.validate(value, {
       current: Joi.number()
         .max(100000)
@@ -61,7 +62,7 @@ export class MenuValidator extends Validator {
    * @param {*} value
    * @memberof MenuValidator
    */
-  public createMenu(value: any) {
+  public createMenu(value: any): AdminMenuInfo {
     return this.validate(value, {
       parentId: Joi.string()
         .trim()
@@ -96,7 +97,7 @@ export class MenuValidator extends Validator {
    * @param {*} value
    * @memberof MenuValidator
    */
-  public updateMenu(value: any) {
+  public updateMenu(value: any): AdminMenuInfo {
     return this.validate(value, {
       id: Joi.string()
         .max(10)

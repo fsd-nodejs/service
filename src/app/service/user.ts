@@ -203,8 +203,8 @@ export class UserService {
         permissionId: item,
       }))
 
-      await this.AdminRoleUserModel.bulkCreate(increaseUserPermission)
-      await this.AdminRoleUserModel.destroy({
+      await this.AdminUserPermissionModel.bulkCreate(increaseUserPermission)
+      await this.AdminUserPermissionModel.destroy({
         where: {
           userId: user.id,
           permissionId: decrease,

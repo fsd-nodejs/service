@@ -8,6 +8,7 @@ import { MenuService } from '@/app/service/menu'
 import { MenuValidator } from '@/app/validator/menu'
 import { RoleService } from '@/app/service/role'
 import { PermissionService } from '@/app/service/permission'
+import { AdminMenuInfo } from '@/app/model/admin-menu'
 
 @provide()
 @controller('/admin/menu')
@@ -81,7 +82,7 @@ export class MenuController {
     permissionId && await this.PermissionService.checkPermissionExists([permissionId])
 
 
-    const [total] = await this.service.updateAdminMenu(id, params)
+    const [total] = await this.service.updateAdminMenu(id, params as AdminMenuInfo)
     assert(total, new MyError('更新失败', 400))
 
     ctx.helper.success(ctx, null, null, 204)

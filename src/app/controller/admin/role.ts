@@ -7,6 +7,7 @@ import MyError from '@/app/common/my-error'
 import { RoleService } from '@/app/service/role'
 import { RoleValidator } from '@/app/validator/role'
 import { PermissionService } from '@/app/service/permission'
+import { AdminRoleInfo } from '@/app/model/admin-role'
 
 @provide()
 @controller('/admin/role')
@@ -69,7 +70,7 @@ export class RoleController {
     const { permissions: newPermissions = [] } = params
     await this.PermissionService.checkPermissionExists(newPermissions)
 
-    const [total] = await this.service.updateAdminRole(id, params)
+    const [total] = await this.service.updateAdminRole(id, params as AdminRoleInfo)
     assert(total, new MyError('更新失败', 400))
 
     ctx.helper.success(ctx, null, null, 204)

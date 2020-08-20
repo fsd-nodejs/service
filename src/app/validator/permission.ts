@@ -1,5 +1,6 @@
 import * as Joi from 'joi'
 import { provide } from 'midway'
+import { AdminPermissionInfo, GetAdminPermissionOpts } from '@/app/model/admin-permission'
 
 import Validator from './validator'
 
@@ -12,7 +13,7 @@ export class PermissionValidator extends Validator {
    * @param {*} value
    * @memberof PermissionValidator
    */
-  public queryPermission(value: any) {
+  public queryPermission(value: any): GetAdminPermissionOpts {
     return this.validate(value, {
       current: Joi.number()
         .max(100000)
@@ -82,7 +83,7 @@ export class PermissionValidator extends Validator {
    * @param {*} value
    * @memberof PermissionValidator
    */
-  public createPermission(value: any) {
+  public createPermission(value: any): AdminPermissionInfo {
     return this.validate(value, {
       name: Joi.string()
         .trim()
@@ -111,7 +112,7 @@ export class PermissionValidator extends Validator {
    * @param {*} value
    * @memberof PermissionValidator
    */
-  public updatePermission(value: any) {
+  public updatePermission(value: any): AdminPermissionInfo {
     return this.validate(value, {
       id: Joi.string()
         .max(10)
