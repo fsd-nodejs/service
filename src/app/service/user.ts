@@ -67,6 +67,7 @@ export class UserService {
       where,
       limit: pageSize,
       offset: pageSize * (current - 1),
+      attributes: ['id', 'username', 'name', 'avatar', 'createdAt', 'updatedAt'],
       include: [
         {
           model: AdminRoleModel,

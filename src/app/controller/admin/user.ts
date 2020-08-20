@@ -10,7 +10,7 @@ import { RoleService } from '@/app/service/role'
 import { PermissionService } from '@/app/service/permission'
 
 @provide()
-@controller('/admin/menu')
+@controller('/admin/user')
 export class UserController {
 
   @inject('UserService')
