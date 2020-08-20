@@ -84,7 +84,7 @@ describe('test/service/role.test.ts', () => {
       name: 'fakeName',
       slug: 'fakeSlug',
     }
-    const role = await auth.createAdminRole(params)
+    const role = await auth.createAdminRole(params) as AdminRoleModel
 
     assert(role)
     currentRole = role
