@@ -19,7 +19,10 @@ export class MenuController {
 
   @get('/query')
   public async query(ctx: Context): Promise<void> {
-    const result = await this.service.queryAdminMenu()
+    // 校验提交的参数
+    const query = this.validator.queryMenu(ctx.request.query)
+
+    const result = await this.service.queryAdminMenu(query)
 
     ctx.helper.success(ctx, result)
   }

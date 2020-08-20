@@ -1,10 +1,12 @@
 import { providerWrapper } from 'midway'
 import {
-  Column, CreatedAt, UpdatedAt, DataType, Model, Scopes, Table, BelongsToMany,
+  Column, CreatedAt, UpdatedAt, DataType, Model, Scopes, Table, BelongsToMany, BelongsTo,
 } from 'sequelize-typescript'
 // import AdminPermissionModel from '@/app/model/admin-permission'
 import AdminRoleModel from '@/app/model/admin-role'
 import AdminRoleMenuModel from '@/app/model/admin-role-menu'
+
+import AdminPermissionModel from './admin-permission'
 
 
 const { STRING, INTEGER } = DataType
@@ -51,12 +53,6 @@ export default class AdminMenuModel extends Model<AdminMenuModel> {
   })
   uri!: string
 
-  @Column({
-    type: STRING(255),
-    comment: '权限',
-  })
-  permission!: string
-
   @CreatedAt
   @Column({
     field: 'created_at',
@@ -72,6 +68,9 @@ export default class AdminMenuModel extends Model<AdminMenuModel> {
   @BelongsToMany(() => AdminRoleModel, () => AdminRoleMenuModel)
   roles!: AdminRoleModel[]
 
+  @BelongsTo(() => AdminPermissionModel, 'permission_id')
+  permission!: AdminPermissionModel
+
 }
 
 export const factory = () => AdminMenuModel
@@ -83,6 +82,14 @@ providerWrapper([
 ])
 
 export type IAdminMenuModel = typeof AdminMenuModel
+/**
+ * 查询权限信息参数
+ */
+export interface GetAdminMenuOpts {
+  pageSize: number
+  current: number
+}
+
 
 /**
  * 菜单信息

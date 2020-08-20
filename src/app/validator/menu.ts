@@ -8,6 +8,24 @@ import Validator from './validator'
 export class MenuValidator extends Validator {
 
   /**
+ * 查询菜单列表
+ * @param {*} value
+ * @memberof MenuValidator
+ */
+  public queryMenu(value: any) {
+    return this.validate(value, {
+      current: Joi.number()
+        .max(100000)
+        .default(1)
+        .optional(),
+      pageSize: Joi.number()
+        .max(1000)
+        .default(10)
+        .optional(),
+    })
+  }
+
+  /**
    * 查询菜单
    * @param {*} value
    * @memberof MenuValidator

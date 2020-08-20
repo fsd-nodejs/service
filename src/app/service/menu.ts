@@ -1,6 +1,8 @@
 import { provide, inject } from 'midway'
-import { IAdminMenuModel, AdminMenuInfo } from '@/app/model/admin-menu'
+import { IAdminMenuModel, AdminMenuInfo, GetAdminMenuOpts } from '@/app/model/admin-menu'
 import AdminRoleModel from '@/app/model/admin-role'
+
+import AdminPermissionModel from '../model/admin-permission'
 
 @provide('MenuService')
 export class MenuService {
@@ -9,21 +11,27 @@ export class MenuService {
   AdminMenuModel!: IAdminMenuModel
 
   /**
-   * 分页查询菜单列表
+   * 查询菜单列表(不分页)
    * @param {GetAdminMenuOpts} queryParams
    */
-  public async queryAdminMenu() {
-    return this.AdminMenuModel.findAll({
+  public async queryAdminMenu(queryParams: GetAdminMenuOpts) {
+    const { current, pageSize } = queryParams
+    const { rows: list, count: total } = await this.AdminMenuModel.findAndCountAll({
+      limit: pageSize,
+      offset: pageSize * (current - 1),
       include: [
         {
-          model: AdminRoleModel,
+          model: AdminPermissionModel,
           attributes: ['id', 'name', 'slug'],
-          through: {
-            attributes: [],
-          },
         },
       ],
     })
+    return {
+      current,
+      pageSize,
+      total,
+      list,
+    }
   }
 
   /**
@@ -42,6 +50,10 @@ export class MenuService {
           through: {
             attributes: [],
           },
+          attributes: ['id', 'name', 'slug'],
+        },
+        {
+          model: AdminPermissionModel,
           attributes: ['id', 'name', 'slug'],
         },
       ],
