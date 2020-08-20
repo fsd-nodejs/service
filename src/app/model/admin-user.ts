@@ -92,7 +92,7 @@ export type IAdminUserModel = typeof AdminUserModel
  * 查询管理员用户信息参数
  */
 export interface GetAdminUserOpts {
-  id: string
+  id?: string
   name?: string // 名称
   username?: string // 帐号
   sorter?: string // 排序
