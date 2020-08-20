@@ -102,7 +102,8 @@ export interface AdminMenuInfo {
   order?: string
   title?: string
   path?: string
-  permission?: string
+  roles?: string[]
+  permissionId?: string
   createdAt?: Date
   updatedAt?: Date
 }

@@ -1,14 +1,21 @@
 import { provide, inject } from 'midway'
 import { IAdminMenuModel, AdminMenuInfo, GetAdminMenuOpts } from '@/app/model/admin-menu'
 import AdminRoleModel from '@/app/model/admin-role'
-
-import AdminPermissionModel from '../model/admin-permission'
+import AdminPermissionModel from '@/app/model/admin-permission'
+import { RoleService } from '@/app/service/role'
+import { PermissionService } from '@/app/service/permission'
 
 @provide('MenuService')
 export class MenuService {
 
   @inject('AdminMenuModel')
   AdminMenuModel!: IAdminMenuModel
+
+  @inject('RoleService')
+  RoleService!: RoleService
+
+  @inject('PermissionService')
+  PermissionService!: PermissionService
 
   /**
    * 查询菜单列表(不分页)
@@ -66,6 +73,13 @@ export class MenuService {
    * @returns {AdminMenuInfo}
    */
   public async createAdminMenu(params: AdminMenuInfo) {
+    const { roles = [], permissionId } = params
+
+    // 检查角色，权限是否存在
+    await this.RoleService.checkRoleExists(roles)
+    permissionId && await this.PermissionService.checkPermissionExists([permissionId])
+
+
     return this.AdminMenuModel.create(params)
   }
 

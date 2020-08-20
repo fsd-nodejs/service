@@ -1,7 +1,10 @@
+import * as assert from 'assert'
+
 import { provide, inject } from 'midway'
 import { IAdminPermissionModel, AdminPermissionInfo, GetAdminPermissionOpts } from '@/app/model/admin-permission'
 import { Op } from 'sequelize'
 import AdminRoleModel from '@/app/model/admin-role'
+import MyError from '@/app/common/my-error'
 
 @provide('PermissionService')
 export class PermissionService {
@@ -130,6 +133,25 @@ export class PermissionService {
         id: ids,
       },
     })
+  }
+
+  /**
+   * 检查权限是否存在于数据库，自动抛错
+   * @param {string[]} ids
+   */
+  public async checkPermissionExists(ids: string[]) {
+    const count = await this.AdminPermissionModel.count({
+      where: {
+        id: {
+          [Op.in]: ids,
+        },
+      },
+    })
+    assert.deepEqual(
+      count,
+      ids.length,
+      new MyError('权限不存在，请检查', 400),
+    )
   }
 
 }
