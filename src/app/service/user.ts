@@ -172,7 +172,7 @@ export class UserService {
 
     // 如果有传递roles
     if (newRoles) {
-      const oldRoles = user?.roles.map(item => item.id)
+      const oldRoles = user.roles.map(item => item.id)
 
       // 对比角色变更差异
       const [increase, decrease]: [any[], any[]] = this.ctx.helper.arrayDiff(newRoles, oldRoles)
@@ -193,7 +193,7 @@ export class UserService {
 
     // 如果有传递permissions
     if (newPermissions) {
-      const oldPermissions = user?.permissions.map(item => item.id)
+      const oldPermissions = user.permissions.map(item => item.id)
 
       // 对比权限变更差异
       const [increase, decrease]: [any[], any[]] = this.ctx.helper.arrayDiff(newPermissions, oldPermissions)
