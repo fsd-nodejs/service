@@ -33,6 +33,7 @@ export class MenuValidator extends Validator {
   public showMenu(value: any) {
     return this.validate(value, {
       id: Joi.string()
+        .trim()
         .max(10)
         .required(),
     })
@@ -45,7 +46,13 @@ export class MenuValidator extends Validator {
    */
   public removeMenu(value: any) {
     return this.validate(value, {
-      ids: Joi.array().items(Joi.string()).min(1),
+      ids: Joi.array()
+        .items(
+          Joi.string()
+            .trim()
+            .max(10),
+        )
+        .min(1),
     })
   }
 
@@ -66,15 +73,20 @@ export class MenuValidator extends Validator {
         .max(50)
         .required(),
       uri: Joi.string()
+        .trim()
         .max(255)
         .uri({ allowRelative: true })
         .required(),
       roles: Joi.array()
-        .items(Joi.string().max(50))
+        .items(
+          Joi.string()
+            .trim()
+            .max(10),
+        )
         .optional(),
-      permission: Joi.string()
+      permissionId: Joi.string()
         .trim()
-        .max(50)
+        .max(10)
         .optional(),
     })
   }
@@ -87,7 +99,7 @@ export class MenuValidator extends Validator {
   public updateMenu(value: any) {
     return this.validate(value, {
       id: Joi.string()
-        .max(50)
+        .max(10)
         .required(),
       parentId: Joi.string()
         .trim()
@@ -99,11 +111,16 @@ export class MenuValidator extends Validator {
         .max(50)
         .required(),
       uri: Joi.string()
+        .trim()
         .max(255)
         .uri({ allowRelative: true })
         .required(),
       roles: Joi.array()
-        .items(Joi.string().max(50))
+        .items(
+          Joi.string()
+            .trim()
+            .max(10),
+        )
         .optional(),
       permission: Joi.string()
         .trim()
@@ -121,10 +138,12 @@ export class MenuValidator extends Validator {
     return this.validate(value, {
       orders: Joi.array().items(Joi.object({
         id: Joi.string()
-          .max(50)
+          .trim()
+          .max(10)
           .required(),
         parentId: Joi.string()
-          .max(50)
+          .trim()
+          .max(10)
           .optional()
           .default('0'),
       })),

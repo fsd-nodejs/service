@@ -23,12 +23,15 @@ export class RoleValidator extends Validator {
         .default(10)
         .optional(),
       id: Joi.string()
+        .trim()
         .max(10)
         .optional(),
       slug: Joi.string()
+        .trim()
         .max(50)
         .optional(),
       sorter: Joi.string()
+        .trim()
         .max(50)
         .regex(/^[a-zA-Z]*(_asc|_desc)$/)
         .optional(),
@@ -43,6 +46,7 @@ export class RoleValidator extends Validator {
   public showRole(value: any) {
     return this.validate(value, {
       id: Joi.string()
+        .trim()
         .max(10)
         .required(),
     })
@@ -55,7 +59,13 @@ export class RoleValidator extends Validator {
    */
   public removeRole(value: any) {
     return this.validate(value, {
-      ids: Joi.array().items(Joi.string().max(50)).min(1),
+      ids: Joi.array()
+        .items(
+          Joi.string()
+            .trim()
+            .max(10),
+        )
+        .min(1),
     })
   }
 
@@ -75,7 +85,11 @@ export class RoleValidator extends Validator {
         .max(50)
         .required(),
       permissions: Joi.array()
-        .items(Joi.string().max(50))
+        .items(
+          Joi.string()
+            .trim()
+            .max(10),
+        )
         .optional(),
     })
   }
@@ -88,7 +102,7 @@ export class RoleValidator extends Validator {
   public updateRole(value: any) {
     return this.validate(value, {
       id: Joi.string()
-        .max(50)
+        .max(10)
         .required(),
       name: Joi.string()
         .trim()
@@ -99,7 +113,11 @@ export class RoleValidator extends Validator {
         .max(50)
         .optional(),
       permissions: Joi.array()
-        .items(Joi.string().max(50))
+        .items(
+          Joi.string()
+            .trim()
+            .max(10),
+        )
         .optional(),
     })
   }

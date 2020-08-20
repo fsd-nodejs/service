@@ -23,18 +23,23 @@ export class PermissionValidator extends Validator {
         .default(10)
         .optional(),
       id: Joi.string()
+        .trim()
         .max(10)
         .optional(),
       slug: Joi.string()
+        .trim()
         .max(50)
         .optional(),
       httpPath: Joi.string()
+        .trim()
         .max(50)
         .optional(),
       httpMethod: Joi.string()
+        .trim()
         .max(50)
         .optional(),
       sorter: Joi.string()
+        .trim()
         .max(50)
         .regex(/^[a-zA-Z]*(_asc|_desc)$/)
         .optional(),
@@ -49,6 +54,7 @@ export class PermissionValidator extends Validator {
   public showPermission(value: any) {
     return this.validate(value, {
       id: Joi.string()
+        .trim()
         .max(10)
         .required(),
     })
@@ -61,7 +67,13 @@ export class PermissionValidator extends Validator {
    */
   public removePermission(value: any) {
     return this.validate(value, {
-      ids: Joi.array().items(Joi.string()).min(1),
+      ids: Joi.array()
+        .items(
+          Joi.string()
+            .trim()
+            .max(10),
+        )
+        .min(1),
     })
   }
 
@@ -102,7 +114,7 @@ export class PermissionValidator extends Validator {
   public updatePermission(value: any) {
     return this.validate(value, {
       id: Joi.string()
-        .max(50)
+        .max(10)
         .required(),
       name: Joi.string()
         .trim()
