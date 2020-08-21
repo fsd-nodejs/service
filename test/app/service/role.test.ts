@@ -1,13 +1,13 @@
 import * as assert from 'power-assert'
 import { app } from 'midway-mock/bootstrap'
-import { IRoleService } from '@/app/service/role'
+import { RoleService } from '@/app/service/role'
 import AdminRoleModel, { GetAdminRoleOpts, AdminRoleInfo } from '@/app/model/admin-role'
 
 
 describe('test/service/role.test.ts', () => {
   let currentRole: AdminRoleModel
   it('#queryAdminRole >should get role list total > 0', async () => {
-    const roleService = await app.applicationContext.getAsync<IRoleService>('RoleService')
+    const roleService = await app.applicationContext.getAsync<RoleService>('RoleService')
     const queryParams: GetAdminRoleOpts = {
       pageSize: 10,
       current: 1,
@@ -17,7 +17,7 @@ describe('test/service/role.test.ts', () => {
   })
 
   it('#queryAdminRole >should get role list and query by id', async () => {
-    const roleService = await app.applicationContext.getAsync<IRoleService>('RoleService')
+    const roleService = await app.applicationContext.getAsync<RoleService>('RoleService')
     const queryParams: GetAdminRoleOpts = {
       pageSize: 10,
       current: 1,
@@ -33,7 +33,7 @@ describe('test/service/role.test.ts', () => {
   })
 
   it('#queryAdminRole >should get role list and query by name', async () => {
-    const roleService = await app.applicationContext.getAsync<IRoleService>('RoleService')
+    const roleService = await app.applicationContext.getAsync<RoleService>('RoleService')
     const queryParams: GetAdminRoleOpts = {
       pageSize: 10,
       current: 1,
@@ -49,7 +49,7 @@ describe('test/service/role.test.ts', () => {
 
 
   it('#queryAdminRole >should get role list and query by slug', async () => {
-    const roleService = await app.applicationContext.getAsync<IRoleService>('RoleService')
+    const roleService = await app.applicationContext.getAsync<RoleService>('RoleService')
     const queryParams: GetAdminRoleOpts = {
       pageSize: 10,
       current: 1,
@@ -65,7 +65,7 @@ describe('test/service/role.test.ts', () => {
 
   it('#createAdminRole >should created role', async () => {
     const ctx = app.mockContext()
-    const roleService = await ctx.requestContext.getAsync<IRoleService>('RoleService')
+    const roleService = await ctx.requestContext.getAsync<RoleService>('RoleService')
     const params: AdminRoleInfo = {
       name: 'fakeName',
       slug: 'fakeSlug',
@@ -78,7 +78,7 @@ describe('test/service/role.test.ts', () => {
   })
 
   it('#queryAdminRole >should get role list and sorter by id asc', async () => {
-    const roleService = await app.applicationContext.getAsync<IRoleService>('RoleService')
+    const roleService = await app.applicationContext.getAsync<RoleService>('RoleService')
     const queryParams: GetAdminRoleOpts = {
       pageSize: 10,
       current: 1,
@@ -93,7 +93,7 @@ describe('test/service/role.test.ts', () => {
   })
 
   it('#getAdminRoleById >should get role by id', async () => {
-    const roleService = await app.applicationContext.getAsync<IRoleService>('RoleService')
+    const roleService = await app.applicationContext.getAsync<RoleService>('RoleService')
     const role = await roleService.getAdminRoleById(currentRole.id)
 
     assert(role)
@@ -101,14 +101,14 @@ describe('test/service/role.test.ts', () => {
 
   it('#updateAdminRole >should update role', async () => {
     const ctx = app.mockContext()
-    const roleService = await ctx.requestContext.getAsync<IRoleService>('RoleService')
+    const roleService = await ctx.requestContext.getAsync<RoleService>('RoleService')
     const { id } = currentRole
     const [total] = await roleService.updateAdminRole(id, { name: 'fakeName2', permissions: ['2'] })
     assert(total)
   })
 
   it('#removeAdminRoleByIds >should remove role', async () => {
-    const roleService = await app.applicationContext.getAsync<IRoleService>('RoleService')
+    const roleService = await app.applicationContext.getAsync<RoleService>('RoleService')
     const { id } = currentRole
     const total = await roleService.removeAdminRoleByIds([id])
     assert(total)

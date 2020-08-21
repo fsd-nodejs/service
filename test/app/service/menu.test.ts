@@ -1,13 +1,13 @@
 import * as assert from 'power-assert'
 import { app } from 'midway-mock/bootstrap'
-import { IMenuService } from '@/app/service/menu'
+import { MenuService } from '@/app/service/menu'
 import AdminMenuModel, { GetAdminMenuOpts, AdminMenuInfo } from '@/app/model/admin-menu'
 
 
 describe('test/service/menu.test.ts', () => {
   let currentMenu: AdminMenuModel
   it('#queryAdminMenu >should get menu list total > 0', async () => {
-    const menuService = await app.applicationContext.getAsync<IMenuService>('MenuService')
+    const menuService = await app.applicationContext.getAsync<MenuService>('MenuService')
     const queryParams: GetAdminMenuOpts = {
       pageSize: 10,
       current: 1,
@@ -18,7 +18,7 @@ describe('test/service/menu.test.ts', () => {
 
   it('#createAdminMenu >should created menu', async () => {
     const ctx = app.mockContext()
-    const menuService = await ctx.requestContext.getAsync<IMenuService>('MenuService')
+    const menuService = await ctx.requestContext.getAsync<MenuService>('MenuService')
     const params: AdminMenuInfo = {
       title: 'fakeTitle',
       uri: 'fakeUri',
@@ -32,7 +32,7 @@ describe('test/service/menu.test.ts', () => {
   })
 
   it('#getAdminMenuById >should get menu by id', async () => {
-    const menuService = await app.applicationContext.getAsync<IMenuService>('MenuService')
+    const menuService = await app.applicationContext.getAsync<MenuService>('MenuService')
     const menu = await menuService.getAdminMenuById(currentMenu.id)
 
     assert(menu)
@@ -40,7 +40,7 @@ describe('test/service/menu.test.ts', () => {
 
   it('#updateAdminMenu >should update menu', async () => {
     const ctx = app.mockContext()
-    const menuService = await ctx.requestContext.getAsync<IMenuService>('MenuService')
+    const menuService = await ctx.requestContext.getAsync<MenuService>('MenuService')
     const { id } = currentMenu
     const [total] = await menuService.updateAdminMenu(id, {
       title: 'fakeTitle2',
@@ -51,7 +51,7 @@ describe('test/service/menu.test.ts', () => {
   })
 
   it('#removeAdminMenuByIds >should remove menu', async () => {
-    const menuService = await app.applicationContext.getAsync<IMenuService>('MenuService')
+    const menuService = await app.applicationContext.getAsync<MenuService>('MenuService')
     const { id } = currentMenu
     const total = await menuService.removeAdminMenuByIds([id])
     assert(total)

@@ -1,13 +1,13 @@
 import * as assert from 'power-assert'
 import { app } from 'midway-mock/bootstrap'
-import { IUserService } from '@/app/service/user'
+import { UserService } from '@/app/service/user'
 import AdminUserModel, { GetAdminUserOpts, AdminUserInfo } from '@/app/model/admin-user'
 
 
 describe('test/service/user.test.ts', () => {
   let currentUser: AdminUserModel
   it('#queryAdminUser >should get user list total > 0', async () => {
-    const userService = await app.applicationContext.getAsync<IUserService>('UserService')
+    const userService = await app.applicationContext.getAsync<UserService>('UserService')
     const queryParams: GetAdminUserOpts = {
       pageSize: 10,
       current: 1,
@@ -17,7 +17,7 @@ describe('test/service/user.test.ts', () => {
   })
 
   it('#queryAdminUser >should get user list and query by id', async () => {
-    const userService = await app.applicationContext.getAsync<IUserService>('UserService')
+    const userService = await app.applicationContext.getAsync<UserService>('UserService')
     const queryParams: GetAdminUserOpts = {
       pageSize: 10,
       current: 1,
@@ -33,7 +33,7 @@ describe('test/service/user.test.ts', () => {
   })
 
   it('#queryAdminUser >should get user list and query by name', async () => {
-    const userService = await app.applicationContext.getAsync<IUserService>('UserService')
+    const userService = await app.applicationContext.getAsync<UserService>('UserService')
     const queryParams: GetAdminUserOpts = {
       pageSize: 10,
       current: 1,
@@ -49,7 +49,7 @@ describe('test/service/user.test.ts', () => {
 
 
   it('#queryAdminUser >should get user list and query by username', async () => {
-    const userService = await app.applicationContext.getAsync<IUserService>('UserService')
+    const userService = await app.applicationContext.getAsync<UserService>('UserService')
     const queryParams: GetAdminUserOpts = {
       pageSize: 10,
       current: 1,
@@ -65,7 +65,7 @@ describe('test/service/user.test.ts', () => {
 
   it('#createAdminUser >should created user', async () => {
     const ctx = app.mockContext()
-    const userService = await ctx.requestContext.getAsync<IUserService>('UserService')
+    const userService = await ctx.requestContext.getAsync<UserService>('UserService')
     const params: AdminUserInfo = {
       name: 'fakeName',
       username: 'fakeUserName',
@@ -80,7 +80,7 @@ describe('test/service/user.test.ts', () => {
   })
 
   it('#queryAdminUser >should get user list and sorter by id asc', async () => {
-    const userService = await app.applicationContext.getAsync<IUserService>('UserService')
+    const userService = await app.applicationContext.getAsync<UserService>('UserService')
     const queryParams: GetAdminUserOpts = {
       pageSize: 10,
       current: 1,
@@ -95,7 +95,7 @@ describe('test/service/user.test.ts', () => {
   })
 
   it('#getAdminUserById >should get user by id', async () => {
-    const userService = await app.applicationContext.getAsync<IUserService>('UserService')
+    const userService = await app.applicationContext.getAsync<UserService>('UserService')
     const user = await userService.getAdminUserById(currentUser.id)
 
     assert(user)
@@ -103,7 +103,7 @@ describe('test/service/user.test.ts', () => {
 
   it('#updateAdminUser >should update user', async () => {
     const ctx = app.mockContext()
-    const userService = await ctx.requestContext.getAsync<IUserService>('UserService')
+    const userService = await ctx.requestContext.getAsync<UserService>('UserService')
     const { id } = currentUser
     const [total] = await userService.updateAdminUser(id, {
       name: 'fakeName2',
@@ -115,7 +115,7 @@ describe('test/service/user.test.ts', () => {
   })
 
   it('#removeAdminUserByIds >should remove user', async () => {
-    const userService = await app.applicationContext.getAsync<IUserService>('UserService')
+    const userService = await app.applicationContext.getAsync<UserService>('UserService')
     const { id } = currentUser
     const total = await userService.removeAdminUserByIds([id])
     assert(total)

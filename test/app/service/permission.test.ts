@@ -1,13 +1,13 @@
 import * as assert from 'power-assert'
 import { app } from 'midway-mock/bootstrap'
-import { IPermissionService } from '@/app/service/permission'
+import { PermissionService } from '@/app/service/permission'
 import AdminPermissionModel, { GetAdminPermissionOpts, AdminPermissionInfo } from '@/app/model/admin-permission'
 
 
 describe('test/service/permission.test.ts', () => {
   let currentPermission: AdminPermissionModel
   it('#queryAdminPermission >should get permission list total > 0', async () => {
-    const permissionService = await app.applicationContext.getAsync<IPermissionService>('PermissionService')
+    const permissionService = await app.applicationContext.getAsync<PermissionService>('PermissionService')
     const queryParams: GetAdminPermissionOpts = {
       pageSize: 10,
       current: 1,
@@ -17,7 +17,7 @@ describe('test/service/permission.test.ts', () => {
   })
 
   it('#queryAdminPermission >should get permission list and sorter by id asc', async () => {
-    const permissionService = await app.applicationContext.getAsync<IPermissionService>('PermissionService')
+    const permissionService = await app.applicationContext.getAsync<PermissionService>('PermissionService')
     const queryParams: GetAdminPermissionOpts = {
       pageSize: 10,
       current: 1,
@@ -32,7 +32,7 @@ describe('test/service/permission.test.ts', () => {
   })
 
   it('#queryAdminPermission >should get permission list and query by id', async () => {
-    const permissionService = await app.applicationContext.getAsync<IPermissionService>('PermissionService')
+    const permissionService = await app.applicationContext.getAsync<PermissionService>('PermissionService')
     const queryParams: GetAdminPermissionOpts = {
       pageSize: 10,
       current: 1,
@@ -48,7 +48,7 @@ describe('test/service/permission.test.ts', () => {
   })
 
   it('#queryAdminPermission >should get permission list and query by name', async () => {
-    const permissionService = await app.applicationContext.getAsync<IPermissionService>('PermissionService')
+    const permissionService = await app.applicationContext.getAsync<PermissionService>('PermissionService')
     const queryParams: GetAdminPermissionOpts = {
       pageSize: 10,
       current: 1,
@@ -64,7 +64,7 @@ describe('test/service/permission.test.ts', () => {
 
 
   it('#queryAdminPermission >should get permission list and query by slug', async () => {
-    const permissionService = await app.applicationContext.getAsync<IPermissionService>('PermissionService')
+    const permissionService = await app.applicationContext.getAsync<PermissionService>('PermissionService')
     const queryParams: GetAdminPermissionOpts = {
       pageSize: 10,
       current: 1,
@@ -79,7 +79,7 @@ describe('test/service/permission.test.ts', () => {
   })
 
   it('#queryAdminPermission >should get permission list and query by httpPath', async () => {
-    const permissionService = await app.applicationContext.getAsync<IPermissionService>('PermissionService')
+    const permissionService = await app.applicationContext.getAsync<PermissionService>('PermissionService')
     const queryParams: GetAdminPermissionOpts = {
       pageSize: 10,
       current: 1,
@@ -94,7 +94,7 @@ describe('test/service/permission.test.ts', () => {
   })
 
   it('#queryAdminPermission >should get permission list and query by httpMethod', async () => {
-    const permissionService = await app.applicationContext.getAsync<IPermissionService>('PermissionService')
+    const permissionService = await app.applicationContext.getAsync<PermissionService>('PermissionService')
     const queryParams: GetAdminPermissionOpts = {
       pageSize: 10,
       current: 1,
@@ -109,7 +109,7 @@ describe('test/service/permission.test.ts', () => {
   })
 
   it('#createAdminPermission >should created permission', async () => {
-    const permissionService = await app.applicationContext.getAsync<IPermissionService>('PermissionService')
+    const permissionService = await app.applicationContext.getAsync<PermissionService>('PermissionService')
     const params: AdminPermissionInfo = {
       name: 'fakeName',
       slug: 'fakeSlug',
@@ -122,21 +122,21 @@ describe('test/service/permission.test.ts', () => {
   })
 
   it('#getAdminPermissionById >should get permission by id', async () => {
-    const permissionService = await app.applicationContext.getAsync<IPermissionService>('PermissionService')
+    const permissionService = await app.applicationContext.getAsync<PermissionService>('PermissionService')
     const permission = await permissionService.getAdminPermissionById(currentPermission.id)
 
     assert(permission)
   })
 
   it('#updateAdminPermission >should update permission', async () => {
-    const permissionService = await app.applicationContext.getAsync<IPermissionService>('PermissionService')
+    const permissionService = await app.applicationContext.getAsync<PermissionService>('PermissionService')
     const { id } = currentPermission
     const [total] = await permissionService.updateAdminPermission(id, { httpPath: '/fake/path2' })
     assert(total)
   })
 
   it('#removeAdminPermissionByIds >should remove permission', async () => {
-    const permissionService = await app.applicationContext.getAsync<IPermissionService>('PermissionService')
+    const permissionService = await app.applicationContext.getAsync<PermissionService>('PermissionService')
     const { id } = currentPermission
     const total = await permissionService.removeAdminPermissionByIds([id])
     assert(total)
