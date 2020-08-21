@@ -166,9 +166,15 @@ export class UserService {
    * @returns {[number, AdminUserModel[]]}
    */
   public async updateAdminUser(id: string, params: AdminUserInfo) {
-    const { roles: newRoles, permissions: newPermissions } = params
+    const { roles: newRoles, permissions: newPermissions, password } = params
 
     const user = await this.getAdminUserById(id) as AdminUserModel
+
+    let newPassword = user.password
+    // 如果有传递password
+    if (password) {
+      password !== user.password && (newPassword = this.ctx.helper.bhash(password))
+    }
 
     // 如果有传递roles
     if (newRoles) {
@@ -212,7 +218,10 @@ export class UserService {
       })
     }
 
-    return this.adminUserModel.update(params, {
+    return this.adminUserModel.update({
+      ...params,
+      password: newPassword,
+    }, {
       where: {
         id,
       },
