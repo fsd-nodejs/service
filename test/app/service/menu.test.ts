@@ -57,4 +57,37 @@ describe('test/service/menu.test.ts', () => {
     assert(total)
   })
 
+
+  it('#orderAdminMemu >should order menu', async () => {
+    const menuService = await app.applicationContext.getAsync<MenuService>('MenuService')
+    const queryParams: GetAdminMenuOpts = {
+      pageSize: 1000,
+      current: 1,
+    }
+    const { list } = await menuService.queryAdminMenu(queryParams)
+
+    const newList = list.map((item, index) => {
+      return {
+        id: item.id,
+        parentId: item.parentId,
+        order: list.length - index,
+      }
+    })
+
+    await menuService.orderAdminMemu(newList)
+
+    const newMenu = await menuService.getAdminMenuById(list[0].id)
+
+    assert.deepEqual(newMenu?.order, newList[0].order)
+
+    const sortList = list.map((item, index) => {
+      return {
+        id: item.id,
+        parentId: item.parentId,
+        order: index + 1,
+      }
+    })
+    await menuService.orderAdminMemu(sortList)
+  })
+
 })

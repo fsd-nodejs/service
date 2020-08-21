@@ -26,7 +26,10 @@ export class MenuService {
    */
   public async queryAdminMenu(queryParams: GetAdminMenuOpts) {
     const { current, pageSize } = queryParams
+    const order: any = [['order', 'asc']]
+
     const { rows: list, count: total } = await this.adminMenuModel.findAndCountAll({
+      order,
       limit: pageSize,
       offset: pageSize * (current - 1),
       include: [
