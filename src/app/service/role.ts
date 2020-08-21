@@ -5,7 +5,6 @@ import { Op } from 'sequelize'
 import AdminRoleModel, { IAdminRoleModel, GetAdminRoleOpts, AdminRoleInfo } from '@/app/model/admin-role'
 import AdminPermissionModel, { IAdminPermissionModel } from '@/app/model/admin-permission'
 import { IAdminRolePermissionModel } from '@/app/model/admin-role-permission'
-import { PermissionService } from '@/app/service/permission'
 import AdminMenuModel from '@/app/model/admin-menu'
 import MyError from '@/app/common/my-error'
 
@@ -23,9 +22,6 @@ export class RoleService {
 
   @inject('AdminRolePermissionModel')
   AdminRolePermissionModel!: IAdminRolePermissionModel
-
-  @inject('PermissionService')
-  PermissionService!: PermissionService
 
   /**
    * 分页查询角色列表
