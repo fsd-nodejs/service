@@ -106,8 +106,12 @@ export class MenuController {
   public async order(ctx: Context): Promise<void> {
     // 校验提交的参数
     const params = this.validator.orderMenu(ctx.request.body)
+    const { orders } = params
 
-    const newMenu = params.orders.map((item, index) => ({ ...item, order: index + 1 }))
+    // 检查菜单是否存在
+    await this.service.checkMenuExists(orders.map(item => item.id))
+
+    const newMenu = orders.map((item, index) => ({ ...item, order: index + 1 }))
 
     await this.service.orderAdminMemu(newMenu)
 
