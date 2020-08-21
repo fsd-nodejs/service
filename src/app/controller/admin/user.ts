@@ -18,10 +18,10 @@ export class UserController {
   service!: UserService
 
   @inject('RoleService')
-  RoleService!: RoleService
+  roleService!: RoleService
 
   @inject('PermissionService')
-  PermissionService!: PermissionService
+  permissionService!: PermissionService
 
   @inject('AdminUserValidator')
   validator!: AdminUserValidator
@@ -55,10 +55,10 @@ export class UserController {
     const params = this.validator.createUser(ctx.request.body)
     const { roles = [], permissions = [] } = params
     // 检查角色是否存在
-    await this.RoleService.checkRoleExists(roles)
+    await this.roleService.checkRoleExists(roles)
 
     // 检查权限是否存在
-    await this.PermissionService.checkPermissionExists(permissions)
+    await this.permissionService.checkPermissionExists(permissions)
 
     const passwordHash = ctx.helper.bhash(params.password)
 
@@ -80,10 +80,10 @@ export class UserController {
     await this.service.checkUserExists([id as string])
 
     // 检查角色是否存在
-    await this.RoleService.checkRoleExists(roles)
+    await this.roleService.checkRoleExists(roles)
 
     // 检查权限是否存在
-    await this.PermissionService.checkPermissionExists(permissions)
+    await this.permissionService.checkPermissionExists(permissions)
 
     const [total] = await this.service.updateAdminUser(id as string, params as AdminUserInfo)
     assert(total, new MyError('更新失败', 400))

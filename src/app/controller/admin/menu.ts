@@ -18,10 +18,10 @@ export class MenuController {
   service!: MenuService
 
   @inject('RoleService')
-  RoleService!: RoleService
+  roleService!: RoleService
 
   @inject('PermissionService')
-  PermissionService!: PermissionService
+  permissionService!: PermissionService
 
   @inject('MenuValidator')
   validator!: MenuValidator
@@ -56,10 +56,10 @@ export class MenuController {
     const { roles = [], permissionId } = params
 
     // 检查角色是否存在
-    await this.RoleService.checkRoleExists(roles)
+    await this.roleService.checkRoleExists(roles)
 
     // 检查权限是否存在
-    permissionId && await this.PermissionService.checkPermissionExists([permissionId])
+    permissionId && await this.permissionService.checkPermissionExists([permissionId])
 
     const result = await this.service.createAdminMenu(params)
 
@@ -76,10 +76,10 @@ export class MenuController {
     await this.service.checkMenuExists([id as string])
 
     // 检查角色是否存在
-    await this.RoleService.checkRoleExists(roles)
+    await this.roleService.checkRoleExists(roles)
 
     // 检查权限是否存在
-    permissionId && await this.PermissionService.checkPermissionExists([permissionId])
+    permissionId && await this.permissionService.checkPermissionExists([permissionId])
 
 
     const [total] = await this.service.updateAdminMenu(id as string, params as AdminMenuInfo)

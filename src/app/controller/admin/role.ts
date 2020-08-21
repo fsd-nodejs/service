@@ -20,7 +20,7 @@ export class RoleController {
   validator!: RoleValidator
 
   @inject('PermissionService')
-  PermissionService!: PermissionService
+  permissionService!: PermissionService
 
   @get('/query')
   public async query(ctx: Context): Promise<void> {
@@ -51,7 +51,7 @@ export class RoleController {
     const params = this.validator.createRole(ctx.request.body)
     const { permissions = [] } = params
     // 检查权限是否存在
-    await this.PermissionService.checkPermissionExists(permissions)
+    await this.permissionService.checkPermissionExists(permissions)
 
     const result = await this.service.createAdminRole(params)
 
@@ -68,7 +68,7 @@ export class RoleController {
 
     // 检查权限是否存在
     const { permissions: newPermissions = [] } = params
-    await this.PermissionService.checkPermissionExists(newPermissions)
+    await this.permissionService.checkPermissionExists(newPermissions)
 
     const [total] = await this.service.updateAdminRole(id as string, params as AdminRoleInfo)
     assert(total, new MyError('更新失败', 400))
