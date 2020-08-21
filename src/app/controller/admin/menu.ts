@@ -102,5 +102,17 @@ export class MenuController {
     ctx.helper.success(ctx, null, null, 204)
   }
 
+  @post('/order')
+  public async order(ctx: Context): Promise<void> {
+    // 校验提交的参数
+    const params = this.validator.orderMenu(ctx.request.body)
+
+    const newMenu = params.orders.map((item, index) => ({ ...item, order: index + 1 }))
+
+    await this.service.orderAdminMemu(newMenu)
+
+    ctx.helper.success(ctx)
+  }
+
 }
 

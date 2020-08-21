@@ -169,4 +169,20 @@ export class MenuService {
     )
   }
 
+  /**
+   * 批量更新菜单的排序和父级ID
+   * @param {menu[]} params
+   */
+  public async orderAdminMemu(params: any[]) {
+    const queue = params.map((item) => {
+      const { id, ...filed } = item
+      return this.adminMenuModel.update(filed, {
+        where: {
+          id,
+        },
+      })
+    })
+    return Promise.all(queue)
+  }
+
 }

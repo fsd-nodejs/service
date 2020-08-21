@@ -135,7 +135,9 @@ export class MenuValidator extends Validator {
    * @param {*} value
    * @memberof MenuValidator
    */
-  public orderMenu(value: any) {
+  public orderMenu(value: any): {
+    orders: { id: string, parendId: string }[],
+  } {
     return this.validate(value, {
       orders: Joi.array().items(Joi.object({
         id: Joi.string()
