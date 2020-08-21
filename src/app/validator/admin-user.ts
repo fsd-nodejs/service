@@ -140,7 +140,7 @@ export class AdminUserValidator extends Validator {
         .trim()
         .min(5)
         .max(60)
-        .required(),
+        .optional(),
       roles: Joi.array()
         .items(
           Joi.string()
