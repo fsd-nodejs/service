@@ -131,5 +131,3 @@ export class AuthService {
   }
 
 }
-
-export type IAuthService = AuthService

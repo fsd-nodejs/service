@@ -211,4 +211,3 @@ export class RoleService {
 
 }
 
-export type IRoleService = RoleService

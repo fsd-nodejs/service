@@ -263,4 +263,3 @@ export class UserService {
 
 }
 
-export type IUserService = UserService

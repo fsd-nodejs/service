@@ -170,5 +170,3 @@ export class MenuService {
   }
 
 }
-
-export type IMenuService = MenuService
