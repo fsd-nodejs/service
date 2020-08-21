@@ -1,5 +1,6 @@
 import * as bcrypt from 'bcryptjs'
 import * as moment from 'moment'
+import * as meeko from 'meeko'
 import { Context } from 'midway'
 
 
@@ -29,9 +30,9 @@ moment.locale('zh-cn')
  * @param str 需要加密的内容
  * @returns {String} 密文
  */
-// export const bhash = (str: string) => {
-//   return bcrypt.hashSync(str, 10)
-// }
+export const bhash = (str: string) => {
+  return bcrypt.hashSync(str, 10)
+}
 
 /**
  * hash是否正确
@@ -41,6 +42,18 @@ moment.locale('zh-cn')
  */
 export const bcompare = (str: string, hash: string) => {
   return bcrypt.compareSync(str, hash)
+}
+
+
+/**
+ * 对比两个数组差异
+ * @returns {[increase: any[], decreaseany[]]}
+ */
+export const arrayDiff = (arrA: any[], arrB: any[]) => {
+  const intersect = meeko.array.intersect(arrA, arrB)
+  const increase = meeko.array.except(arrA, intersect)
+  const decrease = meeko.array.except(arrB, intersect)
+  return [increase, decrease]
 }
 
 /**

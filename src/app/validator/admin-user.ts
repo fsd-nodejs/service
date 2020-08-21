@@ -1,19 +1,19 @@
 import * as Joi from 'joi'
 import { provide } from 'midway'
-import { AdminRoleInfo, GetAdminRoleOpts } from '@/app/model/admin-role'
+import { AdminUserInfo, GetAdminUserOpts } from '@/app/model/admin-user'
 
 import Validator from './validator'
 
 
-@provide('RoleValidator')
-export class RoleValidator extends Validator {
+@provide('AdminUserValidator')
+export class AdminUserValidator extends Validator {
 
   /**
-   * 查询角色列表
-   * @param {*} value
-   * @memberof RoleValidator
-   */
-  public queryRole(value: any): GetAdminRoleOpts {
+ * 查询管理员用户列表
+ * @param {*} value
+ * @memberof AdminUserValidator
+ */
+  public queryUser(value: any): GetAdminUserOpts {
     return this.validate(value, {
       current: Joi.number()
         .max(100000)
@@ -27,24 +27,23 @@ export class RoleValidator extends Validator {
         .trim()
         .max(10)
         .optional(),
-      slug: Joi.string()
+      name: Joi.string()
         .trim()
         .max(50)
         .optional(),
-      sorter: Joi.string()
+      username: Joi.string()
         .trim()
         .max(50)
-        .regex(/^[a-zA-Z]*(_asc|_desc)$/)
         .optional(),
     })
   }
 
   /**
-   * 查询角色
+   * 查询管理员用户
    * @param {*} value
-   * @memberof RoleValidator
+   * @memberof AdminUserValidator
    */
-  public showRole(value: any) {
+  public showUser(value: any) {
     return this.validate(value, {
       id: Joi.string()
         .trim()
@@ -54,11 +53,11 @@ export class RoleValidator extends Validator {
   }
 
   /**
-   * 删除角色
+   * 删除管理员用户
    * @param {*} value
-   * @memberof RoleValidator
+   * @memberof AdminUserValidator
    */
-  public removeRole(value: any) {
+  public removeUser(value: any) {
     return this.validate(value, {
       ids: Joi.array()
         .items(
@@ -71,20 +70,38 @@ export class RoleValidator extends Validator {
   }
 
   /**
-   * 创建角色
+   * 创建管理员用户
    * @param {*} value
-   * @memberof RoleValidator
+   * @memberof AdminUserValidator
    */
-  public createRole(value: any): AdminRoleInfo {
+  public createUser(value: any): AdminUserInfo {
     return this.validate(value, {
+      username: Joi.string()
+        .trim()
+        .min(5)
+        .max(190)
+        .required(),
       name: Joi.string()
         .trim()
-        .max(50)
+        .min(5)
+        .max(255)
         .required(),
-      slug: Joi.string()
+      avatar: Joi.string()
         .trim()
-        .max(50)
+        .max(255)
+        .optional(),
+      password: Joi.string()
+        .trim()
+        .min(5)
+        .max(60)
         .required(),
+      roles: Joi.array()
+        .items(
+          Joi.string()
+            .trim()
+            .max(10),
+        )
+        .optional(),
       permissions: Joi.array()
         .items(
           Joi.string()
@@ -96,22 +113,40 @@ export class RoleValidator extends Validator {
   }
 
   /**
-   * 修改角色
+   * 修改管理员用户
    * @param {*} value
-   * @memberof RoleValidator
+   * @memberof AdminUserValidator
    */
-  public updateRole(value: any): AdminRoleInfo {
+  public updateUser(value: any): AdminUserInfo {
     return this.validate(value, {
       id: Joi.string()
         .max(10)
         .required(),
+      username: Joi.string()
+        .trim()
+        .min(5)
+        .max(190)
+        .required(),
       name: Joi.string()
         .trim()
-        .max(50)
-        .optional(),
-      slug: Joi.string()
+        .min(5)
+        .max(255)
+        .required(),
+      avatar: Joi.string()
         .trim()
-        .max(50)
+        .max(255)
+        .optional(),
+      password: Joi.string()
+        .trim()
+        .min(5)
+        .max(60)
+        .optional(),
+      roles: Joi.array()
+        .items(
+          Joi.string()
+            .trim()
+            .max(10),
+        )
         .optional(),
       permissions: Joi.array()
         .items(

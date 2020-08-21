@@ -1,13 +1,27 @@
-import { provide, inject } from 'midway'
-import { IAdminRoleModel, GetAdminRoleOpts, AdminRoleInfo } from '@/app/model/admin-role'
-import AdminPermissionModel from '@/app/model/admin-permission'
+import * as assert from 'assert'
+
+import { provide, inject, Context } from 'midway'
 import { Op } from 'sequelize'
+import AdminRoleModel, { IAdminRoleModel, GetAdminRoleOpts, AdminRoleInfo } from '@/app/model/admin-role'
+import AdminPermissionModel, { IAdminPermissionModel } from '@/app/model/admin-permission'
+import { IAdminRolePermissionModel } from '@/app/model/admin-role-permission'
+import AdminMenuModel from '@/app/model/admin-menu'
+import MyError from '@/app/common/my-error'
 
 @provide('RoleService')
 export class RoleService {
 
+  @inject()
+  ctx!: Context
+
   @inject('AdminRoleModel')
-  AdminRoleModel!: IAdminRoleModel
+  adminRoleModel!: IAdminRoleModel
+
+  @inject('AdminPermissionModel')
+  adminPermissionModel!: IAdminPermissionModel
+
+  @inject('AdminRolePermissionModel')
+  adminRolePermissionModel!: IAdminRolePermissionModel
 
   /**
    * 分页查询角色列表
@@ -28,25 +42,25 @@ export class RoleService {
     // 模糊匹配id
     if (params.id) {
       where.id = {
-        [Op.like]: `%${params.id}%`,
+        [Op.like]: `%${params.id}`,
       }
     }
 
     // 模糊匹配名称
     if (params.name) {
       where.name = {
-        [Op.like]: `%${params.name}%`,
+        [Op.like]: `%${params.name}`,
       }
     }
 
     // 模糊匹配标识
     if (params.slug) {
       where.slug = {
-        [Op.like]: `%${params.slug}%`,
+        [Op.like]: `%${params.slug}`,
       }
     }
 
-    const { rows: list, count: total } = await this.AdminRoleModel.findAndCountAll({
+    const { rows: list, count: total } = await this.adminRoleModel.findAndCountAll({
       order,
       where,
       limit: pageSize,
@@ -54,6 +68,7 @@ export class RoleService {
       include: [
         {
           model: AdminPermissionModel,
+          attributes: ['id', 'name', 'slug'],
           through: {
             attributes: [],
           },
@@ -75,7 +90,7 @@ export class RoleService {
    * @returns {AdminRoleModel | null}
    */
   public async getAdminRoleById(id: string) {
-    return this.AdminRoleModel.findOne({
+    return this.adminRoleModel.findOne({
       where: {
         id,
       },
@@ -85,6 +100,14 @@ export class RoleService {
           through: {
             attributes: [],
           },
+          attributes: ['id', 'name', 'slug'],
+        },
+        {
+          model: AdminMenuModel,
+          through: {
+            attributes: [],
+          },
+          attributes: ['id', 'parentId', 'title', 'uri'],
         },
       ],
     })
@@ -96,7 +119,23 @@ export class RoleService {
    * @returns {AdminRoleInfo}
    */
   public async createAdminRole(params: AdminRoleInfo) {
-    return this.AdminRoleModel.create(params)
+    const { permissions } = params
+
+    const role = await this.adminRoleModel.create({
+      name: params.name,
+      slug: params.slug,
+    })
+
+    // 如果有传递permissions
+    if (permissions) {
+      const rolePermissions = permissions.map(id => ({
+        roleId: role.id,
+        permissionId: id,
+      }))
+      await this.adminRolePermissionModel.bulkCreate(rolePermissions)
+    }
+
+    return this.getAdminRoleById(role.id)
   }
 
   /**
@@ -105,7 +144,32 @@ export class RoleService {
    * @returns {[number, AdminRoleModel[]]}
    */
   public async updateAdminRole(id: string, params: AdminRoleInfo) {
-    return this.AdminRoleModel.update(params, {
+    const { permissions: newPermissions } = params
+
+    const role = await this.getAdminRoleById(id) as AdminRoleModel
+
+    // 如果有传递permissions
+    if (newPermissions) {
+      const oldPermissions = role.permissions.map(item => item.id)
+
+      // 对比权限变更差异
+      const [increase, decrease]: [any[], any[]] = this.ctx.helper.arrayDiff(newPermissions, oldPermissions)
+
+      const increaseRolePermissions = increase.map(item => ({
+        roleId: role.id,
+        permissionId: item,
+      }))
+
+      await this.adminRolePermissionModel.bulkCreate(increaseRolePermissions)
+      await this.adminRolePermissionModel.destroy({
+        where: {
+          roleId: role.id,
+          permissionId: decrease,
+        },
+      })
+    }
+
+    return this.adminRoleModel.update(params, {
       where: {
         id,
       },
@@ -115,17 +179,35 @@ export class RoleService {
 
   /**
    * 删除多条角色数据
-   * @param {string} ids
+   * @param {string[]} ids
    * @returns {number}
    */
   public async removeAdminRoleByIds(ids: string[]) {
-    return this.AdminRoleModel.destroy({
+    return this.adminRoleModel.destroy({
       where: {
         id: ids,
       },
     })
   }
 
+  /**
+   * 检查角色是否存在于数据库，自动抛错
+   * @param {string[]} ids
+   */
+  public async checkRoleExists(ids: string[]) {
+    const count = await this.adminRoleModel.count({
+      where: {
+        id: {
+          [Op.in]: ids,
+        },
+      },
+    })
+    assert.deepEqual(
+      count,
+      ids.length,
+      new MyError('角色不存在，请检查', 400),
+    )
+  }
+
 }
 
-export type IRoleService = RoleService

@@ -6,9 +6,11 @@ import {
 import MyError from '@/app/common/my-error'
 import { RoleService } from '@/app/service/role'
 import { RoleValidator } from '@/app/validator/role'
+import { PermissionService } from '@/app/service/permission'
+import { AdminRoleInfo } from '@/app/model/admin-role'
 
 @provide()
-@controller('/role')
+@controller('/admin/role')
 export class RoleController {
 
   @inject('RoleService')
@@ -16,6 +18,9 @@ export class RoleController {
 
   @inject('RoleValidator')
   validator!: RoleValidator
+
+  @inject('PermissionService')
+  permissionService!: PermissionService
 
   @get('/query')
   public async query(ctx: Context): Promise<void> {
@@ -32,6 +37,9 @@ export class RoleController {
     // 校验提交的参数
     const query = this.validator.showRole(ctx.request.query)
 
+    // 检查角色是否存在
+    await this.service.checkRoleExists([query.id])
+
     const result = await this.service.getAdminRoleById(query.id)
 
     ctx.helper.success(ctx, result)
@@ -41,6 +49,9 @@ export class RoleController {
   public async create(ctx: Context): Promise<void> {
     // 校验提交的参数
     const params = this.validator.createRole(ctx.request.body)
+    const { permissions = [] } = params
+    // 检查权限是否存在
+    await this.permissionService.checkPermissionExists(permissions)
 
     const result = await this.service.createAdminRole(params)
 
@@ -52,7 +63,14 @@ export class RoleController {
     // 校验提交的参数
     const { id, ...params } = this.validator.updateRole(ctx.request.body)
 
-    const [total] = await this.service.updateAdminRole(id, params)
+    // 检查角色是否存在
+    await this.service.checkRoleExists([id as string])
+
+    // 检查权限是否存在
+    const { permissions: newPermissions = [] } = params
+    await this.permissionService.checkPermissionExists(newPermissions)
+
+    const [total] = await this.service.updateAdminRole(id as string, params as AdminRoleInfo)
     assert(total, new MyError('更新失败', 400))
 
     ctx.helper.success(ctx, null, null, 204)
@@ -62,6 +80,9 @@ export class RoleController {
   public async remove(ctx: Context): Promise<void> {
     // 校验提交的参数
     const params = this.validator.removeRole(ctx.request.body)
+
+    // 检查角色是否存在
+    await this.service.checkRoleExists(params.ids)
 
     const total = await this.service.removeAdminRoleByIds(params.ids)
     assert(total, new MyError('删除失败', 400))

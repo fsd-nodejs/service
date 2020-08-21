@@ -1,7 +1,7 @@
 import { provide, plugin, inject, Context, config } from 'midway'
-import AdminUserModel, { IAdminUserModel, AdminUserInfo } from '@/app/model/admin-user'
 import { Jwt, JwtConfig } from '@waiting/egg-jwt'
 import { Redis } from 'ioredis'
+import AdminUserModel, { IAdminUserModel, AdminUserInfo } from '@/app/model/admin-user'
 
 
 @provide('AuthService')
@@ -14,7 +14,7 @@ export class AuthService {
   ctx!: Context
 
   @inject('AdminUserModel')
-  AdminUserModel!: IAdminUserModel
+  adminUserModel!: IAdminUserModel
 
   @plugin()
   jwt!: Jwt
@@ -57,7 +57,7 @@ export class AuthService {
    * @returns {AdminUserModel | null} 承载用户的 Promise 对象
    */
   public async getAdminUserByUserName(username: string) {
-    const user = await this.AdminUserModel.findOne({
+    const user = await this.adminUserModel.findOne({
       where: {
         username,
       },
@@ -131,5 +131,3 @@ export class AuthService {
   }
 
 }
-
-export type IAuthService = AuthService

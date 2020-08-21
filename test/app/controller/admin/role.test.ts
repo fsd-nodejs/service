@@ -3,9 +3,9 @@ import * as assert from 'power-assert'
 import { app } from 'midway-mock/bootstrap'
 
 
-describe('test/controller/permission.test.ts', () => {
+describe('test/controller/admin/role.test.ts', () => {
   let currentUser: any
-  let currentPermission: any
+  let currentRole: any
   before(async () => {
     app.mockCsrf()
     const response = await app.httpRequest()
@@ -16,25 +16,25 @@ describe('test/controller/permission.test.ts', () => {
     currentUser = response.body.data
   })
 
-  it('should get /permission/query ', async () => {
+  it('should get /admin/role/query ', async () => {
     app.mockCsrf()
     const response = await app.httpRequest()
-      .get('/permission/query')
+      .get('/admin/role/query')
       .set('Authorization', `Bearer ${currentUser.token}`)
       .expect(200)
     assert(response.body.data.total)
   })
 
-  it('should get /permission/show ', async () => {
+  it('should get /admin/role/show ', async () => {
     app.mockCsrf()
     const response = await app.httpRequest()
-      .get('/permission/query')
+      .get('/admin/role/query')
       .set('Authorization', `Bearer ${currentUser.token}`)
       .expect(200)
     assert(response.body.data.total)
     const { list } = response.body.data
     const response2 = await app.httpRequest()
-      .get('/permission/show')
+      .get('/admin/role/show')
       .query({
         id: list[0].id,
       })
@@ -42,32 +42,30 @@ describe('test/controller/permission.test.ts', () => {
     assert.deepEqual(response2.body.data.id, list[0].id)
   })
 
-  it('should post /permission/create ', async () => {
+  it('should post /admin/role/create ', async () => {
     app.mockCsrf()
     const params = {
       name: 'fakeName',
       slug: 'fakeSlug',
-      httpMethod: ['GET', 'POST'],
-      httpPath: '/fake/path',
     }
     const response = await app.httpRequest()
-      .post('/permission/create')
+      .post('/admin/role/create')
       .set('Authorization', `Bearer ${currentUser.token}`)
       .type('form')
       .send(params)
       .expect(201)
     assert(response.body.data)
-    currentPermission = response.body.data
+    currentRole = response.body.data
   })
 
-  it('should patch /permission/update ', async () => {
+  it('should patch /admin/role/update ', async () => {
     app.mockCsrf()
     const params = {
-      id: currentPermission.id,
-      httpPath: '/fake/path2',
+      id: currentRole.id,
+      slug: 'fakeSlug2',
     }
     const response = await app.httpRequest()
-      .patch('/permission/update')
+      .patch('/admin/role/update')
       .set('Authorization', `Bearer ${currentUser.token}`)
       .type('form')
       .send(params)
@@ -75,13 +73,13 @@ describe('test/controller/permission.test.ts', () => {
     assert.deepEqual(response.status, 204)
   })
 
-  it('should delete /permission/remove ', async () => {
+  it('should delete /admin/role/remove ', async () => {
     app.mockCsrf()
     const params = {
-      ids: [currentPermission.id],
+      ids: [currentRole.id],
     }
     const response = await app.httpRequest()
-      .del('/permission/remove')
+      .del('/admin/role/remove')
       .set('Authorization', `Bearer ${currentUser.token}`)
       .type('form')
       .send(params)

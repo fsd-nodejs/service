@@ -1,25 +1,15 @@
 import { providerWrapper } from 'midway'
 import {
-  Column, CreatedAt, UpdatedAt, DataType, Model, Scopes, Table, BelongsToMany,
+  Column, CreatedAt, UpdatedAt, DataType, Model, Table, BelongsToMany,
 } from 'sequelize-typescript'
 import AdminPermissionModel from '@/app/model/admin-permission'
 import AdminRolePermissionModel from '@/app/model/admin-role-permission'
+import AdminMenuModel from '@/app/model/admin-menu'
+import AdminRoleMenuModel from '@/app/model/admin-role-menu'
 
 
 const { STRING, INTEGER } = DataType
 
-@Scopes(() => ({
-  permissions: {
-    include: [
-      {
-        model: AdminPermissionModel,
-        through: {
-          attributes: [],
-        },
-      },
-    ],
-  },
-}))
 @Table({
   freezeTableName: true,
   tableName: 'admin_roles',
@@ -31,7 +21,9 @@ export default class AdminRoleModel extends Model<AdminRoleModel> {
     primaryKey: true,
     autoIncrement: true,
   })
-  id!: string
+  public get id() {
+    return String(this.getDataValue('id'))
+  }
 
   @Column({
     type: STRING(50),
@@ -60,8 +52,10 @@ export default class AdminRoleModel extends Model<AdminRoleModel> {
   @BelongsToMany(() => AdminPermissionModel, () => AdminRolePermissionModel)
   permissions!: AdminPermissionModel[]
 
-}
+  @BelongsToMany(() => AdminMenuModel, () => AdminRoleMenuModel)
+  menu!: AdminMenuModel[]
 
+}
 
 export const factory = () => AdminRoleModel
 providerWrapper([
@@ -92,6 +86,7 @@ export interface AdminRoleInfo {
   id?: string
   name?: string
   slug?: string
+  permissions?: string[]
   createdAt?: Date
   updatedAt?: Date
 }

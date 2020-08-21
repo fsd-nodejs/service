@@ -1,16 +1,15 @@
 import { providerWrapper } from 'midway'
 import {
-  Column, CreatedAt, UpdatedAt, DataType, Model, Scopes, Table,
+  Column, CreatedAt, UpdatedAt, DataType, Model, Table, BelongsToMany,
 } from 'sequelize-typescript'
+import AdminRoleModel from '@/app/model/admin-role'
+import AdminRoleUserModel from '@/app/model/admin-role-user'
+import AdminPermissionModel from '@/app/model/admin-permission'
+import AdminUserPermissionModel from '@/app/model/admin-user-permission'
 
 
 const { STRING, INTEGER } = DataType
 
-@Scopes({
-  avaliable: {
-    where: { status: 1 },
-  },
-})
 @Table({
   freezeTableName: true,
   tableName: 'admin_users',
@@ -22,7 +21,9 @@ export default class AdminUserModel extends Model<AdminUserModel> {
     primaryKey: true,
     autoIncrement: true,
   })
-  id!: string
+  public get id() {
+    return String(this.getDataValue('id'))
+  }
 
   @Column({
     type: STRING(190),
@@ -43,7 +44,6 @@ export default class AdminUserModel extends Model<AdminUserModel> {
     comment: '名称',
   })
   name!: string
-
 
   @Column({
     type: STRING(255),
@@ -70,6 +70,12 @@ export default class AdminUserModel extends Model<AdminUserModel> {
   })
   updatedAt!: Date
 
+  @BelongsToMany(() => AdminRoleModel, () => AdminRoleUserModel)
+  roles!: AdminRoleModel[]
+
+  @BelongsToMany(() => AdminPermissionModel, () => AdminUserPermissionModel)
+  permissions!: AdminPermissionModel[]
+
 }
 
 export const factory = () => AdminUserModel
@@ -86,17 +92,25 @@ export type IAdminUserModel = typeof AdminUserModel
  * 查询管理员用户信息参数
  */
 export interface GetAdminUserOpts {
-  id: string
+  id?: string
+  name?: string // 名称
+  username?: string // 帐号
+  sorter?: string // 排序
+  pageSize: number
+  current: number
 }
 
 /**
  * 管理员用户信息
  */
 export interface AdminUserInfo {
-  id: string
+  id?: string
   username?: string
   name?: string
+  password?: string
   avatar?: string
+  roles?: string[]
+  permissions?: string[]
   createdAt?: Date
   updatedAt?: Date
 }

@@ -2,15 +2,15 @@ import { providerWrapper } from 'midway'
 import {
   Column, CreatedAt, UpdatedAt, Model, Table, ForeignKey,
 } from 'sequelize-typescript'
-import AdminPermissionModel from '@/app/model/admin-permission'
+import AdminUserModel from '@/app/model/admin-user'
 import AdminRoleModel from '@/app/model/admin-role'
 
 
 @Table({
   freezeTableName: true,
-  tableName: 'admin_role_permissions',
+  tableName: 'admin_role_users',
 })
-export default class AdminRolePermissionModel extends Model<AdminRolePermissionModel> {
+export default class AdminRoleUserModel extends Model<AdminRoleUserModel> {
 
   @ForeignKey(() => AdminRoleModel)
   @Column({
@@ -18,11 +18,11 @@ export default class AdminRolePermissionModel extends Model<AdminRolePermissionM
   })
   roleId!: string
 
-  @ForeignKey(() => AdminPermissionModel)
+  @ForeignKey(() => AdminUserModel)
   @Column({
-    field: 'permission_id',
+    field: 'user_id',
   })
-  permissionId!: string
+  userId!: string
 
   @CreatedAt
   @Column({
@@ -38,12 +38,12 @@ export default class AdminRolePermissionModel extends Model<AdminRolePermissionM
 
 }
 
-export const factory = () => AdminRolePermissionModel
+export const factory = () => AdminRoleUserModel
 providerWrapper([
   {
-    id: 'AdminRolePermissionModel',
+    id: 'AdminRoleUserModel',
     provider: factory,
   },
 ])
 
-export type IAdminRolePermissionModel = typeof AdminRolePermissionModel
+export type IAdminRoleUserModel = typeof AdminRoleUserModel

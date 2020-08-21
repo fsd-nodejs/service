@@ -1,5 +1,6 @@
 import * as Joi from 'joi'
 import { provide } from 'midway'
+import { AdminPermissionInfo, GetAdminPermissionOpts } from '@/app/model/admin-permission'
 
 import Validator from './validator'
 
@@ -12,7 +13,7 @@ export class PermissionValidator extends Validator {
    * @param {*} value
    * @memberof PermissionValidator
    */
-  public queryPermission(value: any) {
+  public queryPermission(value: any): GetAdminPermissionOpts {
     return this.validate(value, {
       current: Joi.number()
         .max(100000)
@@ -23,18 +24,23 @@ export class PermissionValidator extends Validator {
         .default(10)
         .optional(),
       id: Joi.string()
+        .trim()
         .max(10)
         .optional(),
       slug: Joi.string()
+        .trim()
         .max(50)
         .optional(),
       httpPath: Joi.string()
+        .trim()
         .max(50)
         .optional(),
       httpMethod: Joi.string()
+        .trim()
         .max(50)
         .optional(),
       sorter: Joi.string()
+        .trim()
         .max(50)
         .regex(/^[a-zA-Z]*(_asc|_desc)$/)
         .optional(),
@@ -49,6 +55,7 @@ export class PermissionValidator extends Validator {
   public showPermission(value: any) {
     return this.validate(value, {
       id: Joi.string()
+        .trim()
         .max(10)
         .required(),
     })
@@ -61,7 +68,13 @@ export class PermissionValidator extends Validator {
    */
   public removePermission(value: any) {
     return this.validate(value, {
-      ids: Joi.array().items(Joi.string()).min(1),
+      ids: Joi.array()
+        .items(
+          Joi.string()
+            .trim()
+            .max(10),
+        )
+        .min(1),
     })
   }
 
@@ -70,7 +83,7 @@ export class PermissionValidator extends Validator {
    * @param {*} value
    * @memberof PermissionValidator
    */
-  public createPermission(value: any) {
+  public createPermission(value: any): AdminPermissionInfo {
     return this.validate(value, {
       name: Joi.string()
         .trim()
@@ -99,10 +112,10 @@ export class PermissionValidator extends Validator {
    * @param {*} value
    * @memberof PermissionValidator
    */
-  public updatePermission(value: any) {
+  public updatePermission(value: any): AdminPermissionInfo {
     return this.validate(value, {
       id: Joi.string()
-        .max(50)
+        .max(10)
         .required(),
       name: Joi.string()
         .trim()

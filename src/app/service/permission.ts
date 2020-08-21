@@ -1,14 +1,17 @@
-import { provide, inject } from 'midway'
-import { IAdminPermissionModel, AdminPermissionInfo, GetAdminPermissionOpts } from '@/app/model/admin-permission'
-import { Op } from 'sequelize'
+import * as assert from 'assert'
 
-import AdminRoleModel from '../model/admin-role'
+import { provide, inject } from 'midway'
+import { Op } from 'sequelize'
+import { IAdminPermissionModel, AdminPermissionInfo, GetAdminPermissionOpts } from '@/app/model/admin-permission'
+import AdminRoleModel from '@/app/model/admin-role'
+import AdminMenuModel from '@/app/model/admin-menu'
+import MyError from '@/app/common/my-error'
 
 @provide('PermissionService')
 export class PermissionService {
 
   @inject('AdminPermissionModel')
-  AdminPermissionModel!: IAdminPermissionModel
+  adminPermissionModel!: IAdminPermissionModel
 
   /**
    * 分页查询权限列表
@@ -29,39 +32,39 @@ export class PermissionService {
     // 模糊匹配id
     if (params.id) {
       where.id = {
-        [Op.like]: `%${params.id}%`,
+        [Op.like]: `%${params.id}`,
       }
     }
 
     // 模糊匹配名称
     if (params.name) {
       where.name = {
-        [Op.like]: `%${params.name}%`,
+        [Op.like]: `%${params.name}`,
       }
     }
 
     // 模糊匹配标识
     if (params.slug) {
       where.slug = {
-        [Op.like]: `%${params.slug}%`,
+        [Op.like]: `%${params.slug}`,
       }
     }
 
     // 模糊匹配路径
     if (params.httpPath) {
       where.httpPath = {
-        [Op.like]: `%${params.httpPath}%`,
+        [Op.like]: `%${params.httpPath}`,
       }
     }
 
     // 模糊匹配请求方式
     if (params.httpMethod) {
       where.httpMethod = {
-        [Op.like]: `%${params.httpMethod}%`,
+        [Op.like]: `%${params.httpMethod}`,
       }
     }
 
-    const { rows: list, count: total } = await this.AdminPermissionModel.findAndCountAll({
+    const { rows: list, count: total } = await this.adminPermissionModel.findAndCountAll({
       order,
       where,
       limit: pageSize,
@@ -82,7 +85,7 @@ export class PermissionService {
    * @returns {AdminPermissionModel | null}
    */
   public async getAdminPermissionById(id: string) {
-    return this.AdminPermissionModel.findOne({
+    return this.adminPermissionModel.findOne({
       where: {
         id,
       },
@@ -94,6 +97,10 @@ export class PermissionService {
           },
           attributes: ['id', 'name', 'slug'],
         },
+        {
+          model: AdminMenuModel,
+          attributes: ['id', 'parentId', 'title', 'uri'],
+        },
       ],
     })
   }
@@ -104,7 +111,7 @@ export class PermissionService {
    * @returns {AdminPermissionModel}
    */
   public async createAdminPermission(params: AdminPermissionInfo) {
-    return this.AdminPermissionModel.create(params)
+    return this.adminPermissionModel.create(params)
   }
 
   /**
@@ -112,7 +119,7 @@ export class PermissionService {
    * @param {AdminPermissionInfo} params
    */
   public async updateAdminPermission(id: string, params: AdminPermissionInfo) {
-    return this.AdminPermissionModel.update(params, {
+    return this.adminPermissionModel.update(params, {
       where: {
         id,
       },
@@ -126,12 +133,30 @@ export class PermissionService {
    * @returns {number}
    */
   public async removeAdminPermissionByIds(ids: string[]) {
-    return this.AdminPermissionModel.destroy({
+    return this.adminPermissionModel.destroy({
       where: {
         id: ids,
       },
     })
   }
 
+  /**
+   * 检查权限是否存在于数据库，自动抛错
+   * @param {string[]} ids
+   */
+  public async checkPermissionExists(ids: string[]) {
+    const count = await this.adminPermissionModel.count({
+      where: {
+        id: {
+          [Op.in]: ids,
+        },
+      },
+    })
+    assert.deepEqual(
+      count,
+      ids.length,
+      new MyError('权限不存在，请检查', 400),
+    )
+  }
+
 }
-export type IPermissionService = PermissionService
