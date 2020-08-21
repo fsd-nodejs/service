@@ -108,6 +108,7 @@ describe('test/service/user.test.ts', () => {
     const [total] = await userService.updateAdminUser(id, {
       name: 'fakeName2',
       username: 'fakeUserName2',
+      password: '123456',
       roles: [],
       permissions: [],
     })
