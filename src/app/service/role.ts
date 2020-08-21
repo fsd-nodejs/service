@@ -15,13 +15,13 @@ export class RoleService {
   ctx!: Context
 
   @inject('AdminRoleModel')
-  AdminRoleModel!: IAdminRoleModel
+  adminRoleModel!: IAdminRoleModel
 
   @inject('AdminPermissionModel')
-  AdminPermissionModel!: IAdminPermissionModel
+  adminPermissionModel!: IAdminPermissionModel
 
   @inject('AdminRolePermissionModel')
-  AdminRolePermissionModel!: IAdminRolePermissionModel
+  adminRolePermissionModel!: IAdminRolePermissionModel
 
   /**
    * 分页查询角色列表
@@ -60,7 +60,7 @@ export class RoleService {
       }
     }
 
-    const { rows: list, count: total } = await this.AdminRoleModel.findAndCountAll({
+    const { rows: list, count: total } = await this.adminRoleModel.findAndCountAll({
       order,
       where,
       limit: pageSize,
@@ -90,7 +90,7 @@ export class RoleService {
    * @returns {AdminRoleModel | null}
    */
   public async getAdminRoleById(id: string) {
-    return this.AdminRoleModel.findOne({
+    return this.adminRoleModel.findOne({
       where: {
         id,
       },
@@ -121,7 +121,7 @@ export class RoleService {
   public async createAdminRole(params: AdminRoleInfo) {
     const { permissions } = params
 
-    const role = await this.AdminRoleModel.create({
+    const role = await this.adminRoleModel.create({
       name: params.name,
       slug: params.slug,
     })
@@ -132,7 +132,7 @@ export class RoleService {
         roleId: role.id,
         permissionId: id,
       }))
-      await this.AdminRolePermissionModel.bulkCreate(rolePermissions)
+      await this.adminRolePermissionModel.bulkCreate(rolePermissions)
     }
 
     return this.getAdminRoleById(role.id)
@@ -160,8 +160,8 @@ export class RoleService {
         permissionId: item,
       }))
 
-      await this.AdminRolePermissionModel.bulkCreate(increaseRolePermissions)
-      await this.AdminRolePermissionModel.destroy({
+      await this.adminRolePermissionModel.bulkCreate(increaseRolePermissions)
+      await this.adminRolePermissionModel.destroy({
         where: {
           roleId: role.id,
           permissionId: decrease,
@@ -169,7 +169,7 @@ export class RoleService {
       })
     }
 
-    return this.AdminRoleModel.update(params, {
+    return this.adminRoleModel.update(params, {
       where: {
         id,
       },
@@ -183,7 +183,7 @@ export class RoleService {
    * @returns {number}
    */
   public async removeAdminRoleByIds(ids: string[]) {
-    return this.AdminRoleModel.destroy({
+    return this.adminRoleModel.destroy({
       where: {
         id: ids,
       },
@@ -195,7 +195,7 @@ export class RoleService {
    * @param {string[]} ids
    */
   public async checkRoleExists(ids: string[]) {
-    const count = await this.AdminRoleModel.count({
+    const count = await this.adminRoleModel.count({
       where: {
         id: {
           [Op.in]: ids,

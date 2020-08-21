@@ -15,10 +15,10 @@ export class MenuService {
   ctx!: Context
 
   @inject('AdminMenuModel')
-  AdminMenuModel!: IAdminMenuModel
+  adminMenuModel!: IAdminMenuModel
 
   @inject('AdminRoleMenuModel')
-  AdminRoleMenuModel!: IAdminRoleMenuModel
+  adminRoleMenuModel!: IAdminRoleMenuModel
 
   /**
    * 查询菜单列表
@@ -26,7 +26,7 @@ export class MenuService {
    */
   public async queryAdminMenu(queryParams: GetAdminMenuOpts) {
     const { current, pageSize } = queryParams
-    const { rows: list, count: total } = await this.AdminMenuModel.findAndCountAll({
+    const { rows: list, count: total } = await this.adminMenuModel.findAndCountAll({
       limit: pageSize,
       offset: pageSize * (current - 1),
       include: [
@@ -50,7 +50,7 @@ export class MenuService {
    * @returns {AdminMenuModel | null}
    */
   public async getAdminMenuById(id: string) {
-    return this.AdminMenuModel.findOne({
+    return this.adminMenuModel.findOne({
       where: {
         id,
       },
@@ -78,7 +78,7 @@ export class MenuService {
   public async createAdminMenu(params: AdminMenuInfo) {
     const { roles } = params
 
-    const menu = await this.AdminMenuModel.create({
+    const menu = await this.adminMenuModel.create({
       parentId: params.parentId,
       title: params.title,
       uri: params.uri,
@@ -92,7 +92,7 @@ export class MenuService {
         menuId: menu.id,
       }))
 
-      await this.AdminRoleMenuModel.bulkCreate(roleMenu)
+      await this.adminRoleMenuModel.bulkCreate(roleMenu)
     }
 
     return this.getAdminMenuById(menu.id)
@@ -120,8 +120,8 @@ export class MenuService {
         menuId: menu.id,
       }))
 
-      await this.AdminRoleMenuModel.bulkCreate(increaseRoleMenu)
-      await this.AdminRoleMenuModel.destroy({
+      await this.adminRoleMenuModel.bulkCreate(increaseRoleMenu)
+      await this.adminRoleMenuModel.destroy({
         where: {
           roleId: decrease,
           menuId: menu.id,
@@ -129,7 +129,7 @@ export class MenuService {
       })
     }
 
-    return this.AdminMenuModel.update(params, {
+    return this.adminMenuModel.update(params, {
       where: {
         id,
       },
@@ -143,7 +143,7 @@ export class MenuService {
    * @returns {number}
    */
   public async removeAdminMenuByIds(ids: string[]) {
-    return this.AdminMenuModel.destroy({
+    return this.adminMenuModel.destroy({
       where: {
         id: ids,
       },
@@ -155,7 +155,7 @@ export class MenuService {
    * @param {string[]} ids
    */
   public async checkMenuExists(ids: string[]) {
-    const count = await this.AdminMenuModel.count({
+    const count = await this.adminMenuModel.count({
       where: {
         id: {
           [Op.in]: ids,

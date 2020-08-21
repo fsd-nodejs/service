@@ -11,7 +11,7 @@ import MyError from '@/app/common/my-error'
 export class PermissionService {
 
   @inject('AdminPermissionModel')
-  AdminPermissionModel!: IAdminPermissionModel
+  adminPermissionModel!: IAdminPermissionModel
 
   /**
    * 分页查询权限列表
@@ -64,7 +64,7 @@ export class PermissionService {
       }
     }
 
-    const { rows: list, count: total } = await this.AdminPermissionModel.findAndCountAll({
+    const { rows: list, count: total } = await this.adminPermissionModel.findAndCountAll({
       order,
       where,
       limit: pageSize,
@@ -85,7 +85,7 @@ export class PermissionService {
    * @returns {AdminPermissionModel | null}
    */
   public async getAdminPermissionById(id: string) {
-    return this.AdminPermissionModel.findOne({
+    return this.adminPermissionModel.findOne({
       where: {
         id,
       },
@@ -111,7 +111,7 @@ export class PermissionService {
    * @returns {AdminPermissionModel}
    */
   public async createAdminPermission(params: AdminPermissionInfo) {
-    return this.AdminPermissionModel.create(params)
+    return this.adminPermissionModel.create(params)
   }
 
   /**
@@ -119,7 +119,7 @@ export class PermissionService {
    * @param {AdminPermissionInfo} params
    */
   public async updateAdminPermission(id: string, params: AdminPermissionInfo) {
-    return this.AdminPermissionModel.update(params, {
+    return this.adminPermissionModel.update(params, {
       where: {
         id,
       },
@@ -133,7 +133,7 @@ export class PermissionService {
    * @returns {number}
    */
   public async removeAdminPermissionByIds(ids: string[]) {
-    return this.AdminPermissionModel.destroy({
+    return this.adminPermissionModel.destroy({
       where: {
         id: ids,
       },
@@ -145,7 +145,7 @@ export class PermissionService {
    * @param {string[]} ids
    */
   public async checkPermissionExists(ids: string[]) {
-    const count = await this.AdminPermissionModel.count({
+    const count = await this.adminPermissionModel.count({
       where: {
         id: {
           [Op.in]: ids,

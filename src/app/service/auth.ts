@@ -14,7 +14,7 @@ export class AuthService {
   ctx!: Context
 
   @inject('AdminUserModel')
-  AdminUserModel!: IAdminUserModel
+  adminUserModel!: IAdminUserModel
 
   @plugin()
   jwt!: Jwt
@@ -57,7 +57,7 @@ export class AuthService {
    * @returns {AdminUserModel | null} 承载用户的 Promise 对象
    */
   public async getAdminUserByUserName(username: string) {
-    const user = await this.AdminUserModel.findOne({
+    const user = await this.adminUserModel.findOne({
       where: {
         username,
       },

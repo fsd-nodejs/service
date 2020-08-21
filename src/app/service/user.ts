@@ -16,13 +16,13 @@ export class UserService {
   ctx!: Context
 
   @inject('AdminUserModel')
-  AdminUserModel!: IAdminUserModel
+  adminUserModel!: IAdminUserModel
 
   @inject('AdminRoleUserModel')
-  AdminRoleUserModel!: IAdminRoleUserModel
+  adminRoleUserModel!: IAdminRoleUserModel
 
   @inject('AdminUserPermissionModel')
-  AdminUserPermissionModel!: IAdminUserPermissionModel
+  adminUserPermissionModel!: IAdminUserPermissionModel
 
   /**
    * 查询管理员用户列表
@@ -62,7 +62,7 @@ export class UserService {
       }
     }
 
-    const { rows: list, count: total } = await this.AdminUserModel.findAndCountAll({
+    const { rows: list, count: total } = await this.adminUserModel.findAndCountAll({
       order,
       where,
       limit: pageSize,
@@ -99,7 +99,7 @@ export class UserService {
    * @returns {AdminUserModel | null}
    */
   public async getAdminUserById(id: string) {
-    return this.AdminUserModel.findOne({
+    return this.adminUserModel.findOne({
       where: {
         id,
       },
@@ -130,7 +130,7 @@ export class UserService {
   public async createAdminUser(params: AdminUserInfo) {
     const { roles, permissions } = params
 
-    const user = await this.AdminUserModel.create({
+    const user = await this.adminUserModel.create({
       name: params.name,
       username: params.username,
       avatar: params.avatar,
@@ -144,7 +144,7 @@ export class UserService {
         userId: user.id,
       }))
 
-      await this.AdminRoleUserModel.bulkCreate(roleUser)
+      await this.adminRoleUserModel.bulkCreate(roleUser)
     }
 
     // 如果有传递permissions
@@ -154,7 +154,7 @@ export class UserService {
         permissionId: id,
       }))
 
-      await this.AdminUserPermissionModel.bulkCreate(userPermission)
+      await this.adminUserPermissionModel.bulkCreate(userPermission)
     }
 
     return this.getAdminUserById(user.id)
@@ -182,8 +182,8 @@ export class UserService {
         userId: user.id,
       }))
 
-      await this.AdminRoleUserModel.bulkCreate(increaseRoleUser)
-      await this.AdminRoleUserModel.destroy({
+      await this.adminRoleUserModel.bulkCreate(increaseRoleUser)
+      await this.adminRoleUserModel.destroy({
         where: {
           roleId: decrease,
           userId: user.id,
@@ -203,8 +203,8 @@ export class UserService {
         permissionId: item,
       }))
 
-      await this.AdminUserPermissionModel.bulkCreate(increaseUserPermission)
-      await this.AdminUserPermissionModel.destroy({
+      await this.adminUserPermissionModel.bulkCreate(increaseUserPermission)
+      await this.adminUserPermissionModel.destroy({
         where: {
           userId: user.id,
           permissionId: decrease,
@@ -212,7 +212,7 @@ export class UserService {
       })
     }
 
-    return this.AdminUserModel.update(params, {
+    return this.adminUserModel.update(params, {
       where: {
         id,
       },
@@ -226,7 +226,7 @@ export class UserService {
    * @returns {number}
    */
   public async removeAdminUserByIds(ids: string[]) {
-    return this.AdminUserModel.destroy({
+    return this.adminUserModel.destroy({
       where: {
         id: ids,
       },
@@ -238,7 +238,7 @@ export class UserService {
    * @param {string[]} ids
    */
   public async checkUserExists(ids: string[]) {
-    const count = await this.AdminUserModel.count({
+    const count = await this.adminUserModel.count({
       where: {
         id: {
           [Op.in]: ids,
