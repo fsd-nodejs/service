@@ -56,8 +56,7 @@ jobs:
 #         node-version: ${{ matrix.node-version }}
     - name: Verify MySQL connection from container and init data
       run: |
-         pwd
-         ls -al
+         /usr/bin/docker ps -a
 #        apt-get update
 #        apt-get install -y mysql-client
 #        mysql --host mysql -uroot -ppassword -e "SHOW DATABASES"
