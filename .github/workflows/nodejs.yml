@@ -40,6 +40,8 @@ jobs:
         env:
           MYSQL_ROOT_PASSWORD: password
           MYSQL_DATABASE: shop 
+        volumes:
+          - ./:/shard
 
     strategy:
       matrix:
@@ -54,7 +56,8 @@ jobs:
 #         node-version: ${{ matrix.node-version }}
     - name: Verify MySQL connection from container and init data
       run: |
-         mysql -V
+         pwd
+         ls -al
 #        apt-get update
 #        apt-get install -y mysql-client
 #        mysql --host mysql -uroot -ppassword -e "SHOW DATABASES"
