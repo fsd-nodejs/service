@@ -40,8 +40,8 @@ jobs:
         env:
           MYSQL_ROOT_PASSWORD: password
           MYSQL_DATABASE: shop 
-        volumes:
-          - ./:/shard
+#         volumes:
+#           - ./:/shard
 
     strategy:
       matrix:
