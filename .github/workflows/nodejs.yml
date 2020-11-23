@@ -21,15 +21,15 @@ jobs:
     # Service containers to run with `container-job`
     services:
       # Label used to access the service container
-#       redis:
-#         # Docker Hub image
-#         image: redis
-#         # Set health checks to wait until redis has started
-#         options: >-
-#           --health-cmd "redis-cli ping"
-#           --health-interval 10s
-#           --health-timeout 5s
-#           --health-retries 5
+      redis:
+        # Docker Hub image
+        image: redis
+        # Set health checks to wait until redis has started
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
       mysql:
         image: mysql:5.7
         options: >-
@@ -40,8 +40,8 @@ jobs:
         env:
           MYSQL_ROOT_PASSWORD: password
           MYSQL_DATABASE: shop 
-        volumes:
-          - /__w/service/service:/shared
+#         volumes:
+#           - /__w/service/service:/shared
 
     strategy:
       matrix:
@@ -56,26 +56,25 @@ jobs:
 #         node-version: ${{ matrix.node-version }}
     - name: Verify MySQL connection from container and init data
       run: |
-         /usr/bin/docker ps -a
-#        apt-get update
-#        apt-get install -y mysql-client
-#        mysql --host mysql -uroot -ppassword -e "SHOW DATABASES"
-#        mysql --host mysql -uroot -ppassword shop < ./src/database/init.sql
-#     - run: npm i -g npminstall && npminstall
-#     - run: npm run ci
-#       env:
-#         CI: true
-#         # mysql
-#         MYSQL_HOST: mysql
-#         MYSQL_PORT: 3306
-#         MYSQL_USER: root
-#         MYSQL_PASSWORD: password
-#         MYSQL_DATABASE: shop
-#         # redis
-#         REDIS_HOST: redis
-#         REDIS_PORT: 6379
-#     - name: Upload coverage to Codecov
-#       uses: codecov/codecov-action@v1.0.2
-#       with:
-#         token: ${{secrets.CODECOV_TOKEN}}
-#         file: ./coverage/coverage-final.json
+       apt-get update
+       apt-get install -y mysql-client
+       mysql --host mysql -uroot -ppassword -e "SHOW DATABASES"
+       mysql --host mysql -uroot -ppassword shop < ./src/database/init.sql
+    - run: npm i -g npminstall && npminstall
+    - run: npm run ci
+      env:
+        CI: true
+        # mysql
+        MYSQL_HOST: mysql
+        MYSQL_PORT: 3306
+        MYSQL_USER: root
+        MYSQL_PASSWORD: password
+        MYSQL_DATABASE: shop
+        # redis
+        REDIS_HOST: redis
+        REDIS_PORT: 6379
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v1.0.2
+      with:
+        token: ${{secrets.CODECOV_TOKEN}}
+        file: ./coverage/coverage-final.json
